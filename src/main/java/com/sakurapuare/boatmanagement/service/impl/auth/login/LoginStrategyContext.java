@@ -1,29 +1,35 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.login;
 
-import cn.hutool.core.lang.Validator;
-import com.sakurapuare.boatmanagement.mapper.UserMapper;
-import com.sakurapuare.boatmanagement.service.impl.auth.login.strategy.EmailLoginStrategy;
+import com.sakurapuare.boatmanagement.constant.login.LoginStatus;
+import com.sakurapuare.boatmanagement.service.impl.auth.login.strategy.CodeLoginStrategy;
 import com.sakurapuare.boatmanagement.service.impl.auth.login.strategy.LoginStrategy;
-import com.sakurapuare.boatmanagement.service.impl.auth.login.strategy.MobileLoginStrategy;
-import com.sakurapuare.boatmanagement.service.impl.auth.login.strategy.UsernameLoginStrategy;
+import com.sakurapuare.boatmanagement.service.impl.auth.login.strategy.PasswordLoginStrategy;
+import org.springframework.stereotype.Component;
 
+@Component
 public class LoginStrategyContext {
 
-    private final UserMapper userMapper;
+    private final CodeLoginStrategy codeLoginStrategy;
 
-    public LoginStrategyContext(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    private final PasswordLoginStrategy passwordLoginStrategy;
+
+    public LoginStrategyContext(CodeLoginStrategy codeLoginStrategy, PasswordLoginStrategy passwordLoginStrategy) {
+        this.codeLoginStrategy = codeLoginStrategy;
+        this.passwordLoginStrategy = passwordLoginStrategy;
     }
 
-    public LoginStrategy getStrategy(String username) {
-        if (Validator.isEmail(username)) {
-            return new EmailLoginStrategy(userMapper);
-        } else if (Validator.isMobile(username)) {
-            return new MobileLoginStrategy(userMapper);
-        } else if (Validator.isGeneral(username, 10, 25)) {
-            return new UsernameLoginStrategy(userMapper);
-        } else {
-            return null;
+    public LoginStrategy getStrategy(LoginStatus loginStatus) {
+        switch (loginStatus.getMethod()) {
+            case PASSWORD -> {
+                passwordLoginStrategy.configureStrategy(loginStatus.getUsername());
+                return passwordLoginStrategy;
+            }
+            case CODE -> {
+                codeLoginStrategy.configureStrategy(loginStatus.getUsername());
+                return codeLoginStrategy;
+            }
+            case THIRD_PARTY -> throw new UnsupportedOperationException("暂不支持第三方登录");
         }
+        return null;
     }
 }

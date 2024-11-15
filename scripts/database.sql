@@ -113,6 +113,18 @@ CREATE TABLE IF NOT EXISTS alert
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (boat_id) REFERENCES boats (boat_id)
 );
+
+-- 验证码
+CREATE TABLE IF NOT EXISTS verification_codes (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    code VARCHAR(10) NOT NULL,
+    request_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expiration_time DATETIME,
+    is_used BOOLEAN DEFAULT FALSE,
+    INDEX idx_user_id (user_id)
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
 -- -- 运营管理表
 -- CREATE TABLE IF NOT EXISTS operations (
 --     operation_id INT PRIMARY KEY AUTO_INCREMENT,

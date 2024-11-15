@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 public class Response<T> implements Serializable {
-    private int code = ResponseCode.SUCCESS;
+    private int code = ResponseCode.CODE_SUCCESS;
     private String message = "";
     private T data = null;
     private int time;
@@ -18,14 +18,14 @@ public class Response<T> implements Serializable {
 
     public static <T> Response<T> success() {
         Response<T> response = new Response<>();
-        response.setCode(ResponseCode.SUCCESS);
+        response.setCode(ResponseCode.CODE_SUCCESS);
         response.setMessage("Success");
         return response;
     }
 
     public static Response<String> success(String message) {
         Response<String> response = new Response<>();
-        response.setCode(ResponseCode.SUCCESS);
+        response.setCode(ResponseCode.CODE_SUCCESS);
         response.setMessage(message);
         response.setData("");
         return response;
@@ -33,7 +33,7 @@ public class Response<T> implements Serializable {
 
     public static <T> Response<T> success(T data) {
         Response<T> response = new Response<>();
-        response.setCode(ResponseCode.SUCCESS);
+        response.setCode(ResponseCode.CODE_SUCCESS);
         response.setData(data);
         response.setMessage("Success");
         return response;
@@ -41,7 +41,7 @@ public class Response<T> implements Serializable {
 
     public static <T> Response<T> success(String message, T data) {
         Response<T> response = new Response<>();
-        response.setCode(ResponseCode.SUCCESS);
+        response.setCode(ResponseCode.CODE_SUCCESS);
         response.setMessage(message);
         response.setData(data);
         return response;
@@ -49,7 +49,7 @@ public class Response<T> implements Serializable {
 
     public static <T> Response<T> error(String message) {
         Response<T> response = new Response<>();
-        response.setCode(ResponseCode.BAD_REQUEST);
+        response.setCode(ResponseCode.CODE_BAD_REQUEST);
         response.setMessage(message);
         return response;
     }

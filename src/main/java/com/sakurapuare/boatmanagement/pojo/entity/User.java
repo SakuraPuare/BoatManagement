@@ -1,13 +1,11 @@
 package com.sakurapuare.boatmanagement.pojo.entity;
 
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
+import com.mybatisflex.annotation.*;
 import com.sakurapuare.boatmanagement.utils.JWTUtils;
 import lombok.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,6 +37,9 @@ public class User extends BaseEntity {
     private String phone;
 
     private Integer role;
+
+    @RelationOneToMany(selfField = "codes", targetField = "userId")
+    private List<Code> codes;
 
     @Column(onInsertValue = "FALSE")
     private Boolean isActive;

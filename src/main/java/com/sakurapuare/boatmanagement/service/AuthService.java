@@ -7,5 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.User;
 
 public interface AuthService extends IService<User> {
 
-    User login(LoginRequestDTO loginRequestDTO);
+    User loginWithPassword(LoginRequestDTO loginRequestDTO);
+
+    User loginWithCode(LoginRequestDTO loginRequestDTO);
 }
