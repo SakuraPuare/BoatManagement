@@ -2,10 +2,12 @@ package com.sakurapuare.boatmanagement.pojo.entity;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
+import com.mybatisflex.annotation.RelationOneToOne;
 import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -20,11 +22,12 @@ import java.sql.Timestamp;
  * @since 2024-11-15
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("orders")
-public class Orders implements Serializable {
+public class Orders extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -32,18 +35,13 @@ public class Orders implements Serializable {
     @Id(keyType = KeyType.Auto)
     private Integer orderId;
 
-    private Integer userId;
+    @RelationOneToOne(selfField="userId", targetField="userId")
+    private Users user;
 
-    private Integer ticketId;
+    @RelationOneToOne(selfField="ticketId", targetField="ticketId")
+    private Tickets ticket;
 
     private BigDecimal totalAmount;
 
     private Integer paymentStatus;
-
-    private Boolean isDeleted;
-
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
-
 }

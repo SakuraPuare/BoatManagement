@@ -1,11 +1,13 @@
 package com.sakurapuare.boatmanagement.pojo.entity;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -19,11 +21,12 @@ import java.sql.Timestamp;
  * @since 2024-11-15
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("users")
-public class Users implements Serializable {
+public class Users extends BaseEntity implements Serializable  {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -31,6 +34,7 @@ public class Users implements Serializable {
     @Id(keyType = KeyType.Auto)
     private Integer userId;
 
+    @Column(onInsertValue = "UUID()")
     private String uuid;
 
     private String username;
@@ -43,14 +47,10 @@ public class Users implements Serializable {
 
     private Integer role;
 
+    @Column(onInsertValue = "FALSE")
     private Boolean isActive;
 
+    @Column(onInsertValue = "FALSE")
     private Boolean isBlocked;
-
-    private Boolean isDeleted;
-
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
 
 }

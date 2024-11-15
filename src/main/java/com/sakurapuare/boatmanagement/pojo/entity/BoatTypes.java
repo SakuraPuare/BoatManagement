@@ -6,6 +6,7 @@ import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -19,11 +20,12 @@ import java.sql.Timestamp;
  * @since 2024-11-15
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("boat_types")
-public class BoatTypes implements Serializable {
+public class BoatTypes extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -35,10 +37,5 @@ public class BoatTypes implements Serializable {
 
     private String boatTypeDescription;
 
-    private Boolean isDeleted;
-
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
 
 }
