@@ -6,9 +6,6 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * 实体类。
  *
@@ -21,10 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("users")
-public class Users extends BaseEntity implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class User extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
     private Integer userId;

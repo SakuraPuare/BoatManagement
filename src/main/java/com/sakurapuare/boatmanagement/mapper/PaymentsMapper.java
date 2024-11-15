@@ -1,7 +1,7 @@
 package com.sakurapuare.boatmanagement.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.sakurapuare.boatmanagement.pojo.entity.Payments;
+import com.sakurapuare.boatmanagement.pojo.entity.Payment;
 
 /**
  * 映射层。
@@ -9,6 +9,6 @@ import com.sakurapuare.boatmanagement.pojo.entity.Payments;
  * @author sakurapuare
  * @since 2024-11-15
  */
-public interface PaymentsMapper extends BaseMapper<Payments> {
+public interface PaymentsMapper extends BaseMapper<Payment> {
 
 }

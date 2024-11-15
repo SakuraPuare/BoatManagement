@@ -6,8 +6,6 @@ import com.mybatisflex.annotation.RelationOneToOne;
 import com.mybatisflex.annotation.Table;
 import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -23,29 +21,26 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("tickets")
-public class Tickets extends BaseEntity implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Ticket extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
     private Integer ticketId;
 
     @RelationOneToOne(selfField = "userId", targetField = "userId")
-    private Users user;
+    private User user;
 
     @RelationOneToOne(selfField = "boatId", targetField = "boatId")
-    private Boats boat;
+    private Boat boat;
 
     private Timestamp startTime;
 
     private Timestamp endTime;
 
     @RelationOneToOne(selfField = "departureDockId", targetField = "dockId")
-    private Docks departureDock;
+    private Dock departureDock;
 
     @RelationOneToOne(selfField = "destinationDockId", targetField = "dockId")
-    private Docks destinationDock;
+    private Dock destinationDock;
 
     private BigDecimal price;
 

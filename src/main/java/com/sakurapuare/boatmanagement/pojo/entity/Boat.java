@@ -6,10 +6,6 @@ import com.mybatisflex.annotation.RelationOneToOne;
 import com.mybatisflex.annotation.Table;
 import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.sql.Timestamp;
-
 /**
  * 实体类。
  *
@@ -21,25 +17,17 @@ import java.sql.Timestamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("alerts")
-public class Alerts extends BaseEntity implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+@Table("boats")
+public class Boat extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer alertId;
+    private Integer boatId;
 
-    @RelationOneToOne(selfField = "boatId", targetField = "boatId")
-    private Boats boat;
+    private String boatName;
 
-    private String alertType;
-
-    private Timestamp alertTime;
-
-    private String description;
+    @RelationOneToOne(selfField = "boatTypeId", targetField = "boatTypeId")
+    private BoatType boatType;
 
     private Integer status;
-
 
 }

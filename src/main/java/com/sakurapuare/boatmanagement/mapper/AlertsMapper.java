@@ -1,7 +1,7 @@
 package com.sakurapuare.boatmanagement.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.sakurapuare.boatmanagement.pojo.entity.Alerts;
+import com.sakurapuare.boatmanagement.pojo.entity.Alert;
 
 /**
  * 映射层。
@@ -9,6 +9,6 @@ import com.sakurapuare.boatmanagement.pojo.entity.Alerts;
  * @author sakurapuare
  * @since 2024-11-15
  */
-public interface AlertsMapper extends BaseMapper<Alerts> {
+public interface AlertsMapper extends BaseMapper<Alert> {
 
 }

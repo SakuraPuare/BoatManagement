@@ -1,9 +1,8 @@
 package com.sakurapuare.boatmanagement.controller;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.Tickets;
+import com.sakurapuare.boatmanagement.pojo.entity.Ticket;
 import com.sakurapuare.boatmanagement.service.TicketsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +29,8 @@ public class TicketsController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Tickets tickets) {
-        return ticketsService.save(tickets);
+    public boolean save(@RequestBody Ticket ticket) {
+        return ticketsService.save(ticket);
     }
 
     /**
@@ -51,8 +50,8 @@ public class TicketsController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Tickets tickets) {
-        return ticketsService.updateById(tickets);
+    public boolean update(@RequestBody Ticket ticket) {
+        return ticketsService.updateById(ticket);
     }
 
     /**
@@ -61,7 +60,7 @@ public class TicketsController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<Tickets> list() {
+    public List<Ticket> list() {
         return ticketsService.list();
     }
 
@@ -72,7 +71,7 @@ public class TicketsController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Tickets getInfo(@PathVariable Integer id) {
+    public Ticket getInfo(@PathVariable Integer id) {
         return ticketsService.getById(id);
     }
 
@@ -83,7 +82,7 @@ public class TicketsController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<Tickets> page(Page<Tickets> page) {
+    public Page<Ticket> page(Page<Ticket> page) {
         return ticketsService.page(page);
     }
 

@@ -6,8 +6,8 @@ import com.mybatisflex.annotation.RelationOneToOne;
 import com.mybatisflex.annotation.Table;
 import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 /**
  * 实体类。
@@ -20,20 +20,20 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("boats")
-public class Boats extends BaseEntity implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+@Table("payments")
+public class Payment extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer boatId;
+    private Integer paymentId;
 
-    private String boatName;
+    @RelationOneToOne(selfField = "orderId", targetField = "orderId")
+    private Order order;
 
-    @RelationOneToOne(selfField = "boatTypeId", targetField = "boatTypeId")
-    private BoatTypes boatType;
+    private Timestamp paymentTime;
 
-    private Integer status;
+    private BigDecimal amount;
+
+    private Integer paymentMethod;
+
 
 }

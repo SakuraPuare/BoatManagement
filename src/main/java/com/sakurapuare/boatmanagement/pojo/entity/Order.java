@@ -6,8 +6,6 @@ import com.mybatisflex.annotation.RelationOneToOne;
 import com.mybatisflex.annotation.Table;
 import lombok.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -22,19 +20,16 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("orders")
-public class Orders extends BaseEntity implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class Order extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
     private Integer orderId;
 
     @RelationOneToOne(selfField = "userId", targetField = "userId")
-    private Users user;
+    private User user;
 
     @RelationOneToOne(selfField = "ticketId", targetField = "ticketId")
-    private Tickets ticket;
+    private Ticket ticket;
 
     private BigDecimal totalAmount;
 

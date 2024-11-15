@@ -1,9 +1,8 @@
 package com.sakurapuare.boatmanagement.controller;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.BoatTypes;
+import com.sakurapuare.boatmanagement.pojo.entity.BoatType;
 import com.sakurapuare.boatmanagement.service.BoatTypesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +29,8 @@ public class BoatTypesController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody BoatTypes boatTypes) {
-        return boatTypesService.save(boatTypes);
+    public boolean save(@RequestBody BoatType boatType) {
+        return boatTypesService.save(boatType);
     }
 
     /**
@@ -51,8 +50,8 @@ public class BoatTypesController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody BoatTypes boatTypes) {
-        return boatTypesService.updateById(boatTypes);
+    public boolean update(@RequestBody BoatType boatType) {
+        return boatTypesService.updateById(boatType);
     }
 
     /**
@@ -61,7 +60,7 @@ public class BoatTypesController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<BoatTypes> list() {
+    public List<BoatType> list() {
         return boatTypesService.list();
     }
 
@@ -72,7 +71,7 @@ public class BoatTypesController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public BoatTypes getInfo(@PathVariable Integer id) {
+    public BoatType getInfo(@PathVariable Integer id) {
         return boatTypesService.getById(id);
     }
 
@@ -83,7 +82,7 @@ public class BoatTypesController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<BoatTypes> page(Page<BoatTypes> page) {
+    public Page<BoatType> page(Page<BoatType> page) {
         return boatTypesService.page(page);
     }
 

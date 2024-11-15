@@ -2,7 +2,7 @@ package com.sakurapuare.boatmanagement.service.impl;
 
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.sakurapuare.boatmanagement.mapper.DocksMapper;
-import com.sakurapuare.boatmanagement.pojo.entity.Docks;
+import com.sakurapuare.boatmanagement.pojo.entity.Dock;
 import com.sakurapuare.boatmanagement.service.DocksService;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Service;
  * @since 2024-11-15
  */
 @Service
-public class DocksServiceImpl extends ServiceImpl<DocksMapper, Docks> implements DocksService {
+public class DocksServiceImpl extends ServiceImpl<DocksMapper, Dock> implements DocksService {
 
 }

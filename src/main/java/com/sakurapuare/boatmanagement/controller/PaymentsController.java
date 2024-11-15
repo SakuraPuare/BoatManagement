@@ -1,9 +1,8 @@
 package com.sakurapuare.boatmanagement.controller;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.Payments;
+import com.sakurapuare.boatmanagement.pojo.entity.Payment;
 import com.sakurapuare.boatmanagement.service.PaymentsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +29,8 @@ public class PaymentsController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Payments payments) {
-        return paymentsService.save(payments);
+    public boolean save(@RequestBody Payment payment) {
+        return paymentsService.save(payment);
     }
 
     /**
@@ -51,8 +50,8 @@ public class PaymentsController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Payments payments) {
-        return paymentsService.updateById(payments);
+    public boolean update(@RequestBody Payment payment) {
+        return paymentsService.updateById(payment);
     }
 
     /**
@@ -61,7 +60,7 @@ public class PaymentsController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<Payments> list() {
+    public List<Payment> list() {
         return paymentsService.list();
     }
 
@@ -72,7 +71,7 @@ public class PaymentsController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Payments getInfo(@PathVariable Integer id) {
+    public Payment getInfo(@PathVariable Integer id) {
         return paymentsService.getById(id);
     }
 
@@ -83,7 +82,7 @@ public class PaymentsController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<Payments> page(Page<Payments> page) {
+    public Page<Payment> page(Page<Payment> page) {
         return paymentsService.page(page);
     }
 

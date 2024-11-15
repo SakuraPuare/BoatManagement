@@ -1,9 +1,8 @@
 package com.sakurapuare.boatmanagement.controller;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.Users;
+import com.sakurapuare.boatmanagement.pojo.entity.User;
 import com.sakurapuare.boatmanagement.service.UsersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +29,8 @@ public class UsersController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Users users) {
-        return usersService.save(users);
+    public boolean save(@RequestBody User user) {
+        return usersService.save(user);
     }
 
     /**
@@ -51,8 +50,8 @@ public class UsersController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Users users) {
-        return usersService.updateById(users);
+    public boolean update(@RequestBody User user) {
+        return usersService.updateById(user);
     }
 
     /**
@@ -61,7 +60,7 @@ public class UsersController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<Users> list() {
+    public List<User> list() {
         return usersService.list();
     }
 
@@ -72,7 +71,7 @@ public class UsersController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Users getInfo(@PathVariable Integer id) {
+    public User getInfo(@PathVariable Integer id) {
         return usersService.getById(id);
     }
 
@@ -83,7 +82,7 @@ public class UsersController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<Users> page(Page<Users> page) {
+    public Page<User> page(Page<User> page) {
         return usersService.page(page);
     }
 

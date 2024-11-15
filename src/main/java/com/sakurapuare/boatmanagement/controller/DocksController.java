@@ -1,9 +1,8 @@
 package com.sakurapuare.boatmanagement.controller;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.Docks;
+import com.sakurapuare.boatmanagement.pojo.entity.Dock;
 import com.sakurapuare.boatmanagement.service.DocksService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +29,8 @@ public class DocksController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Docks docks) {
-        return docksService.save(docks);
+    public boolean save(@RequestBody Dock dock) {
+        return docksService.save(dock);
     }
 
     /**
@@ -51,8 +50,8 @@ public class DocksController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Docks docks) {
-        return docksService.updateById(docks);
+    public boolean update(@RequestBody Dock dock) {
+        return docksService.updateById(dock);
     }
 
     /**
@@ -61,7 +60,7 @@ public class DocksController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<Docks> list() {
+    public List<Dock> list() {
         return docksService.list();
     }
 
@@ -72,7 +71,7 @@ public class DocksController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Docks getInfo(@PathVariable Integer id) {
+    public Dock getInfo(@PathVariable Integer id) {
         return docksService.getById(id);
     }
 
@@ -83,7 +82,7 @@ public class DocksController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<Docks> page(Page<Docks> page) {
+    public Page<Dock> page(Page<Dock> page) {
         return docksService.page(page);
     }
 

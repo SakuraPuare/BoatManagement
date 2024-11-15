@@ -1,7 +1,7 @@
 package com.sakurapuare.boatmanagement.service;
 
 import com.mybatisflex.core.service.IService;
-import com.sakurapuare.boatmanagement.pojo.entity.Boats;
+import com.sakurapuare.boatmanagement.pojo.entity.Boat;
 
 /**
  * 服务层。
@@ -9,6 +9,6 @@ import com.sakurapuare.boatmanagement.pojo.entity.Boats;
  * @author sakurapuare
  * @since 2024-11-15
  */
-public interface BoatsService extends IService<Boats> {
+public interface BoatsService extends IService<Boat> {
 
 }
