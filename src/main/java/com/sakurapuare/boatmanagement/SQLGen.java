@@ -39,7 +39,7 @@ public class SQLGen {
         globalConfig.enableService();
         globalConfig.enableServiceImpl();
         globalConfig.enableController();
-        globalConfig.enableTableDef();
+//        globalConfig.enableTableDef();
 
 //        globalConfig.getStrategyConfig().setGenerateSchema("boatmanagement");
 
