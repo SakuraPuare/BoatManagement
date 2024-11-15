@@ -18,13 +18,15 @@ import java.util.List;
 @RequestMapping("/payments")
 public class PaymentsController {
 
-    @Autowired
-    private PaymentsService paymentsService;
+    private final PaymentsService paymentsService;
+
+    public PaymentsController(PaymentsService paymentsService) {
+        this.paymentsService = paymentsService;
+    }
 
     /**
      * 添加。
      *
-     * @param payments
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
@@ -46,7 +48,6 @@ public class PaymentsController {
     /**
      * 根据主键更新。
      *
-     * @param payments
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")

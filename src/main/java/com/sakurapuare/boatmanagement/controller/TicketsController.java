@@ -18,13 +18,15 @@ import java.util.List;
 @RequestMapping("/tickets")
 public class TicketsController {
 
-    @Autowired
-    private TicketsService ticketsService;
+    private final TicketsService ticketsService;
+
+    public TicketsController(TicketsService ticketsService) {
+        this.ticketsService = ticketsService;
+    }
 
     /**
      * 添加。
      *
-     * @param tickets
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
@@ -46,7 +48,6 @@ public class TicketsController {
     /**
      * 根据主键更新。
      *
-     * @param tickets
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")

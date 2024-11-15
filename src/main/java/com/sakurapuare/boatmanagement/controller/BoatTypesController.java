@@ -18,13 +18,15 @@ import java.util.List;
 @RequestMapping("/boatTypes")
 public class BoatTypesController {
 
-    @Autowired
-    private BoatTypesService boatTypesService;
+    private final BoatTypesService boatTypesService;
+
+    public BoatTypesController(BoatTypesService boatTypesService) {
+        this.boatTypesService = boatTypesService;
+    }
 
     /**
      * 添加。
      *
-     * @param boatTypes
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
@@ -46,7 +48,6 @@ public class BoatTypesController {
     /**
      * 根据主键更新。
      *
-     * @param boatTypes
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")

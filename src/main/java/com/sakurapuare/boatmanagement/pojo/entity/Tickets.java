@@ -4,11 +4,7 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.RelationOneToOne;
 import com.mybatisflex.annotation.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -35,20 +31,20 @@ public class Tickets extends BaseEntity implements Serializable {
     @Id(keyType = KeyType.Auto)
     private Integer ticketId;
 
-    @RelationOneToOne(selfField="userId", targetField="userId")
+    @RelationOneToOne(selfField = "userId", targetField = "userId")
     private Users user;
 
-    @RelationOneToOne(selfField="boatId", targetField="boatId")
+    @RelationOneToOne(selfField = "boatId", targetField = "boatId")
     private Boats boat;
 
     private Timestamp startTime;
 
     private Timestamp endTime;
 
-    @RelationOneToOne(selfField="departureDockId", targetField="dockId")
+    @RelationOneToOne(selfField = "departureDockId", targetField = "dockId")
     private Docks departureDock;
 
-    @RelationOneToOne(selfField="destinationDockId", targetField="dockId")
+    @RelationOneToOne(selfField = "destinationDockId", targetField = "dockId")
     private Docks destinationDock;
 
     private BigDecimal price;

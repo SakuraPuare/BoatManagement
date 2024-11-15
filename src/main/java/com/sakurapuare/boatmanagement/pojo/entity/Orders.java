@@ -4,16 +4,11 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.RelationOneToOne;
 import com.mybatisflex.annotation.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 /**
  * 实体类。
@@ -35,10 +30,10 @@ public class Orders extends BaseEntity implements Serializable {
     @Id(keyType = KeyType.Auto)
     private Integer orderId;
 
-    @RelationOneToOne(selfField="userId", targetField="userId")
+    @RelationOneToOne(selfField = "userId", targetField = "userId")
     private Users user;
 
-    @RelationOneToOne(selfField="ticketId", targetField="ticketId")
+    @RelationOneToOne(selfField = "ticketId", targetField = "ticketId")
     private Tickets ticket;
 
     private BigDecimal totalAmount;

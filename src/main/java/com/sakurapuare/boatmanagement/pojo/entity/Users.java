@@ -4,15 +4,10 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * 实体类。
@@ -26,7 +21,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("users")
-public class Users extends BaseEntity implements Serializable  {
+public class Users extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;

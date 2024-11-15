@@ -18,13 +18,15 @@ import java.util.List;
 @RequestMapping("/docks")
 public class DocksController {
 
-    @Autowired
-    private DocksService docksService;
+    private final DocksService docksService;
+
+    public DocksController(DocksService docksService) {
+        this.docksService = docksService;
+    }
 
     /**
      * 添加。
      *
-     * @param docks
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
@@ -46,7 +48,6 @@ public class DocksController {
     /**
      * 根据主键更新。
      *
-     * @param docks
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")

@@ -18,13 +18,15 @@ import java.util.List;
 @RequestMapping("/users")
 public class UsersController {
 
-    @Autowired
-    private UsersService usersService;
+    private final UsersService usersService;
+
+    public UsersController(UsersService usersService) {
+        this.usersService = usersService;
+    }
 
     /**
      * 添加。
      *
-     * @param users
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
@@ -46,7 +48,6 @@ public class UsersController {
     /**
      * 根据主键更新。
      *
-     * @param users
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")

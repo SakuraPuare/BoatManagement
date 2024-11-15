@@ -1,10 +1,9 @@
 package com.sakurapuare.boatmanagement.pojo.entity;
 
-import java.sql.Timestamp;
-
 import com.mybatisflex.annotation.Column;
-
 import lombok.Data;
+
+import java.sql.Timestamp;
 
 @Data
 public class BaseEntity {
