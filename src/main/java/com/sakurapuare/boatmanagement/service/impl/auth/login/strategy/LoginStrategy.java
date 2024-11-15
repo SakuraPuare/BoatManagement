@@ -1,11 +1,9 @@
-package com.sakurapuare.boatmanagement.service;
+package com.sakurapuare.boatmanagement.service.impl.auth.login.strategy;
 
-import com.mybatisflex.core.service.IService;
 import com.sakurapuare.boatmanagement.pojo.dto.LoginRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.User;
 
-
-public interface AuthService extends IService<User> {
+public interface LoginStrategy {
 
     User login(LoginRequestDTO loginRequestDTO);
 }

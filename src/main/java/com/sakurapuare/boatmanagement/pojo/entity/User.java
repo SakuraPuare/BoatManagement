@@ -4,7 +4,11 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.sakurapuare.boatmanagement.utils.JWTUtils;
 import lombok.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 实体类。
@@ -42,4 +46,13 @@ public class User extends BaseEntity {
     @Column(onInsertValue = "FALSE")
     private Boolean isBlocked;
 
+    public String getToken() {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("userId", this.userId);
+        map.put("uuid", this.uuid);
+        map.put("role", this.role);
+
+        return JWTUtils.generateToken(map);
+    }
 }
