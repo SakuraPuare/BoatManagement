@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/boatmanagement
+    username: root
+    password: 123456
+    driver-class-name: org.mariadb.jdbc.Driver
+  application:
+    name: BoatManagement
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+jwt:
+  signKey: sakurapuare
+  expire: 604800
+  # 7 days in seconds
