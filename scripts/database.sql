@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS payment
     FOREIGN KEY (order_id) REFERENCES orders (order_id)
 );
 -- 告警表
-CREATE TABLE IF NOT EXISTS alert
+CREATE TABLE IF NOT EXISTS alerts
 (
     alert_id    BIGINT PRIMARY KEY AUTO_INCREMENT,
     boat_id     BIGINT,
