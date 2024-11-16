@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users
     password   VARCHAR(255) NOT NULL,
     email      VARCHAR(100),
     phone      VARCHAR(20),
-    role       VARCHAR(10)                  DEFAULT "NONE",
+    role       VARCHAR(10)                  DEFAULT 'NONE',
     is_active  BOOLEAN                      DEFAULT TRUE,
     is_blocked BOOLEAN                      DEFAULT FALSE,
     is_deleted BOOLEAN                      DEFAULT FALSE,
