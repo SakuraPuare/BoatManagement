@@ -24,7 +24,9 @@ public class Code {
     @Id(keyType = KeyType.Auto)
     private Long id;
 
-    @RelationManyToOne(selfField = "userId", targetField = "id")
+    private Long userId;
+
+    @RelationManyToOne(selfField = "userId", targetField = "userId")
     private User user;
 
     private String code;

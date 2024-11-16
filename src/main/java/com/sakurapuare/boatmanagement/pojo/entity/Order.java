@@ -25,8 +25,12 @@ public class Order extends BaseEntity {
     @Id(keyType = KeyType.Auto)
     private Long orderId;
 
+    private Long userId;
+
     @RelationOneToOne(selfField = "userId", targetField = "userId")
     private User user;
+
+    private Long ticketId;
 
     @RelationOneToOne(selfField = "ticketId", targetField = "ticketId")
     private Ticket ticket;

@@ -26,8 +26,12 @@ public class Ticket extends BaseEntity {
     @Id(keyType = KeyType.Auto)
     private Long ticketId;
 
+    private Long userId;
+
     @RelationOneToOne(selfField = "userId", targetField = "userId")
     private User user;
+
+    private Long boatId;
 
     @RelationOneToOne(selfField = "boatId", targetField = "boatId")
     private Boat boat;

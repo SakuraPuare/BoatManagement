@@ -25,6 +25,8 @@ public class Boat extends BaseEntity {
 
     private String boatName;
 
+    private Long boatTypeId;
+
     @RelationOneToOne(selfField = "boatTypeId", targetField = "boatTypeId")
     private BoatType boatType;
 

@@ -30,13 +30,13 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
 
     @Override
     public Code generateCode(User user) {
-        Code code = new Code();
+        Code code = Code.builder()
+                .userId(user.getUserId())
+                .code(RandomUtil.randomNumbers(6))
+                .expirationTime(Timestamp.valueOf(LocalDateTime.now().plusDays(1)))
+                .build();
 
-        code.setUser(user);
-        String rnd = RandomUtil.randomNumbers(6);
-        code.setCode(rnd);
-        code.setExpirationTime(Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
-        codeMapper.insert(code);
+        codeMapper.insertSelective(code);
 
         return code;
     }

@@ -25,6 +25,8 @@ public class Alert extends BaseEntity {
     @Id(keyType = KeyType.Auto)
     private Long alertId;
 
+    private Long boatId;
+
     @RelationOneToOne(selfField = "boatId", targetField = "boatId")
     private Boat boat;
 

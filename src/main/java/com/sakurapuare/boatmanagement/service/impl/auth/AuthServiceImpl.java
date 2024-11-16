@@ -1,7 +1,5 @@
 package com.sakurapuare.boatmanagement.service.impl.auth;
 
-import org.springframework.stereotype.Service;
-
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.sakurapuare.boatmanagement.constant.TableName;
@@ -18,6 +16,7 @@ import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthContex
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthStrategy;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.code.CodeSenderContext;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements AuthService {

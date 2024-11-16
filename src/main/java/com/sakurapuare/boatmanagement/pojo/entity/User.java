@@ -39,7 +39,9 @@ public class User extends BaseEntity {
 
     private UserRole role;
 
-    @RelationOneToMany(selfField = "codes", targetField = "userId")
+    private List<Long> codeIds;
+
+    @RelationOneToMany(selfField = "codeIds", targetField = "userId")
     private List<Code> codes;
 
     @Column(onInsertValue = "FALSE")
