@@ -1,6 +1,7 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.code;
 
 import com.mybatisflex.core.query.QueryWrapper;
+import com.sakurapuare.boatmanagement.constant.TableName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.mapper.UserMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
@@ -18,6 +19,8 @@ public class CodeSenderContext {
 
     private CodeSender codeSender;
 
+    private String field = null;
+
     public CodeSenderContext(CodeService codeService, UserMapper userMapper) {
         this.codeService = codeService;
         this.userMapper = userMapper;
@@ -27,8 +30,14 @@ public class CodeSenderContext {
         AuthName name = AuthNameUtils.getAuthName(nameRequestDTO.getUsername());
 
         switch (name) {
-            case AuthName.EMAIL -> this.codeSender = new EmailCodeSender(codeService);
-            case AuthName.PHONE -> this.codeSender = new PhoneCodeSender(codeService);
+            case AuthName.EMAIL -> {
+                this.codeSender = new EmailCodeSender(codeService);
+                field = TableName.USER_EMAIL;
+            }
+            case AuthName.PHONE -> {
+                this.codeSender = new PhoneCodeSender(codeService);
+                field = TableName.USER_PHONE;
+            }
             default -> this.codeSender = null;
         }
     }
@@ -39,8 +48,11 @@ public class CodeSenderContext {
         }
 
         User user = userMapper.selectOneByQuery(
-                QueryWrapper.create().eq("username", nameRequestDTO.getUsername())
-        );
+                QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));
+
+        if (user == null) {
+            return false;
+        }
 
         return codeSender.sendCode(user);
     }

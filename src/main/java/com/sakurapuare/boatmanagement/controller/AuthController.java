@@ -1,23 +1,22 @@
 package com.sakurapuare.boatmanagement.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.sakurapuare.boatmanagement.common.Response;
-import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_FORBIDDEN;
-import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_UNAUTHORIZED;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.User;
 import com.sakurapuare.boatmanagement.pojo.vo.TokenVO;
 import com.sakurapuare.boatmanagement.service.AuthService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_FORBIDDEN;
+import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/auth")

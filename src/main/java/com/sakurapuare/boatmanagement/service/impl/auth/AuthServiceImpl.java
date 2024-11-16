@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.sakurapuare.boatmanagement.constant.TableName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthMethod;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
@@ -74,8 +75,7 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
 
     @Override
     public boolean checkAvailability(NameRequestDTO nameRequestDTO) {
-        // "username", "phone", "email"
-        String[] names = {"username", "phone", "email"};
+        String[] names = {TableName.USER_USERNAME, TableName.USER_PHONE, TableName.USER_EMAIL};
 
         for (String field : names) {
             User user = userMapper.selectOneByQuery(QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));

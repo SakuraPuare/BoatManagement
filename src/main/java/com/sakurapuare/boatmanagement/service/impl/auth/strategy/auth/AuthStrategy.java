@@ -1,8 +1,7 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
-import org.springframework.stereotype.Component;
-
 import com.mybatisflex.core.query.QueryWrapper;
+import com.sakurapuare.boatmanagement.constant.TableName;
 import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
@@ -11,6 +10,7 @@ import com.sakurapuare.boatmanagement.mapper.UserMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.User;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
+import org.springframework.stereotype.Component;
 
 @Component
 public abstract class AuthStrategy {
@@ -28,13 +28,13 @@ public abstract class AuthStrategy {
 
         switch (status.getName()) {
             case AuthName.USERNAME:
-                this.field = "username";
+                this.field = TableName.USER_USERNAME;
                 break;
             case AuthName.PHONE:
-                this.field = "phone";
+                this.field = TableName.USER_PHONE;
                 break;
             case AuthName.EMAIL:
-                this.field = "email";
+                this.field = TableName.USER_EMAIL;
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected value: " + status.getName());
