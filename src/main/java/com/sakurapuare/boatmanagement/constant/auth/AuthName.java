@@ -1,6 +1,6 @@
-package com.sakurapuare.boatmanagement.constant.login;
+package com.sakurapuare.boatmanagement.constant.auth;
 
-public enum Username {
+public enum AuthName {
     USERNAME, // 用户名
     PHONE,    // 手机号
     EMAIL,    // 邮箱

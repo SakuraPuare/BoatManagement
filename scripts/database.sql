@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS verification_codes (
     request_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expiration_time DATETIME,
     is_used BOOLEAN DEFAULT FALSE,
-    INDEX idx_user_id (user_id)
+    INDEX idx_user_id (user_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 -- -- 运营管理表

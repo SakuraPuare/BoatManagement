@@ -1,7 +1,7 @@
 package com.sakurapuare.boatmanagement.controller;
 
 import com.sakurapuare.boatmanagement.common.Response;
-import com.sakurapuare.boatmanagement.pojo.dto.LoginRequestDTO;
+import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.User;
 import com.sakurapuare.boatmanagement.pojo.vo.TokenVO;
 import com.sakurapuare.boatmanagement.service.AuthService;
@@ -28,9 +28,9 @@ public class AuthController {
         this.authService = authService;
     }
 
-    public Response<?> login(User user) {
+    public Response<TokenVO> auth(User user) {
         if (user == null) {
-            return Response.error(CODE_UNAUTHORIZED, "Login failed");
+            return Response.error(CODE_UNAUTHORIZED, "Auth failed");
         }
 
         if (user.getIsBlocked()) {
@@ -44,24 +44,36 @@ public class AuthController {
         String token = user.getToken();
         TokenVO tokenVO = new TokenVO();
         tokenVO.setToken(token);
-        return Response.success("Login success", tokenVO);
+        return Response.success("Auth success", tokenVO);
     }
 
 
     @PostMapping("login")
     @Operation(summary = "Login")
-    @Parameters({@Parameter(name = "loginRequestDTO", description = "Login request", required = true)})
-    public Response<?> loginWithPassword(@RequestBody LoginRequestDTO loginRequestDTO) {
-        User user = authService.loginWithPassword(loginRequestDTO);
-        return this.login(user);
+    @Parameters({@Parameter(name = "authRequestDTO", description = "Login request", required = true)})
+    public Response<TokenVO> loginWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
+        User user = authService.loginWithPassword(authRequestDTO);
+        return this.auth(user);
     }
 
 
     @PostMapping("login/code")
     @Operation(summary = "Login by code")
-    @Parameters({@Parameter(name = "loginRequestDTO", description = "Login request", required = true)})
-    public Response<?> loginByCode(@RequestBody LoginRequestDTO loginRequestDTO) {
-        User user = authService.loginWithCode(loginRequestDTO);
-        return this.login(user);
+    @Parameters({@Parameter(name = "authRequestDTO", description = "Login request", required = true)})
+    public Response<TokenVO> loginByCode(@RequestBody AuthRequestDTO authRequestDTO) {
+        User user = authService.loginWithCode(authRequestDTO);
+
+        if (user == null) {
+            user = authService.registerWithCode(authRequestDTO);
+        }
+
+        return this.auth(user);
+    }
+
+    @PostMapping("register")
+    @Operation(summary = "Register")
+    public Response<TokenVO> registerWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
+        User user = authService.registerWithPassword(authRequestDTO);
+        return this.auth(user);
     }
 }

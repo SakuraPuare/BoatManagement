@@ -3,7 +3,7 @@ package com.sakurapuare.boatmanagement.pojo.dto;
 import lombok.Data;
 
 @Data
-public class LoginRequestDTO {
+public class AuthRequestDTO {
 
     String username;
 

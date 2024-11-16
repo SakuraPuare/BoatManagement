@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.constant.login;
+package com.sakurapuare.boatmanagement.constant.auth;
 
 public enum AuthMethod {
     PASSWORD, // 密码登录
