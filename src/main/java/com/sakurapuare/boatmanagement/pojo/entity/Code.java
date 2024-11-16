@@ -19,14 +19,14 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table("verification_codes")
-public class Code {
+public class Code extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
     private Long id;
 
     private Long userId;
 
-    @RelationManyToOne(selfField = "userId", targetField = "userId")
+    @RelationOneToOne(selfField = "userId", targetField = "userId")
     private User user;
 
     private String code;
@@ -35,7 +35,4 @@ public class Code {
     private Timestamp requestTime;
 
     private Timestamp expirationTime;
-
-    @Column(onInsertValue = "FALSE")
-    private Boolean isUsed;
 }

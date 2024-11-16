@@ -122,7 +122,9 @@ CREATE TABLE IF NOT EXISTS verification_codes
     code            VARCHAR(10) NOT NULL,
     request_time    DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expiration_time DATETIME,
-    is_used         BOOLEAN              DEFAULT FALSE,
+    is_deleted  BOOLEAN   DEFAULT FALSE,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_user_id (user_id),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );

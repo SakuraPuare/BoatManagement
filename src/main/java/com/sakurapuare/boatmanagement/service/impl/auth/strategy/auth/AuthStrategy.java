@@ -2,7 +2,6 @@ package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.constant.TableName;
-import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
@@ -50,7 +49,9 @@ public abstract class AuthStrategy {
             if (status.getType().equals(AuthType.LOGIN)) {
                 return null;
             }
-            user = new User();
+            user = User.builder()
+                    .password(authRequestDTO.getPassword())
+                    .build();
 
             AuthName name = AuthNameUtils.getAuthName(authRequestDTO.getUsername());
             switch (name) {
@@ -60,13 +61,7 @@ public abstract class AuthStrategy {
                 default -> user.setUsername(authRequestDTO.getUsername());
             }
 
-            user.setPassword(authRequestDTO.getPassword());
-            user.setRole(UserRole.USER);
-            user.setIsBlocked(false);
-            user.setIsActive(false);
-            user.setIsDeleted(false);
-
-            userMapper.insert(user);
+            userMapper.insertSelective(user);
         } else if (status.getType().equals(AuthType.REGISTER)) {
             return null;
         }
