@@ -11,6 +11,7 @@ import com.sakurapuare.boatmanagement.service.AuthService;
 import com.sakurapuare.boatmanagement.service.CodeService;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.AuthContext;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.BaseStrategy;
+import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,8 +28,10 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
 
     private User authContext(AuthStatus status, AuthRequestDTO authRequestDTO) {
 
+        status.setName(AuthNameUtils.getAuthName(authRequestDTO.getUsername()));
         AuthContext context = new AuthContext(codeService, userMapper);
         BaseStrategy strategy = context.getStrategy(status);
+        strategy.configureStrategy(status);
 
         return strategy.auth(authRequestDTO);
     }

@@ -1,6 +1,7 @@
 package com.sakurapuare.boatmanagement.pojo.entity;
 
 import com.mybatisflex.annotation.*;
+import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.utils.JWTUtils;
 import lombok.*;
 
@@ -36,7 +37,7 @@ public class User extends BaseEntity {
 
     private String phone;
 
-    private Integer role;
+    private UserRole role;
 
     @RelationOneToMany(selfField = "codes", targetField = "userId")
     private List<Code> codes;
