@@ -1,18 +1,22 @@
 package com.sakurapuare.boatmanagement.service.impl.auth;
 
+import org.springframework.stereotype.Service;
+
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.sakurapuare.boatmanagement.constant.auth.AuthMethod;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
 import com.sakurapuare.boatmanagement.mapper.UserMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
+import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.User;
 import com.sakurapuare.boatmanagement.service.AuthService;
 import com.sakurapuare.boatmanagement.service.CodeService;
-import com.sakurapuare.boatmanagement.service.impl.auth.strategy.AuthContext;
-import com.sakurapuare.boatmanagement.service.impl.auth.strategy.BaseStrategy;
+import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthContext;
+import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthStrategy;
+import com.sakurapuare.boatmanagement.service.impl.auth.strategy.code.CodeSenderContext;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
-import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements AuthService {
@@ -30,7 +34,7 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
 
         status.setName(AuthNameUtils.getAuthName(authRequestDTO.getUsername()));
         AuthContext context = new AuthContext(codeService, userMapper);
-        BaseStrategy strategy = context.getStrategy(status);
+        AuthStrategy strategy = context.getStrategy(status);
         strategy.configureStrategy(status);
 
         return strategy.auth(authRequestDTO);
@@ -58,6 +62,29 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
     public User registerWithCode(AuthRequestDTO authRequestDTO) {
         AuthStatus authStatus = new AuthStatus(AuthMethod.CODE, AuthType.REGISTER);
         return authContext(authStatus, authRequestDTO);
+    }
+
+    @Override
+    public boolean sendCode(NameRequestDTO nameRequestDTO) {
+        CodeSenderContext context = new CodeSenderContext(codeService, userMapper);
+        context.setStrategy(nameRequestDTO);
+
+        return context.sendCode(nameRequestDTO);
+    }
+
+    @Override
+    public boolean checkAvailability(NameRequestDTO nameRequestDTO) {
+        // "username", "phone", "email"
+        String[] names = {"username", "phone", "email"};
+
+        for (String field : names) {
+            User user = userMapper.selectOneByQuery(QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));
+            if (user != null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

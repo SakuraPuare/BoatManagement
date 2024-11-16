@@ -1,21 +1,23 @@
 package com.sakurapuare.boatmanagement.controller;
 
-import com.sakurapuare.boatmanagement.common.Response;
-import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
-import com.sakurapuare.boatmanagement.pojo.vo.TokenVO;
-import com.sakurapuare.boatmanagement.service.AuthService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sakurapuare.boatmanagement.common.Response;
 import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_FORBIDDEN;
 import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_UNAUTHORIZED;
+import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
+import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
+import com.sakurapuare.boatmanagement.pojo.entity.User;
+import com.sakurapuare.boatmanagement.pojo.vo.TokenVO;
+import com.sakurapuare.boatmanagement.service.AuthService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/auth")
@@ -37,9 +39,9 @@ public class AuthController {
             return Response.error(CODE_FORBIDDEN, "User is blocked");
         }
 
-        if (!user.getIsActive()) {
-            return Response.error(CODE_FORBIDDEN, "User is not active");
-        }
+        // if (!user.getIsActive()) {
+        //     return Response.error(CODE_FORBIDDEN, "User is not active");
+        // }
 
         String token = user.getToken();
         TokenVO tokenVO = new TokenVO();
@@ -47,6 +49,14 @@ public class AuthController {
         return Response.success("Auth success", tokenVO);
     }
 
+
+    @PostMapping("availability")
+    @Operation(summary = "Check Username availability")
+    @Parameters({@Parameter(name = "nameRequestDTO", description = "Username request", required = true)})
+    public Response<Boolean> checkAvailability(@RequestBody NameRequestDTO nameRequestDTO) {
+        boolean ret = authService.checkAvailability(nameRequestDTO);
+        return Response.success("Check availability " + ret, ret);
+    }
 
     @PostMapping("login")
     @Operation(summary = "Login")
@@ -72,8 +82,19 @@ public class AuthController {
 
     @PostMapping("register")
     @Operation(summary = "Register")
+    @Parameters({@Parameter(name = "authRequestDTO", description = "Register request", required = true)})
     public Response<TokenVO> registerWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
         User user = authService.registerWithPassword(authRequestDTO);
         return this.auth(user);
+    }
+
+    @PostMapping("code")
+    @Operation(summary = "Send code")
+    public Response<String> sendCode(@RequestBody NameRequestDTO nameRequestDTO) {
+        boolean ret = authService.sendCode(nameRequestDTO);
+        if (!ret) {
+            return Response.error("Send code failed");
+        }
+        return Response.success("Send code success");
     }
 }

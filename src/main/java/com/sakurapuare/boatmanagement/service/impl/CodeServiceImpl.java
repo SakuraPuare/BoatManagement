@@ -1,5 +1,6 @@
 package com.sakurapuare.boatmanagement.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.sakurapuare.boatmanagement.mapper.CodeMapper;
@@ -25,6 +26,19 @@ public class CodeServiceImpl extends ServiceImpl<CodeMapper, Code> implements Co
 
     public CodeServiceImpl(CodeMapper codeMapper) {
         this.codeMapper = codeMapper;
+    }
+
+    @Override
+    public Code generateCode(User user) {
+        Code code = new Code();
+
+        code.setUser(user);
+        String rnd = RandomUtil.randomNumbers(6);
+        code.setCode(rnd);
+        code.setExpirationTime(Timestamp.valueOf(LocalDateTime.now().plusHours(1)));
+        codeMapper.insert(code);
+
+        return code;
     }
 
     @Override

@@ -1,4 +1,6 @@
-package com.sakurapuare.boatmanagement.service.impl.auth.strategy;
+package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
+
+import org.springframework.stereotype.Component;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.constant.UserRole;
@@ -8,16 +10,16 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthType;
 import com.sakurapuare.boatmanagement.mapper.UserMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.User;
-import org.springframework.stereotype.Component;
+import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 
 @Component
-public abstract class BaseStrategy {
+public abstract class AuthStrategy {
 
     private final UserMapper userMapper;
     private AuthStatus status = null;
     private String field = null;
 
-    public BaseStrategy(UserMapper userMapper) {
+    public AuthStrategy(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
 
@@ -42,24 +44,34 @@ public abstract class BaseStrategy {
     public User auth(AuthRequestDTO authRequestDTO) {
 
         User user = userMapper.selectOneByQuery(
-                QueryWrapper.create().eq(this.field, authRequestDTO.getUsername())
-        );
+                QueryWrapper.create().eq(this.field, authRequestDTO.getUsername()));
 
-        if (user == null && !status.getType().equals(AuthType.REGISTER)) {
+        if (user == null) {
+            if (status.getType().equals(AuthType.LOGIN)) {
+                return null;
+            }
+            user = new User();
+
+            AuthName name = AuthNameUtils.getAuthName(authRequestDTO.getUsername());
+            switch (name) {
+                case USERNAME -> user.setUsername(authRequestDTO.getUsername());
+                case PHONE -> user.setPhone(authRequestDTO.getUsername());
+                case EMAIL -> user.setEmail(authRequestDTO.getUsername());
+                default -> user.setUsername(authRequestDTO.getUsername());
+            }
+
+            user.setPassword(authRequestDTO.getPassword());
+            user.setRole(UserRole.USER);
+            user.setIsBlocked(false);
+            user.setIsActive(false);
+            user.setIsDeleted(false);
+
+            userMapper.insert(user);
+        } else if (status.getType().equals(AuthType.REGISTER)) {
             return null;
         }
 
-        user = new User();
-
-        user.setUsername(authRequestDTO.getUsername());
-        user.setPassword(authRequestDTO.getPassword());
-        user.setRole(UserRole.USER);
-        user.setIsBlocked(false);
-        user.setIsActive(false);
-        user.setIsDeleted(false);
-
-        userMapper.insert(user);
-
         return user;
+
     }
 }

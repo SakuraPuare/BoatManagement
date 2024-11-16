@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.service.impl.auth.strategy;
+package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
 import com.sakurapuare.boatmanagement.mapper.UserMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.service.CodeService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CodeStrategy extends BaseStrategy {
+public class CodeStrategy extends AuthStrategy {
 
     private final CodeService codeService;
 

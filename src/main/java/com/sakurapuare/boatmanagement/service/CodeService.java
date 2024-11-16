@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CodeService extends IService<Code> {
 
+    Code generateCode(User user);
+
     boolean verifyCode(User user, String password);
 
 }

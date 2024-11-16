@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.service.impl.auth.strategy;
+package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
 import com.sakurapuare.boatmanagement.constant.auth.AuthMethod;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
@@ -18,7 +18,7 @@ public class AuthContext {
         this.userMapper = userMapper;
     }
 
-    public BaseStrategy getStrategy(AuthStatus status) {
+    public AuthStrategy getStrategy(AuthStatus status) {
         switch (status.getMethod()) {
             case AuthMethod.PASSWORD -> {
                 return new PasswordStrategy(
