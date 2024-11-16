@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 public class Payment extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer paymentId;
+    private Long paymentId;
 
     @RelationOneToOne(selfField = "orderId", targetField = "orderId")
     private Order order;

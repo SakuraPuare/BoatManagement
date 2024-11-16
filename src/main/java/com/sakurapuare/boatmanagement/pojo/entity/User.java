@@ -23,7 +23,7 @@ import java.util.Map;
 public class User extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer userId;
+    private Long userId;
 
     @Column(onInsertValue = "UUID()")
     private String uuid;

@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 public class Order extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer orderId;
+    private Long orderId;
 
     @RelationOneToOne(selfField = "userId", targetField = "userId")
     private User user;

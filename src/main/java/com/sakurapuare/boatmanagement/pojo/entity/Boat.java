@@ -21,7 +21,7 @@ import lombok.*;
 public class Boat extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer boatId;
+    private Long boatId;
 
     private String boatName;
 

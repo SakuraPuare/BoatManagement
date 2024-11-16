@@ -23,7 +23,7 @@ import java.sql.Timestamp;
 public class Alert extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer alertId;
+    private Long alertId;
 
     @RelationOneToOne(selfField = "boatId", targetField = "boatId")
     private Boat boat;

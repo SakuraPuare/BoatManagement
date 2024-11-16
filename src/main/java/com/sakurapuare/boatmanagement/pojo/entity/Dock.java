@@ -20,7 +20,7 @@ import lombok.*;
 public class Dock extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer dockId;
+    private Long dockId;
 
     private String dockName;
 

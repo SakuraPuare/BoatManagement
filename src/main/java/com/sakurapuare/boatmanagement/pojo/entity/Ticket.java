@@ -24,7 +24,7 @@ import java.sql.Timestamp;
 public class Ticket extends BaseEntity {
 
     @Id(keyType = KeyType.Auto)
-    private Integer ticketId;
+    private Long ticketId;
 
     @RelationOneToOne(selfField = "userId", targetField = "userId")
     private User user;
