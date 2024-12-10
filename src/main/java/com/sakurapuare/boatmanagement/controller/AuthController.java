@@ -51,7 +51,6 @@ public class AuthController {
 
     @PostMapping("availability")
     @Operation(summary = "Check Username availability")
-    @Parameters({@Parameter(name = "nameRequestDTO", description = "Username request", required = true)})
     public Response<Boolean> checkAvailability(@RequestBody NameRequestDTO nameRequestDTO) {
         boolean ret = authService.checkAvailability(nameRequestDTO);
         return Response.success("Check availability " + ret, ret);
@@ -59,7 +58,6 @@ public class AuthController {
 
     @PostMapping("login")
     @Operation(summary = "Login")
-    @Parameters({@Parameter(name = "authRequestDTO", description = "Login request", required = true)})
     public Response<TokenVO> loginWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
         User user = authService.loginWithPassword(authRequestDTO);
         return this.auth(user);
@@ -68,7 +66,6 @@ public class AuthController {
 
     @PostMapping("login/code")
     @Operation(summary = "Login by code")
-    @Parameters({@Parameter(name = "authRequestDTO", description = "Login request", required = true)})
     public Response<TokenVO> loginByCode(@RequestBody AuthRequestDTO authRequestDTO) {
         User user = authService.loginWithCode(authRequestDTO);
 
@@ -81,7 +78,6 @@ public class AuthController {
 
     @PostMapping("register")
     @Operation(summary = "Register")
-    @Parameters({@Parameter(name = "authRequestDTO", description = "Register request", required = true)})
     public Response<TokenVO> registerWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
         User user = authService.registerWithPassword(authRequestDTO);
         return this.auth(user);

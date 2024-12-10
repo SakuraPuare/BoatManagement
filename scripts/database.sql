@@ -1,4 +1,4 @@
-DROP DATABASE boatmanagement;
+DROP DATABASE IF EXISTS boatmanagement;
 
 CREATE DATABASE IF NOT EXISTS boatmanagement;
 
@@ -8,7 +8,7 @@ USE boatmanagement;
 CREATE TABLE IF NOT EXISTS users
 (
     user_id    BIGINT PRIMARY KEY AUTO_INCREMENT,
-    uuid       VARCHAR(50)  NOT NULL UNIQUE DEFAULT (UUID()),
+    uuid       VARCHAR(50)  NOT NULL UNIQUE DEFAULT UUID(),
     username   VARCHAR(50),
     password   VARCHAR(255) NOT NULL,
     email      VARCHAR(100),

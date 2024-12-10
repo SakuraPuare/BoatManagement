@@ -4,6 +4,10 @@ spring:
     username: root
     password: 123456
     driver-class-name: org.mariadb.jdbc.Driver
+    # url: jdbc:postgresql://localhost:5432/boatmanagement
+    # username: postgres
+    # password: 123456
+    # driver-class-name: org.postgresql.Driver
   application:
     name: BoatManagement
 
@@ -18,6 +22,7 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match: '/**'
+
 # knife4j的增强配置，不需要增强可以不配
 knife4j:
   enable: true

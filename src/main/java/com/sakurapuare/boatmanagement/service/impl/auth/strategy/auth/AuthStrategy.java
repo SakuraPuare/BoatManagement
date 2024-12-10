@@ -51,6 +51,8 @@ public abstract class AuthStrategy {
             }
             user = User.builder()
                     .password(authRequestDTO.getPassword())
+                    .isActive(false)
+                    .isBlocked(false)
                     .build();
 
             AuthName name = AuthNameUtils.getAuthName(authRequestDTO.getUsername());
