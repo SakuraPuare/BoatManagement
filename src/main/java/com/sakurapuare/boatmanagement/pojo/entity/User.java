@@ -37,7 +37,7 @@ public class User extends BaseEntity {
 
     private String phone;
 
-    private UserRole role;
+    private Integer role;
 
     private List<Long> codeIds;
 

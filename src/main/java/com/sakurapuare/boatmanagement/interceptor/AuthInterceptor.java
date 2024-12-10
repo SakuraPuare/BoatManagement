@@ -1,0 +1,65 @@
+package com.sakurapuare.boatmanagement.interceptor;
+
+import com.sakurapuare.boatmanagement.common.UserContext;
+import com.sakurapuare.boatmanagement.exception.UnauthorizedException;
+import com.sakurapuare.boatmanagement.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.lang.NonNull;
+import java.io.PrintWriter;
+
+@Component
+public class AuthInterceptor implements HandlerInterceptor {
+
+    private final UserService userService;
+
+    public AuthInterceptor(UserService userService) {
+        this.userService = userService;
+    }
+
+    @Override
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull Object handler) throws Exception {
+        // 获取token
+        String token = request.getHeader("Authorization");
+        if (!StringUtils.hasText(token)) {
+            // 设置response的内容类型为application/json
+            response.setContentType("application/json;charset=UTF-8");
+            // 获取response的输出流
+            PrintWriter writer = response.getWriter();
+            // 将json数据写入response
+            writer.write("{\"code\":401,\"message\":\"未登录\",\"data\":null}");
+            writer.flush();
+            writer.close();
+            return false;
+        }
+
+        // 验证token并获取用户信息
+        try {
+            token = token.replace("Bearer ", "");
+            var user = userService.getUserByToken(token);
+            UserContext.setUser(user);
+            return true;
+        } catch (Exception e) {
+            // 设置response的内容类型为application/json
+            response.setContentType("application/json;charset=UTF-8");
+            // 获取response的输出流
+            PrintWriter writer = response.getWriter();
+            // 将json数据写入response
+            writer.write("{\"code\":401,\"message\":\"token无效\",\"data\":null}");
+            writer.flush();
+            writer.close();
+            return false;
+        }
+    }
+
+    @Override
+    public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull Object handler, Exception ex) {
+        // 清理ThreadLocal
+        UserContext.clear();
+    }
+}

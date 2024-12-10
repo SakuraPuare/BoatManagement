@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
-import com.sakurapuare.boatmanagement.service.UserService;
+import com.sakurapuare.boatmanagement.pojo.entity.Alert;
+import com.sakurapuare.boatmanagement.service.AlertService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
  * @since 2024-11-15
  */
 @RestController
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/admin/alerts")
+public class AdminAlertController {
 
-    private final UserService userService;
+    private final AlertService alertService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public AdminAlertController(AlertService alertService) {
+        this.alertService = alertService;
     }
 
     /**
@@ -29,8 +29,8 @@ public class UserController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody User user) {
-        return userService.save(user);
+    public boolean save(@RequestBody Alert alert) {
+        return alertService.save(alert);
     }
 
     /**
@@ -41,7 +41,7 @@ public class UserController {
      */
     @DeleteMapping("remove/{id}")
     public boolean remove(@PathVariable Integer id) {
-        return userService.removeById(id);
+        return alertService.removeById(id);
     }
 
     /**
@@ -50,8 +50,8 @@ public class UserController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody User user) {
-        return userService.updateById(user);
+    public boolean update(@RequestBody Alert alert) {
+        return alertService.updateById(alert);
     }
 
     /**
@@ -60,8 +60,8 @@ public class UserController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<User> list() {
-        return userService.list();
+    public List<Alert> list() {
+        return alertService.list();
     }
 
     /**
@@ -71,8 +71,8 @@ public class UserController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public User getInfo(@PathVariable Integer id) {
-        return userService.getById(id);
+    public Alert getInfo(@PathVariable Integer id) {
+        return alertService.getById(id);
     }
 
     /**
@@ -82,8 +82,8 @@ public class UserController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<User> page(Page<User> page) {
-        return userService.page(page);
+    public Page<Alert> page(Page<Alert> page) {
+        return alertService.page(page);
     }
 
 }

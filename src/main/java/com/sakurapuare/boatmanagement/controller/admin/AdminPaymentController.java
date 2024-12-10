@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.Alert;
-import com.sakurapuare.boatmanagement.service.AlertService;
+import com.sakurapuare.boatmanagement.pojo.entity.Payment;
+import com.sakurapuare.boatmanagement.service.PaymentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
  * @since 2024-11-15
  */
 @RestController
-@RequestMapping("/alerts")
-public class AlertController {
+@RequestMapping("/admin/payments")
+public class AdminPaymentController {
 
-    private final AlertService alertService;
+    private final PaymentService paymentService;
 
-    public AlertController(AlertService alertService) {
-        this.alertService = alertService;
+    public AdminPaymentController(PaymentService paymentService) {
+        this.paymentService = paymentService;
     }
 
     /**
@@ -29,8 +29,8 @@ public class AlertController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Alert alert) {
-        return alertService.save(alert);
+    public boolean save(@RequestBody Payment payment) {
+        return paymentService.save(payment);
     }
 
     /**
@@ -41,7 +41,7 @@ public class AlertController {
      */
     @DeleteMapping("remove/{id}")
     public boolean remove(@PathVariable Integer id) {
-        return alertService.removeById(id);
+        return paymentService.removeById(id);
     }
 
     /**
@@ -50,8 +50,8 @@ public class AlertController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Alert alert) {
-        return alertService.updateById(alert);
+    public boolean update(@RequestBody Payment payment) {
+        return paymentService.updateById(payment);
     }
 
     /**
@@ -60,8 +60,8 @@ public class AlertController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<Alert> list() {
-        return alertService.list();
+    public List<Payment> list() {
+        return paymentService.list();
     }
 
     /**
@@ -71,8 +71,8 @@ public class AlertController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Alert getInfo(@PathVariable Integer id) {
-        return alertService.getById(id);
+    public Payment getInfo(@PathVariable Integer id) {
+        return paymentService.getById(id);
     }
 
     /**
@@ -82,8 +82,8 @@ public class AlertController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<Alert> page(Page<Alert> page) {
-        return alertService.page(page);
+    public Page<Payment> page(Page<Payment> page) {
+        return paymentService.page(page);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.Ticket;
-import com.sakurapuare.boatmanagement.service.TicketService;
+import com.sakurapuare.boatmanagement.pojo.entity.BoatType;
+import com.sakurapuare.boatmanagement.service.BoatTypeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
  * @since 2024-11-15
  */
 @RestController
-@RequestMapping("/tickets")
-public class TicketController {
+@RequestMapping("/admin/boatTypes")
+public class AdminBoatTypeController {
 
-    private final TicketService ticketService;
+    private final BoatTypeService boatTypeService;
 
-    public TicketController(TicketService ticketService) {
-        this.ticketService = ticketService;
+    public AdminBoatTypeController(BoatTypeService boatTypeService) {
+        this.boatTypeService = boatTypeService;
     }
 
     /**
@@ -29,8 +29,8 @@ public class TicketController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Ticket ticket) {
-        return ticketService.save(ticket);
+    public boolean save(@RequestBody BoatType boatType) {
+        return boatTypeService.save(boatType);
     }
 
     /**
@@ -41,7 +41,7 @@ public class TicketController {
      */
     @DeleteMapping("remove/{id}")
     public boolean remove(@PathVariable Integer id) {
-        return ticketService.removeById(id);
+        return boatTypeService.removeById(id);
     }
 
     /**
@@ -50,8 +50,8 @@ public class TicketController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Ticket ticket) {
-        return ticketService.updateById(ticket);
+    public boolean update(@RequestBody BoatType boatType) {
+        return boatTypeService.updateById(boatType);
     }
 
     /**
@@ -60,8 +60,8 @@ public class TicketController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<Ticket> list() {
-        return ticketService.list();
+    public List<BoatType> list() {
+        return boatTypeService.list();
     }
 
     /**
@@ -71,8 +71,8 @@ public class TicketController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Ticket getInfo(@PathVariable Integer id) {
-        return ticketService.getById(id);
+    public BoatType getInfo(@PathVariable Integer id) {
+        return boatTypeService.getById(id);
     }
 
     /**
@@ -82,8 +82,8 @@ public class TicketController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<Ticket> page(Page<Ticket> page) {
-        return ticketService.page(page);
+    public Page<BoatType> page(Page<BoatType> page) {
+        return boatTypeService.page(page);
     }
 
 }

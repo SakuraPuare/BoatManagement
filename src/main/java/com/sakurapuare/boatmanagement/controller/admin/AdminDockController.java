@@ -14,12 +14,12 @@ import java.util.List;
  * @since 2024-11-15
  */
 @RestController
-@RequestMapping("/docks")
-public class DockController {
+@RequestMapping("/admin/docks")
+public class AdminDockController {
 
     private final DockService dockService;
 
-    public DockController(DockService dockService) {
+    public AdminDockController(DockService dockService) {
         this.dockService = dockService;
     }
 

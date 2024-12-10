@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.BoatType;
-import com.sakurapuare.boatmanagement.service.BoatTypeService;
+import com.sakurapuare.boatmanagement.pojo.entity.User;
+import com.sakurapuare.boatmanagement.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
  * @since 2024-11-15
  */
 @RestController
-@RequestMapping("/boatTypes")
-public class BoatTypeController {
+@RequestMapping("/admin/users")
+public class AdminUserController {
 
-    private final BoatTypeService boatTypeService;
+    private final UserService userService;
 
-    public BoatTypeController(BoatTypeService boatTypeService) {
-        this.boatTypeService = boatTypeService;
+    public AdminUserController(UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -29,8 +29,8 @@ public class BoatTypeController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody BoatType boatType) {
-        return boatTypeService.save(boatType);
+    public boolean save(@RequestBody User user) {
+        return userService.save(user);
     }
 
     /**
@@ -41,7 +41,7 @@ public class BoatTypeController {
      */
     @DeleteMapping("remove/{id}")
     public boolean remove(@PathVariable Integer id) {
-        return boatTypeService.removeById(id);
+        return userService.removeById(id);
     }
 
     /**
@@ -50,8 +50,8 @@ public class BoatTypeController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody BoatType boatType) {
-        return boatTypeService.updateById(boatType);
+    public boolean update(@RequestBody User user) {
+        return userService.updateById(user);
     }
 
     /**
@@ -60,8 +60,8 @@ public class BoatTypeController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<BoatType> list() {
-        return boatTypeService.list();
+    public List<User> list() {
+        return userService.list();
     }
 
     /**
@@ -71,8 +71,8 @@ public class BoatTypeController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public BoatType getInfo(@PathVariable Integer id) {
-        return boatTypeService.getById(id);
+    public User getInfo(@PathVariable Integer id) {
+        return userService.getById(id);
     }
 
     /**
@@ -82,8 +82,8 @@ public class BoatTypeController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<BoatType> page(Page<BoatType> page) {
-        return boatTypeService.page(page);
+    public Page<User> page(Page<User> page) {
+        return userService.page(page);
     }
 
 }

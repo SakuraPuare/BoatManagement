@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.Order;
-import com.sakurapuare.boatmanagement.service.OrderService;
+import com.sakurapuare.boatmanagement.pojo.entity.Ticket;
+import com.sakurapuare.boatmanagement.service.TicketService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
  * @since 2024-11-15
  */
 @RestController
-@RequestMapping("/orders")
-public class OrderController {
+@RequestMapping("/admin/tickets")
+public class AdminTicketController {
 
-    private final OrderService orderService;
+    private final TicketService ticketService;
 
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
+    public AdminTicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
     }
 
     /**
@@ -29,8 +29,8 @@ public class OrderController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Order order) {
-        return orderService.save(order);
+    public boolean save(@RequestBody Ticket ticket) {
+        return ticketService.save(ticket);
     }
 
     /**
@@ -41,7 +41,7 @@ public class OrderController {
      */
     @DeleteMapping("remove/{id}")
     public boolean remove(@PathVariable Integer id) {
-        return orderService.removeById(id);
+        return ticketService.removeById(id);
     }
 
     /**
@@ -50,8 +50,8 @@ public class OrderController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Order order) {
-        return orderService.updateById(order);
+    public boolean update(@RequestBody Ticket ticket) {
+        return ticketService.updateById(ticket);
     }
 
     /**
@@ -60,8 +60,8 @@ public class OrderController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<Order> list() {
-        return orderService.list();
+    public List<Ticket> list() {
+        return ticketService.list();
     }
 
     /**
@@ -71,8 +71,8 @@ public class OrderController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Order getInfo(@PathVariable Integer id) {
-        return orderService.getById(id);
+    public Ticket getInfo(@PathVariable Integer id) {
+        return ticketService.getById(id);
     }
 
     /**
@@ -82,8 +82,8 @@ public class OrderController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<Order> page(Page<Order> page) {
-        return orderService.page(page);
+    public Page<Ticket> page(Page<Ticket> page) {
+        return ticketService.page(page);
     }
 
 }

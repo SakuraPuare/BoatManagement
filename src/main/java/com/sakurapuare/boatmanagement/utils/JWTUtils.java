@@ -41,6 +41,7 @@ public class JWTUtils {
         return JWTUtil.parseToken(token).getPayloads();
     }
 
+
     public static boolean verifyToken(String token) {
         try {
             JWT jwt = JWTUtil.parseToken(token);
@@ -50,5 +51,19 @@ public class JWTUtils {
             return false;
         }
 
+    }
+
+    public static String getKey(String token, String keyName) {
+        try {
+            JWT jwt = JWTUtil.parseToken(token);
+            jwt.setKey(jwtConfig.getSignKey().getBytes());
+            return jwt.getPayload(keyName).toString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Long getUserId(String token) {
+        return Long.parseLong(getKey(token, "userId"));
     }
 }

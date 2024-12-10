@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.Boat;
-import com.sakurapuare.boatmanagement.service.BoatService;
+import com.sakurapuare.boatmanagement.pojo.entity.Order;
+import com.sakurapuare.boatmanagement.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.List;
  * @since 2024-11-15
  */
 @RestController
-@RequestMapping("/boats")
-public class BoatController {
+@RequestMapping("/admin/orders")
+public class AdminOrderController {
 
-    private final BoatService boatService;
+    private final OrderService orderService;
 
-    public BoatController(BoatService boatService) {
-        this.boatService = boatService;
+    public AdminOrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     /**
@@ -29,8 +29,8 @@ public class BoatController {
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
-    public boolean save(@RequestBody Boat boat) {
-        return boatService.save(boat);
+    public boolean save(@RequestBody Order order) {
+        return orderService.save(order);
     }
 
     /**
@@ -41,7 +41,7 @@ public class BoatController {
      */
     @DeleteMapping("remove/{id}")
     public boolean remove(@PathVariable Integer id) {
-        return boatService.removeById(id);
+        return orderService.removeById(id);
     }
 
     /**
@@ -50,8 +50,8 @@ public class BoatController {
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
-    public boolean update(@RequestBody Boat boat) {
-        return boatService.updateById(boat);
+    public boolean update(@RequestBody Order order) {
+        return orderService.updateById(order);
     }
 
     /**
@@ -60,8 +60,8 @@ public class BoatController {
      * @return 所有数据
      */
     @GetMapping("list")
-    public List<Boat> list() {
-        return boatService.list();
+    public List<Order> list() {
+        return orderService.list();
     }
 
     /**
@@ -71,8 +71,8 @@ public class BoatController {
      * @return 详情
      */
     @GetMapping("getInfo/{id}")
-    public Boat getInfo(@PathVariable Integer id) {
-        return boatService.getById(id);
+    public Order getInfo(@PathVariable Integer id) {
+        return orderService.getById(id);
     }
 
     /**
@@ -82,8 +82,8 @@ public class BoatController {
      * @return 分页对象
      */
     @GetMapping("page")
-    public Page<Boat> page(Page<Boat> page) {
-        return boatService.page(page);
+    public Page<Order> page(Page<Order> page) {
+        return orderService.page(page);
     }
 
 }

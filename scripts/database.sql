@@ -13,13 +13,17 @@ CREATE TABLE IF NOT EXISTS users
     password   VARCHAR(255) NOT NULL,
     email      VARCHAR(100),
     phone      VARCHAR(20),
-    role       VARCHAR(10)                  DEFAULT 'NONE',
+    role       INT UNSIGNED                   DEFAULT 1,
     is_active  BOOLEAN                      DEFAULT TRUE,
     is_blocked BOOLEAN                      DEFAULT FALSE,
     is_deleted BOOLEAN                      DEFAULT FALSE,
     created_at TIMESTAMP                    DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP                    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+INSERT INTO users (username, password, email, phone, role)
+VALUES ('admin', 'admin', 'admin@admin.com', '1234567890', 0xFFFFFF);
+
 -- 船只类型表
 CREATE TABLE IF NOT EXISTS boat_types
 (
