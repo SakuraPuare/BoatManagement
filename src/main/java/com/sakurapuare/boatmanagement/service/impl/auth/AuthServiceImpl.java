@@ -6,12 +6,12 @@ import com.sakurapuare.boatmanagement.constant.TableName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthMethod;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
-import com.sakurapuare.boatmanagement.mapper.UserMapper;
+import com.sakurapuare.boatmanagement.mapper.UsersMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
 import com.sakurapuare.boatmanagement.service.AuthService;
-import com.sakurapuare.boatmanagement.service.CodeService;
+import com.sakurapuare.boatmanagement.service.CodesService;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthContext;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthStrategy;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.code.CodeSenderContext;
@@ -19,18 +19,18 @@ import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements AuthService {
+public class AuthServiceImpl extends ServiceImpl<UsersMapper, Users> implements AuthService {
 
-    private final UserMapper userMapper;
+    private final UsersMapper userMapper;
 
-    private final CodeService codeService;
+    private final CodesService codeService;
 
-    public AuthServiceImpl(CodeService codeService, UserMapper userMapper) {
+    public AuthServiceImpl(CodesService codeService, UsersMapper userMapper) {
         this.codeService = codeService;
         this.userMapper = userMapper;
     }
 
-    private User authContext(AuthStatus status, AuthRequestDTO authRequestDTO) {
+    private Users authContext(AuthStatus status, AuthRequestDTO authRequestDTO) {
 
         status.setName(AuthNameUtils.getAuthName(authRequestDTO.getUsername()));
         AuthContext context = new AuthContext(codeService, userMapper);
@@ -41,25 +41,25 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
     }
 
     @Override
-    public User loginWithPassword(AuthRequestDTO authRequestDTO) {
+    public Users loginWithPassword(AuthRequestDTO authRequestDTO) {
         AuthStatus authStatus = new AuthStatus(AuthMethod.PASSWORD, AuthType.LOGIN);
         return authContext(authStatus, authRequestDTO);
     }
 
     @Override
-    public User loginWithCode(AuthRequestDTO authRequestDTO) {
+    public Users loginWithCode(AuthRequestDTO authRequestDTO) {
         AuthStatus authStatus = new AuthStatus(AuthMethod.CODE, AuthType.LOGIN);
         return authContext(authStatus, authRequestDTO);
     }
 
     @Override
-    public User registerWithPassword(AuthRequestDTO authRequestDTO) {
+    public Users registerWithPassword(AuthRequestDTO authRequestDTO) {
         AuthStatus authStatus = new AuthStatus(AuthMethod.PASSWORD, AuthType.REGISTER);
         return authContext(authStatus, authRequestDTO);
     }
 
     @Override
-    public User registerWithCode(AuthRequestDTO authRequestDTO) {
+    public Users registerWithCode(AuthRequestDTO authRequestDTO) {
         AuthStatus authStatus = new AuthStatus(AuthMethod.CODE, AuthType.REGISTER);
         return authContext(authStatus, authRequestDTO);
     }
@@ -77,7 +77,7 @@ public class AuthServiceImpl extends ServiceImpl<UserMapper, User> implements Au
         String[] names = {TableName.USER_USERNAME, TableName.USER_PHONE, TableName.USER_EMAIL};
 
         for (String field : names) {
-            User user = userMapper.selectOneByQuery(QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));
+            Users user = userMapper.selectOneByQuery(QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));
             if (user != null) {
                 return false;
             }

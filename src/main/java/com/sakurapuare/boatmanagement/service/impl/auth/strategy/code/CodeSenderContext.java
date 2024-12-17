@@ -3,25 +3,25 @@ package com.sakurapuare.boatmanagement.service.impl.auth.strategy.code;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.constant.TableName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
-import com.sakurapuare.boatmanagement.mapper.UserMapper;
+import com.sakurapuare.boatmanagement.mapper.UsersMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
-import com.sakurapuare.boatmanagement.service.CodeService;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
+import com.sakurapuare.boatmanagement.service.CodesService;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CodeSenderContext {
 
-    private final CodeService codeService;
+    private final CodesService codeService;
 
-    private final UserMapper userMapper;
+    private final UsersMapper userMapper;
 
     private CodeSender codeSender;
 
     private String field = null;
 
-    public CodeSenderContext(CodeService codeService, UserMapper userMapper) {
+    public CodeSenderContext(CodesService codeService, UsersMapper userMapper) {
         this.codeService = codeService;
         this.userMapper = userMapper;
     }
@@ -47,7 +47,7 @@ public class CodeSenderContext {
             return false;
         }
 
-        User user = userMapper.selectOneByQuery(
+        Users user = userMapper.selectOneByQuery(
                 QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));
 
         if (user == null) {

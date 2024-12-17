@@ -1,26 +1,26 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
-import com.sakurapuare.boatmanagement.mapper.UserMapper;
+import com.sakurapuare.boatmanagement.mapper.UsersMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
 
 public class PasswordStrategy extends AuthStrategy {
 
-    public PasswordStrategy(UserMapper userMapper) {
+    public PasswordStrategy(UsersMapper userMapper) {
         super(userMapper);
     }
 
     @Override
-    public User auth(AuthRequestDTO authRequestDTO) {
-        User user = super.auth(authRequestDTO);
+    public Users auth(AuthRequestDTO authRequestDTO) {
+        Users users = super.auth(authRequestDTO);
 
-        if (user == null) {
+        if (users == null) {
             return null;
         }
 
         // check password validity
-        if (user.getPassword().equals(authRequestDTO.getPassword())) {
-            return user;
+        if (users.getPassword().equals(authRequestDTO.getPassword())) {
+            return users;
         }
 
         return null;

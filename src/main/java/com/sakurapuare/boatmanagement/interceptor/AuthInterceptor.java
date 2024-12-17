@@ -1,28 +1,28 @@
 package com.sakurapuare.boatmanagement.interceptor;
 
 import com.sakurapuare.boatmanagement.common.UserContext;
-import com.sakurapuare.boatmanagement.exception.UnauthorizedException;
-import com.sakurapuare.boatmanagement.service.UserService;
+import com.sakurapuare.boatmanagement.service.UsersService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.lang.NonNull;
+
 import java.io.PrintWriter;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final UserService userService;
+    private final UsersService userService;
 
-    public AuthInterceptor(UserService userService) {
+    public AuthInterceptor(UsersService userService) {
         this.userService = userService;
     }
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-            @NonNull Object handler) throws Exception {
+                             @NonNull Object handler) throws Exception {
         // 获取token
         String token = request.getHeader("Authorization");
         if (!StringUtils.hasText(token)) {
@@ -58,7 +58,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-            @NonNull Object handler, Exception ex) {
+                                @NonNull Object handler, Exception ex) {
         // 清理ThreadLocal
         UserContext.clear();
     }

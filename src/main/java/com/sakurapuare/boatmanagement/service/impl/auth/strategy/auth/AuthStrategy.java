@@ -5,20 +5,20 @@ import com.sakurapuare.boatmanagement.constant.TableName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
-import com.sakurapuare.boatmanagement.mapper.UserMapper;
+import com.sakurapuare.boatmanagement.mapper.UsersMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public abstract class AuthStrategy {
 
-    private final UserMapper userMapper;
+    private final UsersMapper userMapper;
     private AuthStatus status = null;
     private String field = null;
 
-    public AuthStrategy(UserMapper userMapper) {
+    public AuthStrategy(UsersMapper userMapper) {
         this.userMapper = userMapper;
     }
 
@@ -40,16 +40,16 @@ public abstract class AuthStrategy {
         }
     }
 
-    public User auth(AuthRequestDTO authRequestDTO) {
+    public Users auth(AuthRequestDTO authRequestDTO) {
 
-        User user = userMapper.selectOneByQuery(
+        Users user = userMapper.selectOneByQuery(
                 QueryWrapper.create().eq(this.field, authRequestDTO.getUsername()));
 
         if (user == null) {
             if (status.getType().equals(AuthType.LOGIN)) {
                 return null;
             }
-            user = User.builder()
+            user = Users.builder()
                     .password(authRequestDTO.getPassword())
                     .isActive(false)
                     .isBlocked(false)

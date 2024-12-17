@@ -2,18 +2,18 @@ package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
 import com.sakurapuare.boatmanagement.constant.auth.AuthMethod;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
-import com.sakurapuare.boatmanagement.mapper.UserMapper;
-import com.sakurapuare.boatmanagement.service.CodeService;
+import com.sakurapuare.boatmanagement.mapper.UsersMapper;
+import com.sakurapuare.boatmanagement.service.CodesService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AuthContext {
 
-    private final UserMapper userMapper;
+    private final UsersMapper userMapper;
 
-    private final CodeService codeService;
+    private final CodesService codeService;
 
-    public AuthContext(CodeService codeService, UserMapper userMapper) {
+    public AuthContext(CodesService codeService, UsersMapper userMapper) {
         this.codeService = codeService;
         this.userMapper = userMapper;
     }

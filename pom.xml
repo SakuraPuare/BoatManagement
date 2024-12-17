@@ -166,6 +166,13 @@
         <!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
         <!--            <version>${spring-boot.version}</version>-->
         <!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
+
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.6.14</version>
+        </dependency>
 
     </dependencies>
 

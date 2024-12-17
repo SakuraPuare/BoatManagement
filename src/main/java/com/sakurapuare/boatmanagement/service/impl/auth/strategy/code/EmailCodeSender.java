@@ -1,24 +1,24 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.code;
 
-import com.sakurapuare.boatmanagement.pojo.entity.Code;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
-import com.sakurapuare.boatmanagement.service.CodeService;
+import com.sakurapuare.boatmanagement.pojo.entity.Codes;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
+import com.sakurapuare.boatmanagement.service.CodesService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class EmailCodeSender implements CodeSender {
 
-    private final CodeService codeService;
+    private final CodesService codeService;
 
-    public EmailCodeSender(CodeService codeService) {
+    public EmailCodeSender(CodesService codeService) {
         this.codeService = codeService;
     }
 
     @Override
-    public boolean sendCode(User user) {
+    public boolean sendCode(Users user) {
         // TODO: send code to email
 
-        Code code = codeService.generateCode(user);
+        Codes code = codeService.generateCode(user);
         return false;
     }
 

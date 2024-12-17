@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.code;
 
-import com.sakurapuare.boatmanagement.pojo.entity.User;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
 
 public interface CodeSender {
 
-    boolean sendCode(User user);
+    boolean sendCode(Users user);
 }

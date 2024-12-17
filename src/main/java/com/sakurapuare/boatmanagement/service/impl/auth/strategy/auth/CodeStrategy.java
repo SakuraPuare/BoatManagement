@@ -1,24 +1,24 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
-import com.sakurapuare.boatmanagement.mapper.UserMapper;
+import com.sakurapuare.boatmanagement.mapper.UsersMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
-import com.sakurapuare.boatmanagement.service.CodeService;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
+import com.sakurapuare.boatmanagement.service.CodesService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CodeStrategy extends AuthStrategy {
 
-    private final CodeService codeService;
+    private final CodesService codeService;
 
-    public CodeStrategy(CodeService codeService, UserMapper userMapper) {
+    public CodeStrategy(CodesService codeService, UsersMapper userMapper) {
         super(userMapper);
         this.codeService = codeService;
     }
 
     @Override
-    public User auth(AuthRequestDTO authRequestDTO) {
-        User user = super.auth(authRequestDTO);
+    public Users auth(AuthRequestDTO authRequestDTO) {
+        Users user = super.auth(authRequestDTO);
 
         if (user == null) {
             return null;

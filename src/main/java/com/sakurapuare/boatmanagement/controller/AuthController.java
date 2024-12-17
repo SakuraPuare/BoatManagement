@@ -3,7 +3,7 @@ package com.sakurapuare.boatmanagement.controller;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
 import com.sakurapuare.boatmanagement.pojo.vo.TokenVO;
 import com.sakurapuare.boatmanagement.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,17 +27,17 @@ public class AuthController {
         this.authService = authService;
     }
 
-    public Response<TokenVO> auth(User user) {
+    public Response<TokenVO> auth(Users user) {
         if (user == null) {
             return Response.error(CODE_UNAUTHORIZED, "Auth failed");
         }
 
         if (user.getIsBlocked()) {
-            return Response.error(CODE_FORBIDDEN, "User is blocked");
+            return Response.error(CODE_FORBIDDEN, "Users is blocked");
         }
 
         // if (!user.getIsActive()) {
-        //     return Response.error(CODE_FORBIDDEN, "User is not active");
+        //     return Response.error(CODE_FORBIDDEN, "Users is not active");
         // }
 
         String token = user.getToken();
@@ -57,7 +57,7 @@ public class AuthController {
     @PostMapping("login")
     @Operation(summary = "Login")
     public Response<TokenVO> loginWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
-        User user = authService.loginWithPassword(authRequestDTO);
+        Users user = authService.loginWithPassword(authRequestDTO);
         return this.auth(user);
     }
 
@@ -65,7 +65,7 @@ public class AuthController {
     @PostMapping("login/code")
     @Operation(summary = "Login by code")
     public Response<TokenVO> loginByCode(@RequestBody AuthRequestDTO authRequestDTO) {
-        User user = authService.loginWithCode(authRequestDTO);
+        Users user = authService.loginWithCode(authRequestDTO);
 
         if (user == null) {
             user = authService.registerWithCode(authRequestDTO);
@@ -77,7 +77,7 @@ public class AuthController {
     @PostMapping("register")
     @Operation(summary = "Register")
     public Response<TokenVO> registerWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
-        User user = authService.registerWithPassword(authRequestDTO);
+        Users user = authService.registerWithPassword(authRequestDTO);
         return this.auth(user);
     }
 

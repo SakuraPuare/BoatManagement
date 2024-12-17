@@ -3,18 +3,18 @@ package com.sakurapuare.boatmanagement.service;
 import com.mybatisflex.core.service.IService;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.User;
+import com.sakurapuare.boatmanagement.pojo.entity.Users;
 
 
-public interface AuthService extends IService<User> {
+public interface AuthService extends IService<Users> {
 
-    User loginWithPassword(AuthRequestDTO authRequestDTO);
+    Users loginWithPassword(AuthRequestDTO authRequestDTO);
 
-    User loginWithCode(AuthRequestDTO authRequestDTO);
+    Users loginWithCode(AuthRequestDTO authRequestDTO);
 
-    User registerWithPassword(AuthRequestDTO authRequestDTO);
+    Users registerWithPassword(AuthRequestDTO authRequestDTO);
 
-    User registerWithCode(AuthRequestDTO authRequestDTO);
+    Users registerWithCode(AuthRequestDTO authRequestDTO);
 
     boolean sendCode(NameRequestDTO nameRequestDTO);
 
