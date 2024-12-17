@@ -60,4 +60,10 @@ public class Orders extends BaseEntity implements Serializable {
     @ApiModelProperty("支付状态")
     private Integer paymentStatus;
 
+    /**
+     * 状态(0-禁用 1-启用)
+     */
+    @ApiModelProperty("状态(0-禁用 1-启用)")
+    private Integer status;
+
 }

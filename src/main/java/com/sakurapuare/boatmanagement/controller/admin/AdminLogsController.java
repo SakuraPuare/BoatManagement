@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @Api("操作日志表接口")
-@RequestMapping("/logs")
+@RequestMapping("/admin/logs")
 public class AdminLogsController {
 
     @Autowired

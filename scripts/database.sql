@@ -47,9 +47,10 @@ CREATE TABLE IF NOT EXISTS docks
     dock_id       BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '码头ID',
     dock_name     VARCHAR(50)  NOT NULL COMMENT '码头名称',
     dock_location VARCHAR(100) NOT NULL COMMENT '码头位置',
-    is_deleted    BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+    status        TINYINT      NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
+    is_deleted    BOOLEAN      DEFAULT FALSE COMMENT '是否删除',
+    created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
 );
 
 -- 设备表
@@ -82,6 +83,7 @@ CREATE TABLE IF NOT EXISTS tickets
     destination_dock_id BIGINT COMMENT '目的码头ID',
     price               DECIMAL(10, 2) COMMENT '票价',
     remaining_tickets   BIGINT    DEFAULT 0 COMMENT '剩余票数',
+    status              TINYINT   DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
     is_deleted          BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -98,6 +100,7 @@ CREATE TABLE IF NOT EXISTS orders
     ticket_id      BIGINT COMMENT '船票ID',
     total_amount   DECIMAL(10, 2) COMMENT '总金额',
     payment_status INT       DEFAULT 0 COMMENT '支付状态',
+    status         TINYINT   DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
     is_deleted     BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -112,6 +115,7 @@ CREATE TABLE IF NOT EXISTS payments
     payment_time   DATETIME COMMENT '支付时间',
     amount         DECIMAL(10, 2) COMMENT '支付金额',
     payment_method INT       DEFAULT 0 COMMENT '支付方式',
+    status         TINYINT   DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
     is_deleted     BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
     created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -125,7 +129,7 @@ CREATE TABLE IF NOT EXISTS alerts
     alert_type  VARCHAR(50) COMMENT '告警类型',
     alert_time  DATETIME COMMENT '告警时间',
     description TEXT COMMENT '告警描述',
-    status      INT       DEFAULT 0 COMMENT '告警状态',
+    status      TINYINT   DEFAULT 1 COMMENT '告警状态',
     is_deleted  BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -140,9 +144,9 @@ CREATE TABLE IF NOT EXISTS codes
     code            VARCHAR(10) NOT NULL COMMENT '验证码',
     request_time    DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '请求时间',
     expiration_time DATETIME COMMENT '过期时间',
-    is_deleted  BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_deleted      BOOLEAN     DEFAULT FALSE COMMENT '是否删除',
+    created_at      TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at      TIMESTAMP   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     INDEX idx_user_id (user_id),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
 );

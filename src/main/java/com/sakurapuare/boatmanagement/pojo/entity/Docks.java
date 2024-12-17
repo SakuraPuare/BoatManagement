@@ -47,4 +47,10 @@ public class Docks extends BaseEntity implements Serializable {
     @ApiModelProperty("码头位置")
     private String dockLocation;
 
+    /**
+     * 状态(0-禁用 1-启用)
+     */
+    @ApiModelProperty("状态(0-禁用 1-启用)")
+    private Integer status;
+
 }

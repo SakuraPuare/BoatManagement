@@ -28,12 +28,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (!StringUtils.hasText(token)) {
             // 设置response的内容类型为application/json
             response.setContentType("application/json;charset=UTF-8");
-            // 获取response的输出流
-            PrintWriter writer = response.getWriter();
             // 将json数据写入response
-            writer.write("{\"code\":401,\"message\":\"未登录\",\"data\":null}");
-            writer.flush();
-            writer.close();
+            try ( // 获取response的输出流
+                  PrintWriter writer = response.getWriter()) {
+                // 将json数据写入response
+                writer.write("{\"code\":401,\"message\":\"未登录\",\"data\":null}");
+                writer.flush();
+            }
             return false;
         }
 
@@ -46,19 +47,20 @@ public class AuthInterceptor implements HandlerInterceptor {
         } catch (Exception e) {
             // 设置response的内容类型为application/json
             response.setContentType("application/json;charset=UTF-8");
-            // 获取response的输出流
-            PrintWriter writer = response.getWriter();
             // 将json数据写入response
-            writer.write("{\"code\":401,\"message\":\"token无效\",\"data\":null}");
-            writer.flush();
-            writer.close();
+            try ( // 获取response的输出流
+                  PrintWriter writer = response.getWriter()) {
+                // 将json数据写入response
+                writer.write("{\"code\":401,\"message\":\"token无效\",\"data\":null}");
+                writer.flush();
+            }
             return false;
         }
     }
 
     @Override
     public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                                @NonNull Object handler, Exception ex) {
+                                @NonNull Object handler, @SuppressWarnings("null") Exception ex) {
         // 清理ThreadLocal
         UserContext.clear();
     }

@@ -85,4 +85,10 @@ public class Tickets extends BaseEntity implements Serializable {
     @ApiModelProperty("剩余票数")
     private Long remainingTickets;
 
+    /**
+     * 状态(0-禁用 1-启用)
+     */
+    @ApiModelProperty("状态(0-禁用 1-启用)")
+    private Integer status;
+
 }

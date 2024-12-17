@@ -61,4 +61,10 @@ public class Payments extends BaseEntity implements Serializable {
     @ApiModelProperty("支付方式")
     private Integer paymentMethod;
 
+    /**
+     * 状态(0-禁用 1-启用)
+     */
+    @ApiModelProperty("状态(0-禁用 1-启用)")
+    private Integer status;
+
 }
