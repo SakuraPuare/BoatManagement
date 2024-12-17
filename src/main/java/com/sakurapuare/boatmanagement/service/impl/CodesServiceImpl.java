@@ -9,7 +9,6 @@ import com.sakurapuare.boatmanagement.mapper.CodesMapper;
 import com.sakurapuare.boatmanagement.pojo.entity.Codes;
 import com.sakurapuare.boatmanagement.pojo.entity.Users;
 import com.sakurapuare.boatmanagement.service.CodesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -31,6 +30,11 @@ import java.util.List;
 @CacheConfig(cacheNames = "codes")
 public class CodesServiceImpl extends ServiceImpl<CodesMapper, Codes> implements CodesService {
 
+    private final CodesMapper codesMapper;
+
+    public CodesServiceImpl(CodesMapper codesMapper) {
+        this.codesMapper = codesMapper;
+    }
 
     @Override
     @CacheEvict(allEntries = true)
@@ -143,8 +147,6 @@ public class CodesServiceImpl extends ServiceImpl<CodesMapper, Codes> implements
         return super.pageAs(page, query, asType);
     }
 
-    @Autowired
-    CodesMapper codesMapper;
 
     @Override
     public Codes generateCode(Users user) {

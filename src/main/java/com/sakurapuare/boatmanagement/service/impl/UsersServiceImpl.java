@@ -3,8 +3,6 @@ package com.sakurapuare.boatmanagement.service.impl;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.sakurapuare.boatmanagement.common.UserContext;
-import com.sakurapuare.boatmanagement.exception.UnauthorizedException;
 import com.sakurapuare.boatmanagement.mapper.UsersMapper;
 import com.sakurapuare.boatmanagement.pojo.entity.Users;
 import com.sakurapuare.boatmanagement.service.UsersService;
@@ -144,14 +142,5 @@ public class UsersServiceImpl extends ServiceImpl<UsersMapper, Users> implements
     public Users getUserByToken(String token) {
         Long userId = JWTUtils.getUserId(token);
         return getById(userId);
-    }
-
-    @Override
-    public Users getCurrentUser() {
-        Users user = UserContext.getUser();
-        if (user == null) {
-            throw new UnauthorizedException("用户未登录");
-        }
-        return user;
     }
 }

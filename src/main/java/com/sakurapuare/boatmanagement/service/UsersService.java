@@ -18,11 +18,4 @@ public interface UsersService extends IService<Users> {
      * @return 用户信息
      */
     Users getUserByToken(String token);
-
-    /**
-     * 获取当前用户
-     *
-     * @return 当前用户
-     */
-    Users getCurrentUser();
 }

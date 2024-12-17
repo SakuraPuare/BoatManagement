@@ -2,6 +2,7 @@ package com.sakurapuare.boatmanagement.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.sakurapuare.boatmanagement.common.Response;
+import com.sakurapuare.boatmanagement.common.UserContext;
 import com.sakurapuare.boatmanagement.pojo.entity.Users;
 import com.sakurapuare.boatmanagement.pojo.vo.UserSelfVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserVO;
@@ -33,7 +34,7 @@ public class UserController {
 
     @GetMapping("/me")
     public Response<UserSelfVO> getMe() {
-        Users user = userService.getCurrentUser();
+        Users user = UserContext.getUser();
 
         UserSelfVO userSelfVO = new UserSelfVO();
         BeanUtil.copyProperties(user, userSelfVO);
