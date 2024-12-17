@@ -43,7 +43,7 @@ public class SQLGen {
 
         globalConfig.getEntityConfig()
                 .setSuperClass(BaseEntity.class)
-                .setOverwriteEnable(true)
+//                .setOverwriteEnable(true)
                 .setWithLombok(true)
                 .setWithSwagger(true)
                 .setJdkVersion(21);
@@ -57,8 +57,8 @@ public class SQLGen {
         ;
 
         globalConfig.getServiceImplConfig()
-//                .setCacheExample(true)
-                .setOverwriteEnable(true)
+                .setCacheExample(true)
+        // .setOverwriteEnable(true)
         ;
 
         globalConfig.getControllerConfig()

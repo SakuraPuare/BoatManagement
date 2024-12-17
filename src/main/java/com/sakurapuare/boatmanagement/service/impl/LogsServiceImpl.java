@@ -1,35 +1,29 @@
 package com.sakurapuare.boatmanagement.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.sakurapuare.boatmanagement.constant.TableName;
-import com.sakurapuare.boatmanagement.mapper.CodesMapper;
-import com.sakurapuare.boatmanagement.pojo.entity.Codes;
-import com.sakurapuare.boatmanagement.pojo.entity.Users;
-import com.sakurapuare.boatmanagement.service.CodesService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sakurapuare.boatmanagement.mapper.LogsMapper;
+import com.sakurapuare.boatmanagement.pojo.entity.Logs;
+import com.sakurapuare.boatmanagement.service.LogsService;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * 验证码表 服务层实现。
+ * 操作日志表 服务层实现。
  *
  * @author sakurapuare
  * @since 2024-12-17
  */
 @Service
-@CacheConfig(cacheNames = "codes")
-public class CodesServiceImpl extends ServiceImpl<CodesMapper, Codes> implements CodesService {
+@CacheConfig(cacheNames = "logs")
+public class LogsServiceImpl extends ServiceImpl<LogsMapper, Logs> implements LogsService {
 
 
     @Override
@@ -52,31 +46,31 @@ public class CodesServiceImpl extends ServiceImpl<CodesMapper, Codes> implements
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean update(Codes entity, QueryWrapper query) {
+    public boolean update(Logs entity, QueryWrapper query) {
         return super.update(entity, query);
     }
 
     @Override
-    @CacheEvict(key = "#entity.id")
-    public boolean updateById(Codes entity, boolean ignoreNulls) {
+    @CacheEvict(key = "#entity.logId")
+    public boolean updateById(Logs entity, boolean ignoreNulls) {
         return super.updateById(entity, ignoreNulls);
     }
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean updateBatch(Collection<Codes> entities, int batchSize) {
+    public boolean updateBatch(Collection<Logs> entities, int batchSize) {
         return super.updateBatch(entities, batchSize);
     }
 
     @Override
     @Cacheable(key = "#id")
-    public Codes getById(Serializable id) {
+    public Logs getById(Serializable id) {
         return super.getById(id);
     }
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public Codes getOne(QueryWrapper query) {
+    public Logs getOne(QueryWrapper query) {
         return super.getOne(query);
     }
 
@@ -112,7 +106,7 @@ public class CodesServiceImpl extends ServiceImpl<CodesMapper, Codes> implements
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public List<Codes> list(QueryWrapper query) {
+    public List<Logs> list(QueryWrapper query) {
         return super.list(query);
     }
 
@@ -127,7 +121,7 @@ public class CodesServiceImpl extends ServiceImpl<CodesMapper, Codes> implements
      */
     @Override
     @Deprecated
-    public List<Codes> listByIds(Collection<? extends Serializable> ids) {
+    public List<Logs> listByIds(Collection<? extends Serializable> ids) {
         return super.listByIds(ids);
     }
 
@@ -141,45 +135,6 @@ public class CodesServiceImpl extends ServiceImpl<CodesMapper, Codes> implements
     @Cacheable(key = "#root.methodName + ':' + #page.getPageSize() + ':' + #page.getPageNumber() + ':' + #query.toSQL()")
     public <R> Page<R> pageAs(Page<R> page, QueryWrapper query, Class<R> asType) {
         return super.pageAs(page, query, asType);
-    }
-
-    @Autowired
-    CodesMapper codesMapper;
-
-    @Override
-    public Codes generateCode(Users user) {
-        Codes code = Codes.builder().userId(user.getUserId()).code(RandomUtil.randomNumbers(6)).expirationTime(Timestamp.valueOf(LocalDateTime.now().plusDays(1))).build();
-
-        codesMapper.insertSelective(code);
-
-        return code;
-    }
-
-    @Override
-    public boolean verifyCode(Users user, String password) {
-        QueryWrapper qw = QueryWrapper.create();
-        qw.eq(TableName.USER_ID, user.getUserId()).orderBy(TableName.CREATED_AT, false);
-        List<Codes> codes = codesMapper.selectListByQuery(qw);
-
-        if (codes.isEmpty()) {
-            return false;
-        }
-
-        for (Codes code : codes) {
-            // parse from timestamp to LocalDateTime
-            Timestamp timestamp = code.getExpirationTime();
-            LocalDateTime expirationTime = timestamp.toLocalDateTime();
-            if (code.getCode().equals(password)) {
-                codesMapper.deleteById(code.getId());
-                return true;
-            }
-            // if expired, delete the code
-            if (expirationTime.isBefore(LocalDateTime.now())) {
-                codesMapper.deleteById(code.getId());
-            }
-        }
-
-        return false;
     }
 
 }

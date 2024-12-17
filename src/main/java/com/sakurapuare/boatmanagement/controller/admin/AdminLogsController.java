@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
-import com.sakurapuare.boatmanagement.pojo.entity.OperationLogs;
-import com.sakurapuare.boatmanagement.service.OperationLogsService;
+import com.sakurapuare.boatmanagement.pojo.entity.Logs;
+import com.sakurapuare.boatmanagement.service.LogsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,22 +19,22 @@ import java.util.List;
  */
 @RestController
 @Api("操作日志表接口")
-@RequestMapping("/admin/operationLogs")
-public class AdminOperationLogsController {
+@RequestMapping("/logs")
+public class AdminLogsController {
 
     @Autowired
-    private OperationLogsService operationLogsService;
+    private LogsService logsService;
 
     /**
      * 添加操作日志表。
      *
-     * @param operationLogs 操作日志表
+     * @param logs 操作日志表
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("save")
     @ApiOperation("保存操作日志表")
-    public boolean save(@RequestBody @ApiParam("操作日志表") OperationLogs operationLogs) {
-        return operationLogsService.save(operationLogs);
+    public boolean save(@RequestBody @ApiParam("操作日志表") Logs logs) {
+        return logsService.save(logs);
     }
 
     /**
@@ -46,19 +46,19 @@ public class AdminOperationLogsController {
     @DeleteMapping("remove/{id}")
     @ApiOperation("根据主键操作日志表")
     public boolean remove(@PathVariable @ApiParam("操作日志表主键") Long id) {
-        return operationLogsService.removeById(id);
+        return logsService.removeById(id);
     }
 
     /**
      * 根据主键更新操作日志表。
      *
-     * @param operationLogs 操作日志表
+     * @param logs 操作日志表
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PutMapping("update")
     @ApiOperation("根据主键更新操作日志表")
-    public boolean update(@RequestBody @ApiParam("操作日志表主键") OperationLogs operationLogs) {
-        return operationLogsService.updateById(operationLogs);
+    public boolean update(@RequestBody @ApiParam("操作日志表主键") Logs logs) {
+        return logsService.updateById(logs);
     }
 
     /**
@@ -68,8 +68,8 @@ public class AdminOperationLogsController {
      */
     @GetMapping("list")
     @ApiOperation("查询所有操作日志表")
-    public List<OperationLogs> list() {
-        return operationLogsService.list();
+    public List<Logs> list() {
+        return logsService.list();
     }
 
     /**
@@ -80,8 +80,8 @@ public class AdminOperationLogsController {
      */
     @GetMapping("getInfo/{id}")
     @ApiOperation("根据主键获取操作日志表")
-    public OperationLogs getInfo(@PathVariable @ApiParam("操作日志表主键") Long id) {
-        return operationLogsService.getById(id);
+    public Logs getInfo(@PathVariable @ApiParam("操作日志表主键") Long id) {
+        return logsService.getById(id);
     }
 
     /**
@@ -92,8 +92,8 @@ public class AdminOperationLogsController {
      */
     @GetMapping("page")
     @ApiOperation("分页查询操作日志表")
-    public Page<OperationLogs> page(@ApiParam("分页信息") Page<OperationLogs> page) {
-        return operationLogsService.page(page);
+    public Page<Logs> page(@ApiParam("分页信息") Page<Logs> page) {
+        return logsService.page(page);
     }
 
 }

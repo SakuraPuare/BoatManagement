@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS codes
 -- );
 
 -- 创建日志表
-CREATE TABLE IF NOT EXISTS operation_logs
+CREATE TABLE IF NOT EXISTS logs
 (
     log_id      BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '日志ID',
     table_name  VARCHAR(50)  NOT NULL COMMENT '表名',
@@ -196,7 +196,7 @@ ALTER TABLE orders COMMENT '订单表';
 ALTER TABLE payments COMMENT '支付记录表';
 ALTER TABLE alerts COMMENT '告警表';
 ALTER TABLE codes COMMENT '验证码表';
-ALTER TABLE operation_logs COMMENT '操作日志表';
+ALTER TABLE logs COMMENT '操作日志表';
 
 -- 插入船只类型数据
 INSERT INTO boat_types (type_name, type_code, max_capacity, max_speed, fuel_type) VALUES

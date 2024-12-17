@@ -1,7 +1,7 @@
 package com.sakurapuare.boatmanagement.service;
 
 import com.mybatisflex.core.service.IService;
-import com.sakurapuare.boatmanagement.pojo.entity.OperationLogs;
+import com.sakurapuare.boatmanagement.pojo.entity.Logs;
 
 /**
  * 操作日志表 服务层。
@@ -9,6 +9,6 @@ import com.sakurapuare.boatmanagement.pojo.entity.OperationLogs;
  * @author sakurapuare
  * @since 2024-12-17
  */
-public interface OperationLogsService extends IService<OperationLogs> {
+public interface LogsService extends IService<Logs> {
 
 }
