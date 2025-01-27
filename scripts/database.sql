@@ -7,9 +7,9 @@ USE boatmanagement;
 -- 用户表
 CREATE TABLE IF NOT EXISTS users
 (
-    user_id    BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '用户ID',
+    user_id    BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',
     uuid       VARCHAR(36)  NOT NULL COMMENT '用户UUID',
-    username   VARCHAR(32)  NOT NULL COMMENT '用户名',
+    username   VARCHAR(32) COMMENT '用户名',
     password   VARCHAR(64) COMMENT '密码',
     email      VARCHAR(64) COMMENT '邮箱',
     phone      VARCHAR(16) COMMENT '手机号',
@@ -271,4 +271,3 @@ ALTER TABLE users
     ADD COLUMN openid VARCHAR(64) COMMENT '微信openid',
     ADD COLUMN avatar VARCHAR(255) COMMENT '头像URL',
     ADD INDEX idx_openid (openid); -- 添加索引以提高查询性能
-

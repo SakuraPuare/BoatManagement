@@ -22,7 +22,7 @@ public class WechatStrategy extends AuthStrategy {
     public Users auth(AuthRequestDTO authRequestDTO) {
         // 1. 通过code获取openid
         String openid = wechatUtils.getOpenId(authRequestDTO.getCode());
-        
+
         // 2. 查找或创建用户
         Users user = userMapper.selectOneByOpenid(openid);
         if (user == null) {
@@ -30,17 +30,17 @@ public class WechatStrategy extends AuthStrategy {
             user = createUser(authRequestDTO.getUserInfo(), openid);
             userMapper.insert(user);
         }
-        
+
         return user;
     }
 
     private Users createUser(WxUserInfo userInfo, String openid) {
         return Users.builder()
-            .openid(openid)
-            .username(userInfo.getNickName())
-            .avatar(userInfo.getAvatarUrl())
-            .isActive(true)
-            .isBlocked(false)
-            .build();
+                .openid(openid)
+                .username(userInfo.getNickName())
+                .avatar(userInfo.getAvatarUrl())
+                .isActive(true)
+                .isBlocked(false)
+                .build();
     }
 } 

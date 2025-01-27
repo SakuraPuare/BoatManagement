@@ -10,18 +10,17 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @RequiredArgsConstructor
 public class WechatUtils {
+    private static final String CODE2SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session?appid={appid}&secret={secret}&js_code={code}&grant_type=authorization_code";
     private final WechatConfig wechatConfig;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    private static final String CODE2SESSION_URL = "https://api.weixin.qq.com/sns/jscode2session?appid={appid}&secret={secret}&js_code={code}&grant_type=authorization_code";
-
     public String getOpenId(String code) {
         try {
             String url = CODE2SESSION_URL
-                .replace("{appid}", wechatConfig.getAppId())
-                .replace("{secret}", wechatConfig.getAppSecret())
-                .replace("{code}", code);
+                    .replace("{appid}", wechatConfig.getAppId())
+                    .replace("{secret}", wechatConfig.getAppSecret())
+                    .replace("{code}", code);
 
             String response = restTemplate.getForObject(url, String.class);
             JsonNode jsonNode = objectMapper.readTree(response);

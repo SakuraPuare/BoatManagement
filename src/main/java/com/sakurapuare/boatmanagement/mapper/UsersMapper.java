@@ -3,7 +3,9 @@ package com.sakurapuare.boatmanagement.mapper;
 import com.mybatisflex.core.BaseMapper;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.pojo.entity.Users;
+
 import static com.sakurapuare.boatmanagement.pojo.entity.table.UsersTableDef.USERS;
+
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -16,9 +18,9 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UsersMapper extends BaseMapper<Users> {
     default Users selectOneByOpenid(String openid) {
         return this.selectOneByQuery(
-            QueryWrapper.create()
-                .where(USERS.OPENID.eq(openid))
-                .and(USERS.IS_DELETED.eq(false))
+                QueryWrapper.create()
+                        .where(USERS.OPENID.eq(openid))
+                        .and(USERS.IS_DELETED.eq(false))
         );
     }
 }

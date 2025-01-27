@@ -7,16 +7,16 @@ import lombok.Data;
 @Data
 @ApiModel("认证请求")
 public class AuthRequestDTO {
-    
+
     @ApiModelProperty("用户名/手机号/邮箱")
     private String username;
-    
+
     @ApiModelProperty("密码/验证码")
     private String password;
-    
+
     @ApiModelProperty("微信登录code")
     private String code;
-    
+
     @ApiModelProperty("微信用户信息")
     private WxUserInfo userInfo;
 }

@@ -23,6 +23,7 @@ public interface AuthService extends IService<Users> {
 
     /**
      * 微信登录
+     *
      * @param wxLoginDTO 微信登录信息
      * @return 用户信息
      */

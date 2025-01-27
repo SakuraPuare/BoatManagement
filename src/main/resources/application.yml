@@ -41,6 +41,7 @@ jwt:
   signKey: sakurapuare
   expire: 604800
   # 7 days in seconds
+
 server:
   port: 8123
 

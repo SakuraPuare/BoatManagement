@@ -88,12 +88,12 @@ public class AuthServiceImpl extends ServiceImpl<UsersMapper, Users> implements 
     @Override
     public Users loginWithWechat(WxLoginDTO wxLoginDTO) {
         AuthStatus authStatus = new AuthStatus(AuthMethod.WECHAT, AuthType.LOGIN);
-        
+
         // 将WxLoginDTO转换为AuthRequestDTO
         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
         authRequestDTO.setCode(wxLoginDTO.getCode());
         authRequestDTO.setUserInfo(wxLoginDTO.getUserInfo());
-        
+
         return authContext(authStatus, authRequestDTO);
     }
 
