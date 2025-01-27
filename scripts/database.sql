@@ -7,18 +7,25 @@ USE boatmanagement;
 -- 用户表
 CREATE TABLE IF NOT EXISTS users
 (
-    user_id    BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',
-    uuid       VARCHAR(50)  NOT NULL UNIQUE DEFAULT UUID() COMMENT '用户UUID',
-    username   VARCHAR(50) DEFAULT '' COMMENT '用户名',
-    password   VARCHAR(255) NOT NULL DEFAULT '' COMMENT '密码',
-    email      VARCHAR(100) DEFAULT '' COMMENT '邮箱',
-    phone      VARCHAR(20)  DEFAULT '' COMMENT '手机号',
-    role       INT UNSIGNED                   DEFAULT 1 COMMENT '角色权限',
-    is_active  BOOLEAN                      DEFAULT TRUE COMMENT '是否激活',
-    is_blocked BOOLEAN                      DEFAULT FALSE COMMENT '是否封禁',
-    is_deleted BOOLEAN                      DEFAULT FALSE COMMENT '是否删除',
-    created_at TIMESTAMP                    DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at TIMESTAMP                    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+    user_id    BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '用户ID',
+    uuid       VARCHAR(36)  NOT NULL COMMENT '用户UUID',
+    username   VARCHAR(32)  NOT NULL COMMENT '用户名',
+    password   VARCHAR(64) COMMENT '密码',
+    email      VARCHAR(64) COMMENT '邮箱',
+    phone      VARCHAR(16) COMMENT '手机号',
+    role       BIGINT      NOT NULL DEFAULT 0 COMMENT '角色权限',
+    openid     VARCHAR(64) COMMENT '微信openid',
+    avatar     VARCHAR(255) COMMENT '头像URL',
+    is_active  BOOLEAN     NOT NULL DEFAULT TRUE COMMENT '是否激活',
+    is_blocked BOOLEAN     NOT NULL DEFAULT FALSE COMMENT '是否封禁',
+    is_deleted BOOLEAN              DEFAULT FALSE COMMENT '是否删除',
+    created_at TIMESTAMP            DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at TIMESTAMP            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE INDEX idx_uuid (uuid),
+    UNIQUE INDEX idx_username (username),
+    UNIQUE INDEX idx_email (email),
+    UNIQUE INDEX idx_phone (phone),
+    INDEX idx_openid (openid)
 );
 
 INSERT INTO users (username, password, email, phone, role)
@@ -259,3 +266,9 @@ INSERT INTO alerts (boat_id, alert_type, alert_time, description, status) VALUES
 (1, '维护提醒', '2024-03-18 10:00:00', '需要进行季度维护检查', 0),
 (2, '天气警告', '2024-03-19 08:00:00', '未来24小时可能有强风天气', 1),
 (3, '设备异常', '2024-03-19 14:00:00', '发动机温度偏高', 2);
+-- 修改users表，添加微信相关字段
+ALTER TABLE users
+    ADD COLUMN openid VARCHAR(64) COMMENT '微信openid',
+    ADD COLUMN avatar VARCHAR(255) COMMENT '头像URL',
+    ADD INDEX idx_openid (openid); -- 添加索引以提高查询性能
+

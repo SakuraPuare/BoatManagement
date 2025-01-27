@@ -3,6 +3,7 @@ package com.sakurapuare.boatmanagement.controller;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
+import com.sakurapuare.boatmanagement.pojo.dto.WxLoginDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Users;
 import com.sakurapuare.boatmanagement.pojo.vo.TokenVO;
 import com.sakurapuare.boatmanagement.service.AuthService;
@@ -89,5 +90,12 @@ public class AuthController {
             return Response.error("Send code failed");
         }
         return Response.success("Send code success");
+    }
+
+    @PostMapping("wx/login")
+    @Operation(summary = "微信登录")
+    public Response<TokenVO> wxLogin(@RequestBody WxLoginDTO wxLoginDTO) {
+        Users user = authService.loginWithWechat(wxLoginDTO);
+        return this.auth(user);
     }
 }

@@ -9,6 +9,7 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthType;
 import com.sakurapuare.boatmanagement.mapper.UsersMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
+import com.sakurapuare.boatmanagement.pojo.dto.WxLoginDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Users;
 import com.sakurapuare.boatmanagement.service.AuthService;
 import com.sakurapuare.boatmanagement.service.CodesService;
@@ -16,24 +17,22 @@ import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthContex
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthStrategy;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.code.CodeSenderContext;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
+import com.sakurapuare.boatmanagement.utils.WechatUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl extends ServiceImpl<UsersMapper, Users> implements AuthService {
 
     private final UsersMapper userMapper;
-
     private final CodesService codeService;
-
-    public AuthServiceImpl(CodesService codeService, UsersMapper userMapper) {
-        this.codeService = codeService;
-        this.userMapper = userMapper;
-    }
+    private final WechatUtils wechatUtils;
+    private final AuthContext authContext;
 
     private Users authContext(AuthStatus status, AuthRequestDTO authRequestDTO) {
-
         status.setName(AuthNameUtils.getAuthName(authRequestDTO.getUsername()));
-        AuthContext context = new AuthContext(codeService, userMapper);
+        AuthContext context = new AuthContext(userMapper, codeService, wechatUtils);
         AuthStrategy strategy = context.getStrategy(status);
         strategy.configureStrategy(status);
 
@@ -84,6 +83,18 @@ public class AuthServiceImpl extends ServiceImpl<UsersMapper, Users> implements 
         }
 
         return true;
+    }
+
+    @Override
+    public Users loginWithWechat(WxLoginDTO wxLoginDTO) {
+        AuthStatus authStatus = new AuthStatus(AuthMethod.WECHAT, AuthType.LOGIN);
+        
+        // 将WxLoginDTO转换为AuthRequestDTO
+        AuthRequestDTO authRequestDTO = new AuthRequestDTO();
+        authRequestDTO.setCode(wxLoginDTO.getCode());
+        authRequestDTO.setUserInfo(wxLoginDTO.getUserInfo());
+        
+        return authContext(authStatus, authRequestDTO);
     }
 
 }
