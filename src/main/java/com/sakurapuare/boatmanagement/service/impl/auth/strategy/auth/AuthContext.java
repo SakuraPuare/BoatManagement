@@ -4,19 +4,19 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthMethod;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.mapper.UsersMapper;
 import com.sakurapuare.boatmanagement.service.CodesService;
+import com.sakurapuare.boatmanagement.utils.WechatUtils;
 import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class AuthContext {
 
     private final UsersMapper userMapper;
 
     private final CodesService codeService;
 
-    public AuthContext(CodesService codeService, UsersMapper userMapper) {
-        this.codeService = codeService;
-        this.userMapper = userMapper;
-    }
+    private final WechatUtils wechatUtils;
 
     public AuthStrategy getStrategy(AuthStatus status) {
         switch (status.getMethod()) {
@@ -30,6 +30,9 @@ public class AuthContext {
                         codeService,
                         userMapper
                 );
+            }
+            case AuthMethod.WECHAT -> {
+                return new WechatStrategy(wechatUtils, userMapper);
             }
             default -> throw new UnsupportedOperationException("暂不支持的登录方式");
         }

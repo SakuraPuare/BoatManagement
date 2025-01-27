@@ -86,6 +86,18 @@ public class Users extends BaseEntity implements Serializable {
     @ApiModelProperty("是否封禁")
     private Boolean isBlocked;
 
+    /**
+     * 微信openid
+     */
+    @ApiModelProperty("微信openid")
+    private String openid;
+
+    /**
+     * 头像URL
+     */
+    @ApiModelProperty("头像URL")
+    private String avatar;
+
     public String getToken() {
         Map<String, Object> map = new HashMap<>();
 
