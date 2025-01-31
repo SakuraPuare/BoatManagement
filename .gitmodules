@@ -1,3 +1,6 @@
 [submodule "web"]
 	path = web
 	url = https://github.com/SakuraPuare/BoatManagement_web
+[submodule "taro"]
+	path = taro
+	url = https://github.com/SakuraPuare/BoatManagement_taro
