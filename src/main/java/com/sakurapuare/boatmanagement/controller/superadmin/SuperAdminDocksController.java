@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.sakurapuare.boatmanagement.pojo.entity.Docks;
-import com.sakurapuare.boatmanagement.service.DocksService;
+import com.sakurapuare.boatmanagement.service.base.BaseDocksService;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,15 +21,15 @@ import java.util.List;
  * 码头表 控制层。
  *
  * @author sakurapuare
- * @since 2024-12-26
+ * @since 2025-02-08
  */
 @RestController
 @Api("码头表接口")
-@RequestMapping("/superadmin/docks")
+@RequestMapping("/docks")
 public class SuperAdminDocksController {
 
     @Autowired
-    private DocksService docksService;
+    private BaseDocksService baseDocksService;
 
     /**
      * 添加码头表。
@@ -40,7 +40,7 @@ public class SuperAdminDocksController {
     @PostMapping("save")
     @ApiOperation("保存码头表")
     public boolean save(@RequestBody @ApiParam("码头表") Docks docks) {
-        return docksService.save(docks);
+        return baseDocksService.save(docks);
     }
 
     /**
@@ -51,8 +51,8 @@ public class SuperAdminDocksController {
      */
     @DeleteMapping("remove/{id}")
     @ApiOperation("根据主键码头表")
-    public boolean remove(@PathVariable @ApiParam("码头表主键") Long id) {
-        return docksService.removeById(id);
+    public boolean remove(@PathVariable @ApiParam("码头表主键") BigInteger id) {
+        return baseDocksService.removeById(id);
     }
 
     /**
@@ -64,7 +64,7 @@ public class SuperAdminDocksController {
     @PutMapping("update")
     @ApiOperation("根据主键更新码头表")
     public boolean update(@RequestBody @ApiParam("码头表主键") Docks docks) {
-        return docksService.updateById(docks);
+        return baseDocksService.updateById(docks);
     }
 
     /**
@@ -75,7 +75,7 @@ public class SuperAdminDocksController {
     @GetMapping("list")
     @ApiOperation("查询所有码头表")
     public List<Docks> list() {
-        return docksService.list();
+        return baseDocksService.list();
     }
 
     /**
@@ -86,8 +86,8 @@ public class SuperAdminDocksController {
      */
     @GetMapping("getInfo/{id}")
     @ApiOperation("根据主键获取码头表")
-    public Docks getInfo(@PathVariable @ApiParam("码头表主键") Long id) {
-        return docksService.getById(id);
+    public Docks getInfo(@PathVariable @ApiParam("码头表主键") BigInteger id) {
+        return baseDocksService.getById(id);
     }
 
     /**
@@ -99,7 +99,7 @@ public class SuperAdminDocksController {
     @GetMapping("page")
     @ApiOperation("分页查询码头表")
     public Page<Docks> page(@ApiParam("分页信息") Page<Docks> page) {
-        return docksService.page(page);
+        return baseDocksService.page(page);
     }
 
 }

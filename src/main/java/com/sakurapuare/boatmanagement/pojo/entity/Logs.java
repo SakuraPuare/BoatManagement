@@ -3,78 +3,70 @@ package com.sakurapuare.boatmanagement.pojo.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
+import java.io.Serializable;
+import java.math.BigInteger;
 
 import java.io.Serial;
-import java.io.Serializable;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 /**
- * 操作日志表 实体类。
+ * 系统日志表 实体类。
  *
  * @author sakurapuare
- * @since 2024-12-17
+ * @since 2025-02-08
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("操作日志表")
+@ApiModel("系统日志表")
 @Table("logs")
 public class Logs extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 日志ID
-     */
     @Id(keyType = KeyType.Auto)
-    @ApiModelProperty("日志ID")
-    private Long logId;
+    @ApiModelProperty("")
+    private BigInteger id;
 
     /**
-     * 表名
+     * 日志类型
      */
-    @ApiModelProperty("表名")
-    private String tableName;
+    @ApiModelProperty("日志类型")
+    private String type;
 
     /**
-     * 操作类型(INSERT/UPDATE/DELETE)
+     * 日志等级
      */
-    @ApiModelProperty("操作类型(INSERT/UPDATE/DELETE)")
-    private String operation;
+    @ApiModelProperty("日志等级")
+    private String level;
 
     /**
-     * 记录ID
+     * 日志内容
      */
-    @ApiModelProperty("记录ID")
-    private Long recordId;
+    @ApiModelProperty("日志内容")
+    private String content;
 
     /**
-     * 操作者ID
+     * 来源模块
      */
-    @ApiModelProperty("操作者ID")
-    private Long operatorId;
+    @ApiModelProperty("来源模块")
+    private String source;
 
     /**
-     * 原数据
+     * 操作人
      */
-    @ApiModelProperty("原数据")
-    private String oldData;
-
-    /**
-     * 新数据
-     */
-    @ApiModelProperty("新数据")
-    private String newData;
-
-    /**
-     * IP地址
-     */
-    @ApiModelProperty("IP地址")
-    private String ipAddress;
+    @ApiModelProperty("操作人")
+    private BigInteger operatorId;
 
 }

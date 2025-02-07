@@ -4,270 +4,262 @@ CREATE DATABASE IF NOT EXISTS boatmanagement;
 
 USE boatmanagement;
 
--- 用户表
-CREATE TABLE IF NOT EXISTS users
-(
-    user_id    BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',
-    uuid       VARCHAR(36)  NOT NULL COMMENT '用户UUID',
-    username   VARCHAR(32) COMMENT '用户名',
-    password   VARCHAR(64) COMMENT '密码',
-    email      VARCHAR(64) COMMENT '邮箱',
-    phone      VARCHAR(16) COMMENT '手机号',
-    role       BIGINT      NOT NULL DEFAULT 0 COMMENT '角色权限',
-    openid     VARCHAR(64) COMMENT '微信openid',
-    avatar     VARCHAR(255) COMMENT '头像URL',
-    is_active  BOOLEAN     NOT NULL DEFAULT TRUE COMMENT '是否激活',
-    is_blocked BOOLEAN     NOT NULL DEFAULT FALSE COMMENT '是否封禁',
-    is_deleted BOOLEAN              DEFAULT FALSE COMMENT '是否删除',
-    created_at TIMESTAMP            DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at TIMESTAMP            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    UNIQUE INDEX idx_uuid (uuid),
-    UNIQUE INDEX idx_username (username),
-    UNIQUE INDEX idx_email (email),
-    UNIQUE INDEX idx_phone (phone),
-    INDEX idx_openid (openid)
-);
+-- 基础账号表
+CREATE TABLE accounts (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `username` VARCHAR(64) UNIQUE COMMENT '用户名',
+  `password` VARCHAR(255) COMMENT '密码',
+  `mobile` VARCHAR(20) UNIQUE COMMENT '手机号',
+  `email` VARCHAR(255) UNIQUE COMMENT '邮箱',
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否激活',
+  `is_blocked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否锁定',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '软删除标记',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  INDEX `idx_mobile` (`mobile`),
+  INDEX `idx_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='基础账号表';
 
-INSERT INTO users (username, password, email, phone, role)
-VALUES ('admin', 'admin', 'admin@admin.com', '1234567890', 0xFFFFFF);
+-- 第三方登录表
+CREATE TABLE `social_auth` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `account_id` BIGINT UNSIGNED NOT NULL,
+  `platform` ENUM('WECHAT','ALIPAY','APPLE') NOT NULL COMMENT '第三方平台',
+  `open_id` VARCHAR(255) NOT NULL COMMENT '第三方唯一ID',
+  `union_id` VARCHAR(255) COMMENT '跨平台统一ID',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_platform_openid` (`platform`, `open_id`),
+  FOREIGN KEY (`account_id`) REFERENCES accounts (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='第三方登录表';
 
--- 船只类型表
-CREATE TABLE IF NOT EXISTS boat_types
-(
-    boat_type_id          BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '船只类型ID',
-    type_name             VARCHAR(50) NOT NULL COMMENT '类型名称',
-    type_code             VARCHAR(20) NOT NULL COMMENT '类型代码',
-    max_capacity          DECIMAL(10,2) NOT NULL COMMENT '最大载量(吨)',
-    max_speed             DECIMAL(10,2) NOT NULL COMMENT '最高速度(节)',
-    fuel_type             VARCHAR(20) NOT NULL COMMENT '燃料类型',
-    status                TINYINT NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
-    is_deleted            BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
-    created_at            TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at            TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    UNIQUE INDEX uk_type_code (type_code),
-    INDEX idx_type_name (type_name)
-);
+-- RBAC权限系统
+CREATE TABLE `role` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL UNIQUE COMMENT '角色名称',
+  `description` VARCHAR(255) COMMENT '角色描述',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色表';
+
+CREATE TABLE `permission` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL UNIQUE COMMENT '权限名称',
+  `code` VARCHAR(50) NOT NULL UNIQUE COMMENT '权限代码',
+  `description` VARCHAR(255) COMMENT '权限描述',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限表';
+
+CREATE TABLE `role_permission` (
+  `role_id` INT UNSIGNED NOT NULL,
+  `permission_id` INT UNSIGNED NOT NULL,
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`role_id`, `permission_id`),
+  FOREIGN KEY (`role_id`) REFERENCES `role`(`id`),
+  FOREIGN KEY (`permission_id`) REFERENCES `permission`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色权限关联表';
+
+-- 角色继承表（实现多继承）
+CREATE TABLE `role_inheritance` (
+  `parent_role_id` INT UNSIGNED NOT NULL,
+  `child_role_id` INT UNSIGNED NOT NULL,
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`parent_role_id`, `child_role_id`),
+  FOREIGN KEY (`parent_role_id`) REFERENCES `role`(`id`),
+  FOREIGN KEY (`child_role_id`) REFERENCES `role`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色继承关系表';
+
+-- 用户角色关联表（带单位）
+CREATE TABLE `user_role` (
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  `role_id` INT UNSIGNED NOT NULL,
+  `unit_id` BIGINT UNSIGNED COMMENT '所属单位',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`, `role_id`, `unit_id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
+  FOREIGN KEY (`role_id`) REFERENCES `role`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关联表';
+
+-- 单位表
+CREATE TABLE units (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL COMMENT '单位名称',
+  `social_credit_code` VARCHAR(18) UNIQUE COMMENT '统一社会信用代码',
+  `legal_person` VARCHAR(50) COMMENT '法人代表',
+  `address` VARCHAR(255) COMMENT '单位地址',
+  `contact_phone` VARCHAR(20) COMMENT '联系电话',
+  `status` ENUM('PENDING','APPROVED','REJECTED') NOT NULL DEFAULT 'PENDING' COMMENT '审核状态',
+  `admin_user_id` BIGINT UNSIGNED NOT NULL COMMENT '单位管理员',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`admin_user_id`) REFERENCES accounts (`id`),
+  INDEX `idx_social_credit_code` (`social_credit_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='单位表';
+
+-- 商家表
+CREATE TABLE merchants (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
+  `unit_id` BIGINT UNSIGNED COMMENT '所属单位',
+  `shop_name` VARCHAR(255) NOT NULL COMMENT '店铺名称',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts(`id`),
+  FOREIGN KEY (`unit_id`) REFERENCES units(`id`),
+  INDEX `idx_shop_name` (`shop_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商家表';
+
+-- 船主表
+CREATE TABLE owners (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
+  `unit_id` BIGINT UNSIGNED COMMENT '所属单位',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts(`id`),
+  FOREIGN KEY (`unit_id`) REFERENCES units(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='船主表';
 
 -- 码头表
-CREATE TABLE IF NOT EXISTS docks
-(
-    dock_id       BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '码头ID',
-    dock_name     VARCHAR(50)  NOT NULL COMMENT '码头名称',
-    dock_location VARCHAR(100) NOT NULL COMMENT '码头位置',
-    status        TINYINT      NOT NULL DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
-    is_deleted    BOOLEAN      DEFAULT FALSE COMMENT '是否删除',
-    created_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at    TIMESTAMP    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
-);
+CREATE TABLE docks (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL COMMENT '码头名称',
+  `location` POINT NOT NULL COMMENT '地理位置',
+  `address` VARCHAR(255) COMMENT '详细地址',
+  `contact_phone` VARCHAR(20) COMMENT '联系电话',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  SPATIAL INDEX `idx_location` (`location`),
+  INDEX `idx_name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='码头表';
 
--- 设备表
-CREATE TABLE IF NOT EXISTS boats
-(
-    boat_id            BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '船只ID',
-    boat_name          VARCHAR(50) NOT NULL COMMENT '船只名称',
-    boat_type_id       BIGINT COMMENT '船只类型ID',
-    registration_number VARCHAR(50) COMMENT '注册编号',
-    build_year         INTEGER COMMENT '建造年份',
-    last_maintenance   TIMESTAMP COMMENT '上次维护时间',
-    next_maintenance   TIMESTAMP COMMENT '下次维护时间',
-    current_dock_id    BIGINT COMMENT '当前码头ID',
-    status             INT       DEFAULT 0 COMMENT '船只状态',
-    is_deleted         BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
-    created_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at         TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    FOREIGN KEY (boat_type_id) REFERENCES boat_types (boat_type_id),
-    FOREIGN KEY (current_dock_id) REFERENCES docks (dock_id)
-);
--- 船票表
-CREATE TABLE IF NOT EXISTS tickets
-(
-    ticket_id           BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '船票ID',
-    user_id             BIGINT COMMENT '用户ID',
-    boat_id             BIGINT COMMENT '船只ID',
-    start_time          DATETIME COMMENT '开始时间',
-    end_time            DATETIME COMMENT '结束时间',
-    departure_dock_id   BIGINT COMMENT '出发码头ID',
-    destination_dock_id BIGINT COMMENT '目的码头ID',
-    price               DECIMAL(10, 2) COMMENT '票价',
-    remaining_tickets   BIGINT    DEFAULT 0 COMMENT '剩余票数',
-    status              TINYINT   DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
-    is_deleted          BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
-    created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    FOREIGN KEY (user_id) REFERENCES users (user_id),
-    FOREIGN KEY (boat_id) REFERENCES boats (boat_id),
-    FOREIGN KEY (departure_dock_id) REFERENCES docks (dock_id),
-    FOREIGN KEY (destination_dock_id) REFERENCES docks (dock_id)
-);
+-- 船只类型表
+CREATE TABLE ship_types (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type_name` VARCHAR(50) NOT NULL UNIQUE COMMENT '类型名称',
+  `description` VARCHAR(255) COMMENT '类型描述',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='船只类型表';
+
+-- 船只表
+CREATE TABLE ships (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL COMMENT '船只名称',
+  `type_id` INT UNSIGNED NOT NULL COMMENT '船只类型',
+  `owner_id` BIGINT UNSIGNED NOT NULL COMMENT '船主ID',
+  `unit_id` BIGINT UNSIGNED NOT NULL COMMENT '所属单位',
+  `length` DECIMAL(10,2) COMMENT '船身长度（米）',
+  `width` DECIMAL(10,2) COMMENT '船身宽度（米）',
+  `max_load` DECIMAL(10,2) COMMENT '最大载重（吨）',
+  `max_endurance` DECIMAL(10,2) COMMENT '最大续航（公里）',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`type_id`) REFERENCES ship_types(`id`),
+  FOREIGN KEY (`owner_id`) REFERENCES owners(`id`),
+  FOREIGN KEY (`unit_id`) REFERENCES units(`id`),
+  INDEX `idx_unit` (`unit_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='船只表';
+
 -- 订单表
-CREATE TABLE IF NOT EXISTS orders
-(
-    order_id       BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '订单ID',
-    user_id        BIGINT COMMENT '用户ID',
-    ticket_id      BIGINT COMMENT '船票ID',
-    total_amount   DECIMAL(10, 2) COMMENT '总金额',
-    payment_status INT       DEFAULT 0 COMMENT '支付状态',
-    status         TINYINT   DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
-    is_deleted     BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
-    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    FOREIGN KEY (user_id) REFERENCES users (user_id),
-    FOREIGN KEY (ticket_id) REFERENCES tickets (ticket_id)
-);
--- 支付记录表
-CREATE TABLE IF NOT EXISTS payments
-(
-    payment_id     BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '支付ID',
-    order_id       BIGINT COMMENT '订单ID',
-    payment_time   DATETIME COMMENT '支付时间',
-    amount         DECIMAL(10, 2) COMMENT '支付金额',
-    payment_method INT       DEFAULT 0 COMMENT '支付方式',
-    status         TINYINT   DEFAULT 1 COMMENT '状态(0-禁用 1-启用)',
-    is_deleted     BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
-    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    FOREIGN KEY (order_id) REFERENCES orders (order_id)
-);
--- 告警表
-CREATE TABLE IF NOT EXISTS alerts
-(
-    alert_id    BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '告警ID',
-    boat_id     BIGINT COMMENT '船只ID',
-    alert_type  VARCHAR(50) COMMENT '告警类型',
-    alert_time  DATETIME COMMENT '告警时间',
-    description TEXT COMMENT '告警描述',
-    status      TINYINT   DEFAULT 1 COMMENT '告警状态',
-    is_deleted  BOOLEAN   DEFAULT FALSE COMMENT '是否删除',
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    FOREIGN KEY (boat_id) REFERENCES boats (boat_id)
-);
+CREATE TABLE orders (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_no` VARCHAR(32) NOT NULL UNIQUE COMMENT '订单编号',
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户',
+  `ship_id` BIGINT UNSIGNED COMMENT '指定船只',
+  `start_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '起始码头',
+  `end_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '目的码头',
+  `start_time` DATETIME NOT NULL COMMENT '租用开始时间',
+  `end_time` DATETIME NOT NULL COMMENT '租用结束时间',
+  `total_amount` DECIMAL(12,2) NOT NULL COMMENT '订单总金额',
+  `status` ENUM('PENDING','PAID','COMPLETED','CANCELLED') NOT NULL DEFAULT 'PENDING',
+  `type` ENUM('REAL_TIME','RESERVATION') NOT NULL COMMENT '订单类型',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
+  FOREIGN KEY (`ship_id`) REFERENCES ships(`id`),
+  FOREIGN KEY (`start_dock_id`) REFERENCES docks(`id`),
+  FOREIGN KEY (`end_dock_id`) REFERENCES docks(`id`),
+  INDEX `idx_user_status` (`user_id`, `status`),
+  INDEX `idx_time_range` (`start_time`, `end_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
 
--- 验证码
-CREATE TABLE IF NOT EXISTS codes
-(
-    id              BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '验证码ID',
-    user_id         BIGINT      NOT NULL COMMENT '用户ID',
-    code            VARCHAR(10) NOT NULL COMMENT '验证码',
-    request_time    DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '请求时间',
-    expiration_time DATETIME COMMENT '过期时间',
-    is_deleted      BOOLEAN     DEFAULT FALSE COMMENT '是否删除',
-    created_at      TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at      TIMESTAMP   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    INDEX idx_user_id (user_id),
-    FOREIGN KEY (user_id) REFERENCES users (user_id)
-);
+-- 日志表
+CREATE TABLE logs (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `type` ENUM('AUDIT','OPERATION','SYSTEM','SECURITY') NOT NULL COMMENT '日志类型',
+  `level` ENUM('INFO','WARNING','ERROR') NOT NULL COMMENT '日志等级',
+  `content` TEXT NOT NULL COMMENT '日志内容',
+  `source` VARCHAR(50) COMMENT '来源模块',
+  `operator_id` BIGINT UNSIGNED COMMENT '操作人',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_log_time` (`created_at`),
+  INDEX `idx_type_level` (`type`, `level`),
+  FOREIGN KEY (`operator_id`) REFERENCES accounts (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统日志表';
 
--- -- 景点介绍表
--- CREATE TABLE IF NOT EXISTS attractions (
---     attraction_id INT PRIMARY KEY AUTO_INCREMENT,
---     name VARCHAR(100),
---     description TEXT,
---     location VARCHAR(100)
--- );
--- -- 分层授权表
--- CREATE TABLE IF NOT EXISTS permissions (
---     permission_id INT PRIMARY KEY AUTO_INCREMENT,
---     user_id INT,
---     permission_level ENUM('景区', '运营方', '合伙人', '技术方'),
---     FOREIGN KEY (user_id) REFERENCES users(user_id)
--- );
--- -- 分账管理表
--- CREATE TABLE IF NOT EXISTS settlements (
---     settlement_id INT PRIMARY KEY AUTO_INCREMENT,
---     order_id INT,
---     recipient_id INT,
---     amount DECIMAL(10, 2),
---     settlement_time DATETIME,
---     FOREIGN KEY (order_id) REFERENCES order(order_id),
---     FOREIGN KEY (recipient_id) REFERENCES users(user_id)
--- );
+-- 验证码表
+CREATE TABLE `captcha` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `target` BIGINT UNSIGNED NOT NULL COMMENT '接收对象',
+  `code` VARCHAR(10) NOT NULL COMMENT '验证码',
+  `scene` ENUM('REGISTER', 'LOGIN', 'RESET_PWD', 'BIND_MOBILE', 'BIND_EMAIL') NOT NULL COMMENT '使用场景',
+  `status` ENUM('UNUSED', 'USED', 'INVALID') NOT NULL DEFAULT 'UNUSED' COMMENT '使用状态',
+  `expire_at` DATETIME NOT NULL COMMENT '过期时间',
+  `client_ip` VARCHAR(45) COMMENT '请求IP',
+  `send_count` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '发送次数',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_target_scene` (`target`, `scene`),
+  INDEX `idx_expire_time` (`expire_at`),
+  INDEX `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='验证码表';
 
--- 创建日志表
-CREATE TABLE IF NOT EXISTS logs
-(
-    log_id      BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '日志ID',
-    table_name  VARCHAR(50)  NOT NULL COMMENT '表名',
-    operation   VARCHAR(20)  NOT NULL COMMENT '操作类型(INSERT/UPDATE/DELETE)',
-    record_id   BIGINT      NOT NULL COMMENT '记录ID',
-    operator_id BIGINT      COMMENT '操作者ID',
-    old_data    JSON        COMMENT '原数据',
-    new_data    JSON        COMMENT '新数据',
-    ip_address  VARCHAR(50) COMMENT 'IP地址',
-    created_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
-) COMMENT '操作日志表';
-
--- 添加表注释
-ALTER TABLE users COMMENT '用户表';
-ALTER TABLE boat_types COMMENT '船只类型表';
-ALTER TABLE boats COMMENT '船只表';
-ALTER TABLE docks COMMENT '码头表';
-ALTER TABLE tickets COMMENT '船票表';
-ALTER TABLE orders COMMENT '订单表';
-ALTER TABLE payments COMMENT '支付记录表';
-ALTER TABLE alerts COMMENT '告警表';
-ALTER TABLE codes COMMENT '验证码表';
-ALTER TABLE logs COMMENT '操作日志表';
-
--- 插入船只类型数据
-INSERT INTO boat_types (type_name, type_code, max_capacity, max_speed, fuel_type) VALUES
-('豪华游轮', 'LUXURY_CRUISE', 500.00, 25.00, '柴油'),
-('快速客轮', 'FAST_FERRY', 200.00, 35.00, '柴油'),
-('观光游船', 'SIGHTSEEING', 100.00, 15.00, '电力'),
-('水上巴士', 'WATER_BUS', 50.00, 20.00, '电力'),
-('帆船', 'SAILBOAT', 20.00, 12.00, '风力');
-
--- 插入码头数据
-INSERT INTO docks (dock_name, dock_location) VALUES
-('东方明珠码头', '上海市浦东新区陆家嘴'),
-('西湖码头', '杭州市西湖区'),
-('三亚湾码头', '海南省三亚市三亚湾'),
-('中山码头', '武汉市江岸区'),
-('鼓浪屿码头', '厦门市思明区');
-
--- 插入船只数据
-INSERT INTO boats (boat_name, boat_type_id, registration_number, build_year, last_maintenance, next_maintenance, current_dock_id, status) VALUES
-('东方之星', 1, 'SH2024001', 2020, '2024-01-15', '2024-07-15', 1, 1),
-('西湖明珠', 2, 'HZ2024001', 2021, '2024-02-01', '2024-08-01', 2, 1),
-('碧海蓝天', 1, 'SY2024001', 2019, '2024-03-01', '2024-09-01', 3, 1),
-('长江号', 3, 'WH2024001', 2022, '2024-01-20', '2024-07-20', 4, 1),
-('鹭江号', 4, 'XM2024001', 2023, '2024-02-15', '2024-08-15', 5, 1);
-
--- 插入船票数据
-INSERT INTO tickets (boat_id, start_time, end_time, departure_dock_id, destination_dock_id, price, remaining_tickets) VALUES
-(1, '2024-03-20 09:00:00', '2024-03-20 11:00:00', 1, 2, 299.99, 100),
-(2, '2024-03-20 10:00:00', '2024-03-20 11:30:00', 2, 3, 199.99, 80),
-(3, '2024-03-20 13:00:00', '2024-03-20 15:00:00', 3, 4, 399.99, 150),
-(4, '2024-03-20 14:00:00', '2024-03-20 15:30:00', 4, 5, 149.99, 40),
-(5, '2024-03-20 16:00:00', '2024-03-20 17:00:00', 5, 1, 99.99, 30);
-
--- 插入测试用户数据
-INSERT INTO users (username, password, email, phone, role) VALUES
-('test_user1', 'password123', 'user1@example.com', '13800138001', 1),
-('test_user2', 'password123', 'user2@example.com', '13800138002', 1),
-('operator1', 'password123', 'operator1@example.com', '13800138003', 2),
-('manager1', 'password123', 'manager1@example.com', '13800138004', 3);
-
--- 插入订单数据
-INSERT INTO orders (user_id, ticket_id, total_amount, payment_status) VALUES
-(2, 1, 299.99, 1),
-(2, 2, 199.99, 1),
-(3, 3, 399.99, 0),
-(4, 4, 149.99, 1);
-
--- 插入支付记录
-INSERT INTO payments (order_id, payment_time, amount, payment_method) VALUES
-(1, '2024-03-19 15:30:00', 299.99, 1),
-(2, '2024-03-19 16:00:00', 199.99, 2),
-(4, '2024-03-19 16:30:00', 149.99, 1);
-
--- 插入告警数据
-INSERT INTO alerts (boat_id, alert_type, alert_time, description, status) VALUES
-(1, '维护提醒', '2024-03-18 10:00:00', '需要进行季度维护检查', 0),
-(2, '天气警告', '2024-03-19 08:00:00', '未来24小时可能有强风天气', 1),
-(3, '设备异常', '2024-03-19 14:00:00', '发动机温度偏高', 2);
--- 修改users表，添加微信相关字段
-ALTER TABLE users
-    ADD COLUMN openid VARCHAR(64) COMMENT '微信openid',
-    ADD COLUMN avatar VARCHAR(255) COMMENT '头像URL',
-    ADD INDEX idx_openid (openid); -- 添加索引以提高查询性能
+-- 防刷记录表
+CREATE TABLE `captcha_limit` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `target` VARCHAR(255) NOT NULL,
+  `scene` VARCHAR(20) NOT NULL,
+  `ip` VARCHAR(45) NOT NULL,
+  `count` INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '请求次数',
+  `last_request` DATETIME NOT NULL COMMENT '最后请求时间',
+  `is_blocked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否锁定',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_target_scene_ip` (`target`, `scene`, `ip`),
+  INDEX `idx_last_request` (`last_request`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='验证码防刷记录';

@@ -11,7 +11,7 @@ public class SQLGen {
         // 配置数据源
         HikariDataSource dataSource = new HikariDataSource();
         dataSource.setJdbcUrl(
-                "jdbc:mariadb://127.0.0.1:3306/boatmanagement?characterEncoding=utf-8&useInformationSchema=true");
+                "jdbc:mariadb://127.0.0.1:3306/boatmanagement?useInformationSchema=true&characterEncoding=utf-8");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
 
@@ -24,7 +24,7 @@ public class SQLGen {
     }
 
     public static GlobalConfig createGlobalConfigUseStyle() {
-        //创建配置内容
+        // 创建配置内容
         GlobalConfig globalConfig = new GlobalConfig();
 
         globalConfig.enableEntity();
@@ -35,36 +35,36 @@ public class SQLGen {
         globalConfig.enableTableDef();
         globalConfig.enableMapperXml();
 
-        //设置根包
+        // 设置根包
         globalConfig.setBasePackage("com.sakurapuare.boatmanagement");
         globalConfig.getPackageConfig()
                 .setControllerPackage("com.sakurapuare.boatmanagement.controller.superadmin")
+                .setServicePackage("com.sakurapuare.boatmanagement.service.base")
+                .setServiceImplPackage("com.sakurapuare.boatmanagement.service.base.impl")
                 .setEntityPackage("com.sakurapuare.boatmanagement.pojo.entity");
 
         globalConfig.getEntityConfig()
                 .setSuperClass(BaseEntity.class)
-//                .setOverwriteEnable(true)
+                .setOverwriteEnable(true)
                 .setWithLombok(true)
                 .setWithSwagger(true)
                 .setJdkVersion(21);
 
         globalConfig.getMapperConfig()
-//                .setOverwriteEnable(true)
-        ;
+                .setOverwriteEnable(true);
 
         globalConfig.getServiceConfig()
-//                .setOverwriteEnable(true)
-        ;
+                .setClassPrefix("Base")
+                .setOverwriteEnable(true);
 
         globalConfig.getServiceImplConfig()
+                .setClassPrefix("Base")
                 .setCacheExample(true)
-        // .setOverwriteEnable(true)
-        ;
+                .setOverwriteEnable(true);
 
         globalConfig.getControllerConfig()
                 .setClassPrefix("SuperAdmin")
-                .setOverwriteEnable(true)
-        ;
+                .setOverwriteEnable(true);
 
         globalConfig.getTableDefConfig()
                 .setOverwriteEnable(true);

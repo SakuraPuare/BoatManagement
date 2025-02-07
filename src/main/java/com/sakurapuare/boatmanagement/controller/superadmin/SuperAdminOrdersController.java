@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.sakurapuare.boatmanagement.pojo.entity.Orders;
-import com.sakurapuare.boatmanagement.service.OrdersService;
+import com.sakurapuare.boatmanagement.service.base.BaseOrdersService;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,15 +21,15 @@ import java.util.List;
  * 订单表 控制层。
  *
  * @author sakurapuare
- * @since 2024-12-26
+ * @since 2025-02-08
  */
 @RestController
 @Api("订单表接口")
-@RequestMapping("/superadmin/orders")
+@RequestMapping("/orders")
 public class SuperAdminOrdersController {
 
     @Autowired
-    private OrdersService ordersService;
+    private BaseOrdersService baseOrdersService;
 
     /**
      * 添加订单表。
@@ -40,7 +40,7 @@ public class SuperAdminOrdersController {
     @PostMapping("save")
     @ApiOperation("保存订单表")
     public boolean save(@RequestBody @ApiParam("订单表") Orders orders) {
-        return ordersService.save(orders);
+        return baseOrdersService.save(orders);
     }
 
     /**
@@ -51,8 +51,8 @@ public class SuperAdminOrdersController {
      */
     @DeleteMapping("remove/{id}")
     @ApiOperation("根据主键订单表")
-    public boolean remove(@PathVariable @ApiParam("订单表主键") Long id) {
-        return ordersService.removeById(id);
+    public boolean remove(@PathVariable @ApiParam("订单表主键") BigInteger id) {
+        return baseOrdersService.removeById(id);
     }
 
     /**
@@ -64,7 +64,7 @@ public class SuperAdminOrdersController {
     @PutMapping("update")
     @ApiOperation("根据主键更新订单表")
     public boolean update(@RequestBody @ApiParam("订单表主键") Orders orders) {
-        return ordersService.updateById(orders);
+        return baseOrdersService.updateById(orders);
     }
 
     /**
@@ -75,7 +75,7 @@ public class SuperAdminOrdersController {
     @GetMapping("list")
     @ApiOperation("查询所有订单表")
     public List<Orders> list() {
-        return ordersService.list();
+        return baseOrdersService.list();
     }
 
     /**
@@ -86,8 +86,8 @@ public class SuperAdminOrdersController {
      */
     @GetMapping("getInfo/{id}")
     @ApiOperation("根据主键获取订单表")
-    public Orders getInfo(@PathVariable @ApiParam("订单表主键") Long id) {
-        return ordersService.getById(id);
+    public Orders getInfo(@PathVariable @ApiParam("订单表主键") BigInteger id) {
+        return baseOrdersService.getById(id);
     }
 
     /**
@@ -99,7 +99,7 @@ public class SuperAdminOrdersController {
     @GetMapping("page")
     @ApiOperation("分页查询订单表")
     public Page<Orders> page(@ApiParam("分页信息") Page<Orders> page) {
-        return ordersService.page(page);
+        return baseOrdersService.page(page);
     }
 
 }
