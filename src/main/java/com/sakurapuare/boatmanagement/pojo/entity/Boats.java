@@ -2,6 +2,7 @@ package com.sakurapuare.boatmanagement.pojo.entity;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
+import com.mybatisflex.annotation.RelationOneToOne;
 import com.mybatisflex.annotation.Table;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -49,6 +50,13 @@ public class Boats extends BaseEntity implements Serializable {
     private Long boatTypeId;
 
     /**
+     * 船只类型
+     */
+    @ApiModelProperty("船只类型")
+    @RelationOneToOne(selfField = "boatTypeId", targetField = "boatTypeId")
+    private BoatTypes boatType;
+
+    /**
      * 注册编号
      */
     @ApiModelProperty("注册编号")
@@ -77,6 +85,13 @@ public class Boats extends BaseEntity implements Serializable {
      */
     @ApiModelProperty("当前码头ID")
     private Long currentDockId;
+
+    /**
+     * 当前码头
+     */
+    @ApiModelProperty("当前码头")
+    @RelationOneToOne(selfField = "currentDockId", targetField = "dockId")
+    private Docks currentDock;
 
     /**
      * 船只状态

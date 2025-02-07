@@ -32,13 +32,13 @@ public class SQLGen {
         globalConfig.enableService();
         globalConfig.enableServiceImpl();
         globalConfig.enableController();
-        // globalConfig.enableTableDef();
-        // globalConfig.enableMapperXml();
+        globalConfig.enableTableDef();
+        globalConfig.enableMapperXml();
 
         //设置根包
         globalConfig.setBasePackage("com.sakurapuare.boatmanagement");
         globalConfig.getPackageConfig()
-                .setControllerPackage("com.sakurapuare.boatmanagement.controller.admin")
+                .setControllerPackage("com.sakurapuare.boatmanagement.controller.superadmin")
                 .setEntityPackage("com.sakurapuare.boatmanagement.pojo.entity");
 
         globalConfig.getEntityConfig()
@@ -62,15 +62,15 @@ public class SQLGen {
         ;
 
         globalConfig.getControllerConfig()
-                .setClassPrefix("Admin")
-//                .setOverwriteEnable(true)
+                .setClassPrefix("SuperAdmin")
+                .setOverwriteEnable(true)
         ;
 
-        // globalConfig.getTableDefConfig()
-        //         .setOverwriteEnable(true);
+        globalConfig.getTableDefConfig()
+                .setOverwriteEnable(true);
 
-        // globalConfig.getMapperXmlConfig()
-        //         .setOverwriteEnable(true);
+        globalConfig.getMapperXmlConfig()
+                .setOverwriteEnable(true);
 
         return globalConfig;
     }
