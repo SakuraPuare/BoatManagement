@@ -13,7 +13,7 @@ public class RequestInfoInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                             @NonNull Object handler) throws Exception {
+                             @NonNull Object handler) {
         // 获取请求信息
         RequestInfo requestInfo = new RequestInfo();
         requestInfo.setIp(request.getRemoteAddr());
@@ -29,7 +29,7 @@ public class RequestInfoInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                                @NonNull Object handler, @SuppressWarnings("null") Exception ex) throws Exception {
+                                @NonNull Object handler, @SuppressWarnings("null") Exception ex) {
         RequestContext.clear();
     }
 }

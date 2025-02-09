@@ -10,12 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class WechatStrategy implements AuthStrategy {
-    private final WechatUtils wechatUtils;
-    private final AccountsMapper accountsMapper;
 
     public WechatStrategy(WechatUtils wechatUtils, AccountsMapper accountsMapper) {
-        this.wechatUtils = wechatUtils;
-        this.accountsMapper = accountsMapper;
     }
 
     @Override

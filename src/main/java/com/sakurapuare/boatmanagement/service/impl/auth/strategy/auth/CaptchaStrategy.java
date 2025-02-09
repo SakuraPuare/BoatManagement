@@ -7,21 +7,19 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
-import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
-import com.sakurapuare.boatmanagement.service.CapthaService;
+import com.sakurapuare.boatmanagement.service.CaptchaService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CaptchaStrategy implements AuthStrategy {
 
-    private final CapthaService capthaService;
+    private final CaptchaService captchaService;
 
     private final AccountsMapper accountsMapper;
 
-    private final AccountsTableDef accountsTableDef = new AccountsTableDef();
 
-    public CaptchaStrategy(CapthaService capthaService, AccountsMapper accountsMapper) {
-        this.capthaService = capthaService;
+    public CaptchaStrategy(CaptchaService captchaService, AccountsMapper accountsMapper) {
+        this.captchaService = captchaService;
         this.accountsMapper = accountsMapper;
     }
 
@@ -30,18 +28,13 @@ public class CaptchaStrategy implements AuthStrategy {
         String username = authRequestDTO.getUsername();
         String password = authRequestDTO.getPassword();
 
-        if (!capthaService.verifyCode(username, password)) {
+        if (!captchaService.verifyCode(username, password)) {
             throw new IllegalArgumentException("验证码错误或已过期");
         }
 
-        String field = null;
+        String field;
 
-        switch (status.getName()) {
-            case AuthName.USERNAME -> field = accountsTableDef.USERNAME.getName();
-            case AuthName.PHONE -> field = accountsTableDef.PHONE.getName();
-            case AuthName.EMAIL -> field = accountsTableDef.EMAIL.getName();
-            default -> throw new IllegalArgumentException("不支持的验证码发送方式");
-        }
+        field = AuthStrategy.getFieldName(status);
 
         Accounts account = accountsMapper.selectOneByQuery(
                 QueryWrapper.create()
@@ -69,5 +62,6 @@ public class CaptchaStrategy implements AuthStrategy {
         return account;
 
     }
+
 
 }

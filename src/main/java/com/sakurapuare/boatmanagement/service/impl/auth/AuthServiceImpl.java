@@ -13,7 +13,7 @@ import com.sakurapuare.boatmanagement.pojo.dto.WxLoginDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
 import com.sakurapuare.boatmanagement.service.AuthService;
-import com.sakurapuare.boatmanagement.service.CapthaService;
+import com.sakurapuare.boatmanagement.service.CaptchaService;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthContext;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.captcha.CaptchaSenderContext;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
@@ -31,11 +31,11 @@ public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> imple
 
     private static final AccountsTableDef accountsTableDef = new AccountsTableDef();
     private final AccountsMapper userMapper;
-    private final CapthaService capthaService;
+    private final CaptchaService captchaService;
     private final WechatUtils wechatUtils;
 
     private Accounts authContext(AuthStatus status, AuthRequestDTO authRequestDTO) {
-        AuthContext authContext = new AuthContext(capthaService, userMapper, wechatUtils);
+        AuthContext authContext = new AuthContext(captchaService, userMapper, wechatUtils);
 
         String username = authRequestDTO.getUsername();
         AuthName name = AuthNameUtils.getAuthName(username);
@@ -65,7 +65,7 @@ public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> imple
 
     @Override
     public boolean sendCode(NameRequestDTO nameRequestDTO) {
-        CaptchaSenderContext context = new CaptchaSenderContext(capthaService, userMapper);
+        CaptchaSenderContext context = new CaptchaSenderContext(captchaService, userMapper);
         context.setStrategy(nameRequestDTO);
 
         return context.sendCaptcha(nameRequestDTO);
@@ -80,9 +80,7 @@ public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> imple
             case AuthName.USERNAME -> field = accountsTableDef.USERNAME.getName();
             case AuthName.PHONE -> field = accountsTableDef.PHONE.getName();
             case AuthName.EMAIL -> field = accountsTableDef.EMAIL.getName();
-            default -> {
-                field = null;
-            }
+            default -> field = null;
         }
 
         if (field == null) {

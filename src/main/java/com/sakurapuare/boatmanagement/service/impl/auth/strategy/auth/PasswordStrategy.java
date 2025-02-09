@@ -1,7 +1,6 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
 import com.mybatisflex.core.query.QueryWrapper;
-import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
@@ -24,14 +23,8 @@ public class PasswordStrategy implements AuthStrategy {
         String username = authRequestDTO.getUsername();
         String password = authRequestDTO.getPassword();
 
-        String field = null;
 
-        switch (status.getName()) {
-            case AuthName.USERNAME -> field = accountsTableDef.USERNAME.getName();
-            case AuthName.PHONE -> field = accountsTableDef.PHONE.getName();
-            case AuthName.EMAIL -> field = accountsTableDef.EMAIL.getName();
-            default -> throw new IllegalArgumentException("不支持的验证码发送方式");
-        }
+        String field = AuthStrategy.getFieldName(status);
 
         Accounts account = accountsMapper.selectOneByQuery(
                 QueryWrapper.create()

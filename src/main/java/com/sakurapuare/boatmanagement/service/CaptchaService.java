@@ -11,8 +11,6 @@ import com.sakurapuare.boatmanagement.pojo.entity.CaptchaLimit;
 import com.sakurapuare.boatmanagement.pojo.entity.table.CaptchaLimitTableDef;
 import com.sakurapuare.boatmanagement.pojo.entity.table.CaptchaTableDef;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseCaptchaServiceImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -20,18 +18,20 @@ import java.util.Objects;
 
 
 @Service
-@RequiredArgsConstructor
-public class CapthaService extends BaseCaptchaServiceImpl {
+public class CaptchaService extends BaseCaptchaServiceImpl {
 
-    @Autowired
     private final CaptchaLimitMapper captchaLimitMapper;
 
-    @Autowired
     private final CaptchaMapper captchaMapper;
 
     private final CaptchaLimitTableDef captchaLimitTableDef = new CaptchaLimitTableDef();
 
     private final CaptchaTableDef captchaTableDef = new CaptchaTableDef();
+
+    public CaptchaService(CaptchaLimitMapper captchaLimitMapper, CaptchaMapper captchaMapper) {
+        this.captchaLimitMapper = captchaLimitMapper;
+        this.captchaMapper = captchaMapper;
+    }
 
     public boolean isReachCaptchaLimit(String target) {
         CaptchaLimit captchaLimit = captchaLimitMapper.selectOneByQuery(
