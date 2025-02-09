@@ -6,7 +6,6 @@ import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import java.io.Serial;
 
@@ -22,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * 船只表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 @Data
 @Builder
@@ -38,7 +37,7 @@ public class Ships extends BaseEntity implements Serializable {
 
     @Id(keyType = KeyType.Auto)
     @ApiModelProperty("")
-    private BigInteger id;
+    private Long id;
 
     /**
      * 船只名称
@@ -56,13 +55,13 @@ public class Ships extends BaseEntity implements Serializable {
      * 船主ID
      */
     @ApiModelProperty("船主ID")
-    private BigInteger ownerId;
+    private Long ownerId;
 
     /**
      * 所属单位
      */
     @ApiModelProperty("所属单位")
-    private BigInteger unitId;
+    private Long unitId;
 
     /**
      * 船身长度（米）

@@ -9,7 +9,7 @@ import java.io.Serial;
  * 权限表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 public class PermissionTableDef extends TableDef {
 

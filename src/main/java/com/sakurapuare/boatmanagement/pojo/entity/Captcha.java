@@ -5,7 +5,6 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 import java.io.Serial;
@@ -22,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * 验证码表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 @Data
 @Builder
@@ -38,13 +37,13 @@ public class Captcha extends BaseEntity implements Serializable {
 
     @Id(keyType = KeyType.Auto)
     @ApiModelProperty("")
-    private BigInteger id;
+    private Long id;
 
     /**
      * 接收对象
      */
     @ApiModelProperty("接收对象")
-    private BigInteger target;
+    private Long target;
 
     /**
      * 验证码

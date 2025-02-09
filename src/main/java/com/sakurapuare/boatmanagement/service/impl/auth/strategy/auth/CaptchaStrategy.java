@@ -3,11 +3,17 @@ package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
+import com.sakurapuare.boatmanagement.service.CapthaService;
+import org.springframework.stereotype.Component;
 
-public class PasswordStrategy extends AuthStrategy {
+@Component
+public class CaptchaStrategy extends AuthStrategy {
 
-    public PasswordStrategy(AccountsMapper accountsMapper) {
+    private final CapthaService capthaService;
+
+    public CaptchaStrategy(CapthaService capthaService, AccountsMapper accountsMapper) {
         super(accountsMapper);
+        this.capthaService = capthaService;
     }
 
     @Override
@@ -18,7 +24,8 @@ public class PasswordStrategy extends AuthStrategy {
             return null;
         }
 
-        if (account.getPassword().equals(authRequestDTO.getPassword())) {
+        // check code validity
+        if (capthaService.verifyCode(account, authRequestDTO.getPassword())) {
             return account;
         }
 

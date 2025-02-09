@@ -3,10 +3,10 @@ package com.sakurapuare.boatmanagement.controller;
 import cn.hutool.core.bean.BeanUtil;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.common.UserContext;
-import com.sakurapuare.boatmanagement.pojo.entity.Users;
+import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.vo.UserSelfVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserVO;
-import com.sakurapuare.boatmanagement.service.UsersService;
+import com.sakurapuare.boatmanagement.service.AccountsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,27 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Users", description = "Users")
 public class UserController {
 
-    private final UsersService userService;
+    private final AccountsService accountsService;
 
-    public UserController(UsersService userService) {
-        this.userService = userService;
+    public UserController(AccountsService accountsService) {
+        this.accountsService = accountsService;
     }
 
     @GetMapping("/{id}")
     public Response<UserVO> getUser(@PathVariable Long id) {
-        Users user = userService.getById(id);
+        Accounts account = accountsService.getById(id);
         UserVO userVO = new UserVO();
-        BeanUtil.copyProperties(user, userVO);
+        BeanUtil.copyProperties(account, userVO);
         return Response.success(userVO);
     }
 
     @GetMapping("/me")
     public Response<UserSelfVO> getMe() {
-        Users user = UserContext.getUser();
-
+        Accounts account = UserContext.getAccount();
+        
         UserSelfVO userSelfVO = new UserSelfVO();
-        BeanUtil.copyProperties(user, userSelfVO);
-
+        BeanUtil.copyProperties(account, userSelfVO);
+        
         return Response.success(userSelfVO);
     }
 }

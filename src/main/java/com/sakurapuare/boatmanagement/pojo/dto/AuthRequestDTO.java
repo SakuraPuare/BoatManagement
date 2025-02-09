@@ -13,10 +13,4 @@ public class AuthRequestDTO {
 
     @ApiModelProperty("密码/验证码")
     private String password;
-
-    @ApiModelProperty("微信登录code")
-    private String code;
-
-    @ApiModelProperty("微信用户信息")
-    private WxUserInfo userInfo;
 }

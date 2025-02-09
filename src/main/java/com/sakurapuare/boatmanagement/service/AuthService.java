@@ -3,19 +3,19 @@ package com.sakurapuare.boatmanagement.service;
 import com.mybatisflex.core.service.IService;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.Users;
+import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.dto.WxLoginDTO;
 
 
-public interface AuthService extends IService<Users> {
+public interface AuthService extends IService<Accounts> {
 
-    Users loginWithPassword(AuthRequestDTO authRequestDTO);
+    Accounts loginWithPassword(AuthRequestDTO authRequestDTO);
 
-    Users loginWithCode(AuthRequestDTO authRequestDTO);
+    Accounts loginWithCode(AuthRequestDTO authRequestDTO);
 
-    Users registerWithPassword(AuthRequestDTO authRequestDTO);
+    Accounts registerWithPassword(AuthRequestDTO authRequestDTO);
 
-    Users registerWithCode(AuthRequestDTO authRequestDTO);
+    Accounts registerWithCode(AuthRequestDTO authRequestDTO);
 
     boolean sendCode(NameRequestDTO nameRequestDTO);
 
@@ -27,5 +27,7 @@ public interface AuthService extends IService<Users> {
      * @param wxLoginDTO 微信登录信息
      * @return 用户信息
      */
-    Users loginWithWechat(WxLoginDTO wxLoginDTO);
+    Accounts loginWithWechat(WxLoginDTO wxLoginDTO);
+
+    String generateToken(Accounts account);
 }

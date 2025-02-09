@@ -19,7 +19,7 @@ import java.util.List;
  * 系统日志表 服务层实现。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 @Service
 @CacheConfig(cacheNames = "logs")

@@ -1,32 +1,32 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
-import com.sakurapuare.boatmanagement.mapper.UsersMapper;
+import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.Users;
-import com.sakurapuare.boatmanagement.service.CodesService;
+import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
+import com.sakurapuare.boatmanagement.service.CapthaService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CodeStrategy extends AuthStrategy {
 
-    private final CodesService codeService;
+    private final CapthaService capthaService;
 
-    public CodeStrategy(CodesService codeService, UsersMapper userMapper) {
-        super(userMapper);
-        this.codeService = codeService;
+    public CodeStrategy(CapthaService capthaService, AccountsMapper accountsMapper) {
+        super(accountsMapper);
+        this.capthaService = capthaService;
     }
 
     @Override
-    public Users auth(AuthRequestDTO authRequestDTO) {
-        Users user = super.auth(authRequestDTO);
+    public Accounts auth(AuthRequestDTO authRequestDTO) {
+        Accounts account = super.auth(authRequestDTO);
 
-        if (user == null) {
+        if (account == null) {
             return null;
         }
 
         // check code validity
-        if (codeService.verifyCode(user, authRequestDTO.getPassword())) {
-            return user;
+        if (capthaService.verifyCode(account, authRequestDTO.getPassword())) {
+            return account;
         }
 
         return null;

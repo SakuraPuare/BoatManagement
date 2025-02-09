@@ -2,8 +2,8 @@ package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
 import com.sakurapuare.boatmanagement.constant.auth.AuthMethod;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
-import com.sakurapuare.boatmanagement.mapper.UsersMapper;
-import com.sakurapuare.boatmanagement.service.CodesService;
+import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
+import com.sakurapuare.boatmanagement.service.CapthaService;
 import com.sakurapuare.boatmanagement.utils.WechatUtils;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthContext {
 
-    private final UsersMapper userMapper;
+    private final AccountsMapper userMapper;
 
-    private final CodesService codeService;
+    private final CapthaService capthaService;
 
     private final WechatUtils wechatUtils;
 
@@ -26,8 +26,8 @@ public class AuthContext {
                 );
             }
             case AuthMethod.CODE -> {
-                return new CodeStrategy(
-                        codeService,
+                return new CaptchaStrategy(
+                        capthaService,
                         userMapper
                 );
             }

@@ -5,7 +5,6 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
-import java.math.BigInteger;
 
 import java.io.Serial;
 
@@ -21,7 +20,7 @@ import lombok.EqualsAndHashCode;
  * 船主表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 @Data
 @Builder
@@ -37,18 +36,18 @@ public class Owners extends BaseEntity implements Serializable {
 
     @Id(keyType = KeyType.Auto)
     @ApiModelProperty("")
-    private BigInteger id;
+    private Long id;
 
     /**
      * 关联用户
      */
     @ApiModelProperty("关联用户")
-    private BigInteger userId;
+    private Long userId;
 
     /**
      * 所属单位
      */
     @ApiModelProperty("所属单位")
-    private BigInteger unitId;
+    private Long unitId;
 
 }

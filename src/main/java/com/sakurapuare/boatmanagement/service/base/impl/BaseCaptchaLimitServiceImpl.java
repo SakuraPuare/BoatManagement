@@ -19,7 +19,7 @@ import java.util.List;
  * 验证码防刷记录 服务层实现。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 @Service
 @CacheConfig(cacheNames = "captchaLimit")

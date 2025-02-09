@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
  * 基础账号表 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 public interface BaseAccountsService extends IService<Accounts> {
 

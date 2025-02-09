@@ -1,20 +1,20 @@
 package com.sakurapuare.boatmanagement.common;
 
 
-import com.sakurapuare.boatmanagement.pojo.entity.Users;
+import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 
 public class UserContext {
-    private static final ThreadLocal<Users> userHolder = new ThreadLocal<>();
+    private static final ThreadLocal<Accounts> accountHolder = new ThreadLocal<>();
 
-    public static Users getUser() {
-        return userHolder.get();
+    public static Accounts getAccount() {
+        return accountHolder.get();
     }
 
-    public static void setUser(Users users) {
-        userHolder.set(users);
+    public static void setAccount(Accounts account) {
+        accountHolder.set(account);
     }
 
     public static void clear() {
-        userHolder.remove();
+        accountHolder.remove();
     }
 } 

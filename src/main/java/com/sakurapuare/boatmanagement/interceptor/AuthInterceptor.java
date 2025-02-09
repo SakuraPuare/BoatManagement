@@ -1,7 +1,7 @@
 package com.sakurapuare.boatmanagement.interceptor;
 
 import com.sakurapuare.boatmanagement.common.UserContext;
-import com.sakurapuare.boatmanagement.service.UsersService;
+import com.sakurapuare.boatmanagement.service.AccountsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.lang.NonNull;
@@ -14,10 +14,10 @@ import java.io.PrintWriter;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final UsersService userService;
+    private final AccountsService accountService;
 
-    public AuthInterceptor(UsersService userService) {
-        this.userService = userService;
+    public AuthInterceptor(AccountsService accountService) {
+        this.accountService = accountService;
     }
 
     @Override
@@ -41,8 +41,8 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 验证token并获取用户信息
         try {
             token = token.replace("Bearer ", "");
-            var user = userService.getUserByToken(token);
-            UserContext.setUser(user);
+            var account = accountService.getAccountByToken(token);
+            UserContext.setAccount(account);
             return true;
         } catch (Exception e) {
             // 设置response的内容类型为application/json

@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
  * 角色权限关联表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 @Data
 @Builder

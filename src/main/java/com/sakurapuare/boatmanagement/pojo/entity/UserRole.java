@@ -4,7 +4,6 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
-import java.math.BigInteger;
 
 import java.io.Serial;
 
@@ -20,7 +19,7 @@ import lombok.EqualsAndHashCode;
  * 用户角色关联表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 @Data
 @Builder
@@ -36,7 +35,7 @@ public class UserRole extends BaseEntity implements Serializable {
 
     @Id
     @ApiModelProperty("")
-    private BigInteger userId;
+    private Long userId;
 
     @Id
     @ApiModelProperty("")
@@ -47,6 +46,6 @@ public class UserRole extends BaseEntity implements Serializable {
      */
     @Id
     @ApiModelProperty("所属单位")
-    private BigInteger unitId;
+    private Long unitId;
 
 }

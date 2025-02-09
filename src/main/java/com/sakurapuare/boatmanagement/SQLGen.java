@@ -1,9 +1,14 @@
 package com.sakurapuare.boatmanagement;
 
+import org.apache.ibatis.type.JdbcType;
+
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
-import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
+import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.zaxxer.hikari.HikariDataSource;
+import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
+
+import java.math.BigInteger;
 
 public class SQLGen {
 
@@ -19,6 +24,9 @@ public class SQLGen {
         // 通过 datasource 和 globalConfig 创建代码生成器
         Generator generator = new Generator(dataSource, globalConfig);
 
+        // JdbcTypeMapping
+        JdbcTypeMapping.registerMapping(BigInteger.class, Long.class);
+
         // 生成代码
         generator.generate();
     }
@@ -31,7 +39,7 @@ public class SQLGen {
         globalConfig.enableMapper();
         globalConfig.enableService();
         globalConfig.enableServiceImpl();
-        globalConfig.enableController();
+//        globalConfig.enableController();
         globalConfig.enableTableDef();
         globalConfig.enableMapperXml();
 

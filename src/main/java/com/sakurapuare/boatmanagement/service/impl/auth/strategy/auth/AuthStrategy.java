@@ -5,21 +5,21 @@ import com.sakurapuare.boatmanagement.constant.TableName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
-import com.sakurapuare.boatmanagement.mapper.UsersMapper;
+import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.Users;
+import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 public abstract class AuthStrategy {
 
-    private final UsersMapper userMapper;
+    private final AccountsMapper accountsMapper;
     private AuthStatus status = null;
     private String field = null;
 
-    public AuthStrategy(UsersMapper userMapper) {
-        this.userMapper = userMapper;
+    public AuthStrategy(AccountsMapper accountsMapper) {
+        this.accountsMapper = accountsMapper;
     }
 
     public void configureStrategy(AuthStatus status) {
@@ -40,16 +40,15 @@ public abstract class AuthStrategy {
         }
     }
 
-    public Users auth(AuthRequestDTO authRequestDTO) {
-
-        Users user = userMapper.selectOneByQuery(
+    public Accounts auth(AuthRequestDTO authRequestDTO) {
+        Accounts account = accountsMapper.selectOneByQuery(
                 QueryWrapper.create().eq(this.field, authRequestDTO.getUsername()));
 
-        if (user == null) {
+        if (account == null) {
             if (status.getType().equals(AuthType.LOGIN)) {
                 return null;
             }
-            user = Users.builder()
+            account = Accounts.builder()
                     .password(authRequestDTO.getPassword())
                     .isActive(false)
                     .isBlocked(false)
@@ -57,18 +56,17 @@ public abstract class AuthStrategy {
 
             AuthName name = AuthNameUtils.getAuthName(authRequestDTO.getUsername());
             switch (name) {
-                case USERNAME -> user.setUsername(authRequestDTO.getUsername());
-                case PHONE -> user.setPhone(authRequestDTO.getUsername());
-                case EMAIL -> user.setEmail(authRequestDTO.getUsername());
-                default -> user.setUsername(authRequestDTO.getUsername());
+                case USERNAME -> account.setUsername(authRequestDTO.getUsername());
+                case PHONE -> account.setMobile(authRequestDTO.getUsername());
+                case EMAIL -> account.setEmail(authRequestDTO.getUsername());
+                default -> account.setUsername(authRequestDTO.getUsername());
             }
 
-            userMapper.insertSelective(user);
+            accountsMapper.insertSelective(account);
         } else if (status.getType().equals(AuthType.REGISTER)) {
             return null;
         }
 
-        return user;
-
+        return account;
     }
 }

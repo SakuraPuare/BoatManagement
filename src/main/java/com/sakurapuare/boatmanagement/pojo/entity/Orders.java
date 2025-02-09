@@ -6,7 +6,6 @@ import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Timestamp;
 
 import java.io.Serial;
@@ -23,7 +22,7 @@ import lombok.EqualsAndHashCode;
  * 订单表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-08
+ * @since 2025-02-10
  */
 @Data
 @Builder
@@ -39,7 +38,7 @@ public class Orders extends BaseEntity implements Serializable {
 
     @Id(keyType = KeyType.Auto)
     @ApiModelProperty("")
-    private BigInteger id;
+    private Long id;
 
     /**
      * 订单编号
@@ -51,25 +50,25 @@ public class Orders extends BaseEntity implements Serializable {
      * 下单用户
      */
     @ApiModelProperty("下单用户")
-    private BigInteger userId;
+    private Long userId;
 
     /**
      * 指定船只
      */
     @ApiModelProperty("指定船只")
-    private BigInteger shipId;
+    private Long shipId;
 
     /**
      * 起始码头
      */
     @ApiModelProperty("起始码头")
-    private BigInteger startDockId;
+    private Long startDockId;
 
     /**
      * 目的码头
      */
     @ApiModelProperty("目的码头")
-    private BigInteger endDockId;
+    private Long endDockId;
 
     /**
      * 租用开始时间
