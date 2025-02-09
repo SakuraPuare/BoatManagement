@@ -34,7 +34,7 @@ public class AccountsTableDef extends TableDef {
     /**
      * 手机号
      */
-    public final QueryColumn MOBILE = new QueryColumn(this, "mobile");
+    public final QueryColumn PHONE = new QueryColumn(this, "phone");
 
     /**
      * 是否激活
@@ -64,7 +64,7 @@ public class AccountsTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USERNAME, PASSWORD, MOBILE, EMAIL, IS_ACTIVE, IS_BLOCKED};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USERNAME, PASSWORD, PHONE, EMAIL, IS_ACTIVE, IS_BLOCKED};
 
     public AccountsTableDef() {
         super("", "accounts");

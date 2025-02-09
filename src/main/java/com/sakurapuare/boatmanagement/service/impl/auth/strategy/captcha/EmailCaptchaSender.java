@@ -1,6 +1,6 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.captcha;
 
-import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
+import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Captcha;
 import com.sakurapuare.boatmanagement.service.CapthaService;
 import org.springframework.stereotype.Component;
@@ -15,10 +15,10 @@ public class EmailCaptchaSender implements CaptchaSender {
     }
 
     @Override
-    public boolean sendCaptcha(Accounts account) {
-        // TODO: send code to email
+    public boolean sendCaptcha(NameRequestDTO nameRequestDTO) {
+        // TODO: Send email
 
-        Captcha captha = capthaService.generateCode(account);
+        Captcha captha = capthaService.generateCaptcha(nameRequestDTO.getUsername());
         return false;
     }
 

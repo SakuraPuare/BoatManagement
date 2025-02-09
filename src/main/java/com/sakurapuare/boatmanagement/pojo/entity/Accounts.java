@@ -57,7 +57,7 @@ public class Accounts extends BaseEntity implements Serializable {
      * 手机号
      */
     @ApiModelProperty("手机号")
-    private String mobile;
+    private String phone;
 
     /**
      * 邮箱

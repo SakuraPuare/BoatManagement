@@ -43,19 +43,13 @@ public class Captcha extends BaseEntity implements Serializable {
      * 接收对象
      */
     @ApiModelProperty("接收对象")
-    private Long target;
+    private String target;
 
     /**
      * 验证码
      */
     @ApiModelProperty("验证码")
     private String code;
-
-    /**
-     * 使用场景
-     */
-    @ApiModelProperty("使用场景")
-    private String scene;
 
     /**
      * 使用状态
@@ -74,11 +68,5 @@ public class Captcha extends BaseEntity implements Serializable {
      */
     @ApiModelProperty("请求IP")
     private String clientIp;
-
-    /**
-     * 发送次数
-     */
-    @ApiModelProperty("发送次数")
-    private Integer sendCount;
 
 }

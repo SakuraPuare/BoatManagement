@@ -30,11 +30,6 @@ public class CaptchaTableDef extends TableDef {
     public final QueryColumn CODE = new QueryColumn(this, "code");
 
     /**
-     * 使用场景
-     */
-    public final QueryColumn SCENE = new QueryColumn(this, "scene");
-
-    /**
      * 使用状态
      */
     public final QueryColumn STATUS = new QueryColumn(this, "status");
@@ -55,11 +50,6 @@ public class CaptchaTableDef extends TableDef {
     public final QueryColumn EXPIRE_AT = new QueryColumn(this, "expire_at");
 
     /**
-     * 发送次数
-     */
-    public final QueryColumn SEND_COUNT = new QueryColumn(this, "send_count");
-
-    /**
      * 所有字段。
      */
     public final QueryColumn ALL_COLUMNS = new QueryColumn(this, "*");
@@ -67,7 +57,7 @@ public class CaptchaTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, TARGET, CODE, SCENE, STATUS, EXPIRE_AT, CLIENT_IP, SEND_COUNT};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, TARGET, CODE, STATUS, EXPIRE_AT, CLIENT_IP};
 
     public CaptchaTableDef() {
         super("", "captcha");

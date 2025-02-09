@@ -43,9 +43,6 @@ public class CaptchaLimit extends BaseEntity implements Serializable {
     private String target;
 
     @ApiModelProperty("")
-    private String scene;
-
-    @ApiModelProperty("")
     private String ip;
 
     /**

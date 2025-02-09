@@ -7,17 +7,17 @@ USE boatmanagement;
 -- 基础账号表
 CREATE TABLE accounts (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `username` VARCHAR(64) UNIQUE COMMENT '用户名',
+  `username` VARCHAR(64) COMMENT '用户名',
   `password` VARCHAR(255) COMMENT '密码',
-  `mobile` VARCHAR(20) UNIQUE COMMENT '手机号',
-  `email` VARCHAR(255) UNIQUE COMMENT '邮箱',
+  `phone` VARCHAR(20) COMMENT '手机号',
+  `email` VARCHAR(255) COMMENT '邮箱',
   `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否激活',
   `is_blocked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否锁定',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '软删除标记',
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  INDEX `idx_mobile` (`mobile`),
+  INDEX `idx_phone` (`phone`),
   INDEX `idx_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='基础账号表';
 
@@ -232,18 +232,16 @@ CREATE TABLE logs (
 -- 验证码表
 CREATE TABLE `captcha` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `target` BIGINT UNSIGNED NOT NULL COMMENT '接收对象',
+  `target` VARCHAR(255) NOT NULL COMMENT '接收对象',
   `code` VARCHAR(10) NOT NULL COMMENT '验证码',
-  `scene` ENUM('REGISTER', 'LOGIN', 'RESET_PWD', 'BIND_MOBILE', 'BIND_EMAIL') NOT NULL COMMENT '使用场景',
   `status` ENUM('UNUSED', 'USED', 'INVALID') NOT NULL DEFAULT 'UNUSED' COMMENT '使用状态',
   `expire_at` DATETIME NOT NULL COMMENT '过期时间',
   `client_ip` VARCHAR(45) COMMENT '请求IP',
-  `send_count` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '发送次数',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `idx_target_scene` (`target`, `scene`),
+  INDEX `idx_target` (`target`),
   INDEX `idx_expire_time` (`expire_at`),
   INDEX `idx_status` (`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='验证码表';
@@ -252,14 +250,13 @@ CREATE TABLE `captcha` (
 CREATE TABLE `captcha_limit` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `target` VARCHAR(255) NOT NULL,
-  `scene` VARCHAR(20) NOT NULL,
   `ip` VARCHAR(45) NOT NULL,
   `count` INT UNSIGNED NOT NULL DEFAULT 1 COMMENT '请求次数',
   `last_request` DATETIME NOT NULL COMMENT '最后请求时间',
   `is_blocked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否锁定',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_target_scene_ip` (`target`, `scene`, `ip`),
   INDEX `idx_last_request` (`last_request`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='验证码防刷记录';

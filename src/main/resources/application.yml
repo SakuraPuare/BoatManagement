@@ -11,6 +11,20 @@ spring:
   application:
     name: BoatManagement
 
+server:
+  port: 8123
+  tomcat:
+    uri-encoding: UTF-8
+    remote-ip-header: X-Real-IP
+    protocol-header: X-Forwarded-Proto
+    server-header: X-Forwarded-Server
+    port-header: X-Forwarded-Port 
+    forwarded-header-present: true
+    x-forwarded-for-header: X-Forwarded-For
+    x-forwarded-host-header: X-Forwarded-Host
+    x-forwarded-port-header: X-Forwarded-Port
+    x-forwarded-proto-header: X-Forwarded-Proto
+
 # springdoc-openapi项目配置
 springdoc:
   swagger-ui:
@@ -42,8 +56,6 @@ jwt:
   expire: 604800
   # 7 days in seconds
 
-server:
-  port: 8123
 
 wechat:
   miniapp:

@@ -11,11 +11,9 @@ public interface AuthService extends IService<Accounts> {
 
     Accounts loginWithPassword(AuthRequestDTO authRequestDTO);
 
-    Accounts loginWithCode(AuthRequestDTO authRequestDTO);
+    Accounts authWithCode(AuthRequestDTO authRequestDTO);
 
     Accounts registerWithPassword(AuthRequestDTO authRequestDTO);
-
-    Accounts registerWithCode(AuthRequestDTO authRequestDTO);
 
     boolean sendCode(NameRequestDTO nameRequestDTO);
 

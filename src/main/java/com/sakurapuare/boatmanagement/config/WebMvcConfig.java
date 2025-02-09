@@ -1,6 +1,7 @@
 package com.sakurapuare.boatmanagement.config;
 
 import com.sakurapuare.boatmanagement.interceptor.AuthInterceptor;
+import com.sakurapuare.boatmanagement.interceptor.RequestInfoInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,8 +14,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
 
-    public WebMvcConfig(AuthInterceptor authInterceptor) {
+    private final RequestInfoInterceptor requestInfoInterceptor;
+
+    public WebMvcConfig(AuthInterceptor authInterceptor, RequestInfoInterceptor requestInfoInterceptor) {
         this.authInterceptor = authInterceptor;
+        this.requestInfoInterceptor = requestInfoInterceptor;
     }
 
     @Override
@@ -37,6 +41,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/api/swagger-ui/**"
                 )
                 .excludePathPatterns("/login", "/register", "/register");
+
+        registry.addInterceptor(requestInfoInterceptor)
+                .addPathPatterns("/**");
     }
 
     // 设置静态资源映射

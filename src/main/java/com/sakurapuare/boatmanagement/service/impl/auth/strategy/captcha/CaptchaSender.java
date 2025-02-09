@@ -1,8 +1,8 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.captcha;
 
-import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
+import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 
 public interface CaptchaSender {
 
-    boolean sendCaptcha(Accounts account);
+    boolean sendCaptcha(NameRequestDTO nameRequestDTO);
 }

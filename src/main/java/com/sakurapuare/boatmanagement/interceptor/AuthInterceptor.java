@@ -1,6 +1,7 @@
 package com.sakurapuare.boatmanagement.interceptor;
 
 import com.sakurapuare.boatmanagement.common.UserContext;
+import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.service.AccountsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,11 +40,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         // 验证token并获取用户信息
+        Accounts account = null;
         try {
             token = token.replace("Bearer ", "");
-            var account = accountService.getAccountByToken(token);
+            account = accountService.getAccountByToken(token);
             UserContext.setAccount(account);
-            return true;
         } catch (Exception e) {
             // 设置response的内容类型为application/json
             response.setContentType("application/json;charset=UTF-8");
@@ -56,6 +57,22 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
             return false;
         }
+
+        // 初步校验权限
+        if (account != null && account.getIsBlocked()) {
+            // 设置response的内容类型为application/json
+            response.setContentType("application/json;charset=UTF-8");
+            // 将json数据写入response
+            try ( // 获取response的输出流
+                  PrintWriter writer = response.getWriter()) {
+                // 将json数据写入response
+                writer.write("{\"code\":401,\"message\":\"账号已锁定\",\"data\":null}");
+                writer.flush();
+            }
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -63,5 +80,6 @@ public class AuthInterceptor implements HandlerInterceptor {
                                 @NonNull Object handler, @SuppressWarnings("null") Exception ex) {
         // 清理ThreadLocal
         UserContext.clear();
+
     }
 }

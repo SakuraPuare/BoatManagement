@@ -1,5 +1,6 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
+import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.WxUserInfo;
@@ -8,18 +9,17 @@ import com.sakurapuare.boatmanagement.utils.WechatUtils;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WechatStrategy extends AuthStrategy {
+public class WechatStrategy implements AuthStrategy {
     private final WechatUtils wechatUtils;
     private final AccountsMapper accountsMapper;
 
     public WechatStrategy(WechatUtils wechatUtils, AccountsMapper accountsMapper) {
-        super(accountsMapper);
         this.wechatUtils = wechatUtils;
         this.accountsMapper = accountsMapper;
     }
 
     @Override
-    public Accounts auth(AuthRequestDTO authRequestDTO) {
+    public Accounts auth(AuthStatus status, AuthRequestDTO authRequestDTO) {
         // String openid = wechatUtils.getOpenId(authRequestDTO.getCode());
 
         // Accounts account = accountsMapper.selectOneByOpenid(openid);

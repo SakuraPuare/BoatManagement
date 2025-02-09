@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_FORBIDDEN;
-import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Auth", description = "Authentication")
+@Tag(name = "认证", description = "统一认证模块")
 public class AuthController {
 
     private final AuthService authService;
@@ -29,30 +28,29 @@ public class AuthController {
     }
 
     public Response<TokenVO> auth(Accounts account) {
-        if (account == null) {
-            return Response.error(CODE_UNAUTHORIZED, "Auth failed");
-        }
-
         if (account.getIsBlocked()) {
-            return Response.error(CODE_FORBIDDEN, "Account is blocked");
+            return Response.error(CODE_FORBIDDEN, "账号已锁定"); // 不会走到这里的
         }
 
         String token = authService.generateToken(account);
         TokenVO tokenVO = new TokenVO();
         tokenVO.setToken(token);
-        return Response.success("Auth success", tokenVO);
+        return Response.success("登录成功", tokenVO);
     }
 
 
     @PostMapping("availability")
-    @Operation(summary = "Check Username availability")
+    @Operation(summary = "检查用户名是否可用")
     public Response<Boolean> checkAvailability(@RequestBody NameRequestDTO nameRequestDTO) {
-        boolean ret = authService.checkAvailability(nameRequestDTO);
-        return Response.success("Username is available", ret);
+        boolean isAvailable = authService.checkAvailability(nameRequestDTO);
+        if (!isAvailable) {
+            return Response.error(CODE_FORBIDDEN, "用户名已存在");
+        }
+        return Response.success("用户名可用", isAvailable);
     }
 
     @PostMapping("login")
-    @Operation(summary = "Login")
+    @Operation(summary = "密码登录")
     public Response<TokenVO> loginWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
         Accounts account = authService.loginWithPassword(authRequestDTO);
         return this.auth(account);
@@ -60,19 +58,14 @@ public class AuthController {
 
 
     @PostMapping("login/code")
-    @Operation(summary = "Login by code")
+    @Operation(summary = "验证码登录")
     public Response<TokenVO> loginByCode(@RequestBody AuthRequestDTO authRequestDTO) {
-        Accounts account = authService.loginWithCode(authRequestDTO);
-
-        if (account == null) {
-            account = authService.registerWithCode(authRequestDTO);
-        }
-
+        Accounts account = authService.authWithCode(authRequestDTO);
         return this.auth(account);
     }
 
     @PostMapping("login/wechat")
-    @Operation(summary = "Login by wechat")
+    @Operation(summary = "微信登录")
     public Response<TokenVO> loginByWechat(@RequestBody WxLoginDTO wxLoginDTO) {
         Accounts account = authService.loginWithWechat(wxLoginDTO);
         return this.auth(account);
@@ -80,20 +73,17 @@ public class AuthController {
 
 
     @PostMapping("register")
-    @Operation(summary = "Register")
+    @Operation(summary = "密码注册")
     public Response<TokenVO> registerWithPassword(@RequestBody AuthRequestDTO authRequestDTO) {
         Accounts account = authService.registerWithPassword(authRequestDTO);
         return this.auth(account);
     }
 
     @PostMapping("code")
-    @Operation(summary = "Send code")
+    @Operation(summary = "发送验证码")
     public Response<String> sendCode(@RequestBody NameRequestDTO nameRequestDTO) {
-        boolean ret = authService.sendCode(nameRequestDTO);
-        if (!ret) {
-            return Response.error("Send code failed");
-        }
-        return Response.success("Send code success");
+        authService.sendCode(nameRequestDTO);
+        return Response.success("验证码发送成功");
     }
 
     @PostMapping("wx/login")

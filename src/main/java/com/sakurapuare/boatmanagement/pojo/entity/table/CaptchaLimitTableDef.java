@@ -33,9 +33,6 @@ public class CaptchaLimitTableDef extends TableDef {
     public final QueryColumn COUNT = new QueryColumn(this, "count");
 
     
-    public final QueryColumn SCENE = new QueryColumn(this, "scene");
-
-    
     public final QueryColumn TARGET = new QueryColumn(this, "target");
 
     /**
@@ -56,7 +53,7 @@ public class CaptchaLimitTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, TARGET, SCENE, IP, COUNT, LAST_REQUEST, IS_BLOCKED};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, TARGET, IP, COUNT, LAST_REQUEST, IS_BLOCKED};
 
     public CaptchaLimitTableDef() {
         super("", "captcha_limit");
