@@ -1,12 +1,10 @@
 package com.sakurapuare.boatmanagement;
 
-import org.apache.ibatis.type.JdbcType;
-
 import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
-import com.zaxxer.hikari.HikariDataSource;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
+import com.zaxxer.hikari.HikariDataSource;
 
 import java.math.BigInteger;
 

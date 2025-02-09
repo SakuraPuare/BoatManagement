@@ -3,8 +3,8 @@ package com.sakurapuare.boatmanagement.service;
 import com.mybatisflex.core.service.IService;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.dto.WxLoginDTO;
+import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 
 
 public interface AuthService extends IService<Accounts> {

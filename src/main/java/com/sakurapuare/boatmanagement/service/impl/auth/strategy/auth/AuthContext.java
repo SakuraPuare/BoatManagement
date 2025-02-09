@@ -5,8 +5,8 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.service.CapthaService;
 import com.sakurapuare.boatmanagement.utils.WechatUtils;
-import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor

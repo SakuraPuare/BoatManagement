@@ -35,10 +35,10 @@ public class UserController {
     @GetMapping("/me")
     public Response<UserSelfVO> getMe() {
         Accounts account = UserContext.getAccount();
-        
+
         UserSelfVO userSelfVO = new UserSelfVO();
         BeanUtil.copyProperties(account, userSelfVO);
-        
+
         return Response.success(userSelfVO);
     }
 }

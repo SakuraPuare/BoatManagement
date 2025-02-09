@@ -1,7 +1,7 @@
 package com.sakurapuare.boatmanagement.service.impl.auth.strategy.captcha;
 
-import com.sakurapuare.boatmanagement.pojo.entity.Captcha;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
+import com.sakurapuare.boatmanagement.pojo.entity.Captcha;
 import com.sakurapuare.boatmanagement.service.CapthaService;
 import org.springframework.stereotype.Component;
 
