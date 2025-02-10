@@ -24,10 +24,10 @@ CREATE TABLE accounts (
 
 INSERT INTO `accounts` (`username`, `password`, `phone`, `email`, `role`, `is_active`, `is_blocked`, `is_deleted`, `created_at`, `updated_at`)
 VALUES ('admin', 'admin', '12345678901', 'admin@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW()),
-('merchant', 'merchant', '12345678901', 'merchant@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW()),
-('vendor', 'vendor', '12345678901', 'vendor@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW()),
-('merchant2', 'merchant2', '12345678902', 'merchant2@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW()),
-('vendor2', 'vendor2', '12345678902', 'vendor2@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW());
+('merchant', 'merchant', '12345678901', 'merchant@example.com', 1 << 1, 1, 0, 0, NOW(), NOW()),
+('vendor', 'vendor', '12345678901', 'vendor@example.com', 1 << 2, 1, 0, 0, NOW(), NOW()),
+('merchant2', 'merchant2', '12345678902', 'merchant2@example.com', 1 << 1, 1, 0, 0, NOW(), NOW()),
+('vendor2', 'vendor2', '12345678902', 'vendor2@example.com', 1 << 2, 1, 0, 0, NOW(), NOW());
 
 CREATE TABLE `user_certify` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
