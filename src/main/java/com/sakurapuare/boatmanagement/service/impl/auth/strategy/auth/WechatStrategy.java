@@ -6,9 +6,11 @@ import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.WxUserInfo;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.utils.WechatUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class WechatStrategy implements AuthStrategy {
 
     public WechatStrategy(WechatUtils wechatUtils, AccountsMapper accountsMapper) {

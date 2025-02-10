@@ -11,7 +11,7 @@ CREATE TABLE accounts (
   `password` VARCHAR(255) COMMENT '密码',
   `phone` VARCHAR(20) COMMENT '手机号',
   `email` VARCHAR(255) COMMENT '邮箱',
-  `role` INT NOT NULL COMMENT '角色MASK',
+  `role` INT NOT NULL DEFAULT 1 COMMENT '角色MASK',
   `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否激活',
   `is_blocked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否锁定',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '软删除标记',
@@ -23,7 +23,11 @@ CREATE TABLE accounts (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='基础账号表';
 
 INSERT INTO `accounts` (`username`, `password`, `phone`, `email`, `role`, `is_active`, `is_blocked`, `is_deleted`, `created_at`, `updated_at`)
-VALUES ('admin', 'admin', '12345678901', 'admin@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW());
+VALUES ('admin', 'admin', '12345678901', 'admin@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW()),
+('merchant', 'merchant', '12345678901', 'merchant@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW()),
+('vendor', 'vendor', '12345678901', 'vendor@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW()),
+('merchant2', 'merchant2', '12345678902', 'merchant2@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW()),
+('vendor2', 'vendor2', '12345678902', 'vendor2@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW());
 
 CREATE TABLE `user_certify` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -114,13 +118,15 @@ CREATE TABLE `user_role` (
 -- 单位表
 CREATE TABLE units (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL COMMENT '单位名称',
+  `name` VARCHAR(255) NOT NULL COMMENT '对外名称',
+  `unit_name` VARCHAR(255) NOT NULL COMMENT '单位名称',
   `social_credit_code` VARCHAR(18) UNIQUE COMMENT '统一社会信用代码',
   `legal_person` VARCHAR(50) COMMENT '法人代表',
   `address` VARCHAR(255) COMMENT '单位地址',
   `contact_phone` VARCHAR(20) COMMENT '联系电话',
   `status` ENUM('PENDING','APPROVED','REJECTED') NOT NULL DEFAULT 'PENDING' COMMENT '审核状态',
   `admin_user_id` BIGINT UNSIGNED NOT NULL COMMENT '单位管理员',
+  `types` ENUM('MERCHANT','VENDOR') NOT NULL COMMENT '单位类型',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -129,20 +135,19 @@ CREATE TABLE units (
   INDEX `idx_social_credit_code` (`social_credit_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='单位表';
 
+
 -- 商家表
 CREATE TABLE merchants (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
   `unit_id` BIGINT UNSIGNED COMMENT '所属单位',
-  `shop_name` VARCHAR(255) NOT NULL COMMENT '店铺名称',
   `status` ENUM('PENDING','APPROVED','REJECTED') NOT NULL DEFAULT 'PENDING' COMMENT '审核状态',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES accounts(`id`),
-  FOREIGN KEY (`unit_id`) REFERENCES units(`id`),
-  INDEX `idx_shop_name` (`shop_name`)
+  FOREIGN KEY (`unit_id`) REFERENCES units(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商家表';
 
 -- 船主表

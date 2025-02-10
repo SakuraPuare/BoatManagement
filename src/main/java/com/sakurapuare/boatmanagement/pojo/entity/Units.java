@@ -39,10 +39,16 @@ public class Units extends BaseEntity implements Serializable {
     private Long id;
 
     /**
+     * 对外名称
+     */
+    @ApiModelProperty("对外名称")
+    private String name;
+
+    /**
      * 单位名称
      */
     @ApiModelProperty("单位名称")
-    private String name;
+    private String unitName;
 
     /**
      * 统一社会信用代码
@@ -79,5 +85,11 @@ public class Units extends BaseEntity implements Serializable {
      */
     @ApiModelProperty("单位管理员")
     private Long adminUserId;
+
+    /**
+     * 单位类型
+     */
+    @ApiModelProperty("单位类型")
+    private String types;
 
 }

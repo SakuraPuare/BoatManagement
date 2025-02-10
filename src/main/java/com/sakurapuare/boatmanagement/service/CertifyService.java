@@ -19,5 +19,9 @@ public interface CertifyService {
 
     UnitCertifyVO getVendorCertify();
 
+    void joinUnit(String types, Long unitId);
 
+    void transferUnit(String types, Long userId);
+
+    void leaveUnit(String types);
 }

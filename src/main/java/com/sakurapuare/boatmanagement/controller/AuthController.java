@@ -9,6 +9,7 @@ import com.sakurapuare.boatmanagement.pojo.vo.TokenVO;
 import com.sakurapuare.boatmanagement.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +20,10 @@ import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_FORBIDDE
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "认证", description = "统一认证模块")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
 
     public Response<TokenVO> auth(Accounts account) {
         if (account.getIsBlocked()) {

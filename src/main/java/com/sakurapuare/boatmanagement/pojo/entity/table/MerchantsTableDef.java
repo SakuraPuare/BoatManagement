@@ -40,11 +40,6 @@ public class MerchantsTableDef extends TableDef {
     public final QueryColumn USER_ID = new QueryColumn(this, "user_id");
 
     /**
-     * 店铺名称
-     */
-    public final QueryColumn SHOP_NAME = new QueryColumn(this, "shop_name");
-
-    /**
      * 所有字段。
      */
     public final QueryColumn ALL_COLUMNS = new QueryColumn(this, "*");
@@ -52,7 +47,7 @@ public class MerchantsTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USER_ID, UNIT_ID, SHOP_NAME, STATUS};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USER_ID, UNIT_ID, STATUS};
 
     public MerchantsTableDef() {
         super("", "merchants");

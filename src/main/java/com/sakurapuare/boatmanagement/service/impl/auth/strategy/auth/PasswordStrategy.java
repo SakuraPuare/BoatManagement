@@ -7,16 +7,17 @@ import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
+@RequiredArgsConstructor
 public class PasswordStrategy implements AuthStrategy {
 
     private static final AccountsTableDef accountsTableDef = new AccountsTableDef();
 
     private final AccountsMapper accountsMapper;
 
-    public PasswordStrategy(AccountsMapper accountsMapper) {
-        this.accountsMapper = accountsMapper;
-    }
 
     @Override
     public Accounts auth(AuthStatus status, AuthRequestDTO authRequestDTO) {
@@ -52,7 +53,7 @@ public class PasswordStrategy implements AuthStrategy {
                     .isBlocked(false)
                     .build();
 
-            accountsMapper.insertSelective(account);    
+            accountsMapper.insertSelective(account);
         }
 
         return account;

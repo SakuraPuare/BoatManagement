@@ -5,7 +5,9 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface AuthStrategy {
 
     AccountsTableDef accountsTableDef = new AccountsTableDef();

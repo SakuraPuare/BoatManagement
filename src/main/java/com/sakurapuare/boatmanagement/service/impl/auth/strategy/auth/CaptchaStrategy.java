@@ -9,20 +9,16 @@ import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.service.CaptchaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CaptchaStrategy implements AuthStrategy {
 
     private final CaptchaService captchaService;
 
     private final AccountsMapper accountsMapper;
-
-
-    public CaptchaStrategy(CaptchaService captchaService, AccountsMapper accountsMapper) {
-        this.captchaService = captchaService;
-        this.accountsMapper = accountsMapper;
-    }
 
     @Override
     public Accounts auth(AuthStatus status, AuthRequestDTO authRequestDTO) {

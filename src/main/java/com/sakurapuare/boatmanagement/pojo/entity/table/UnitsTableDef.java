@@ -25,9 +25,14 @@ public class UnitsTableDef extends TableDef {
     public final QueryColumn ID = new QueryColumn(this, "id");
 
     /**
-     * 单位名称
+     * 对外名称
      */
     public final QueryColumn NAME = new QueryColumn(this, "name");
+
+    /**
+     * 单位类型
+     */
+    public final QueryColumn TYPES = new QueryColumn(this, "types");
 
     /**
      * 审核状态
@@ -38,6 +43,11 @@ public class UnitsTableDef extends TableDef {
      * 单位地址
      */
     public final QueryColumn ADDRESS = new QueryColumn(this, "address");
+
+    /**
+     * 单位名称
+     */
+    public final QueryColumn UNIT_NAME = new QueryColumn(this, "unit_name");
 
     /**
      * 单位管理员
@@ -67,7 +77,7 @@ public class UnitsTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, NAME, SOCIAL_CREDIT_CODE, LEGAL_PERSON, ADDRESS, CONTACT_PHONE, STATUS, ADMIN_USER_ID};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, NAME, UNIT_NAME, SOCIAL_CREDIT_CODE, LEGAL_PERSON, ADDRESS, CONTACT_PHONE, STATUS, ADMIN_USER_ID, TYPES};
 
     public UnitsTableDef() {
         super("", "units");

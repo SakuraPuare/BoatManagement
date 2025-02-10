@@ -7,19 +7,17 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
 import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
-import com.sakurapuare.boatmanagement.mapper.UserCertifyMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.WxLoginDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
+import com.sakurapuare.boatmanagement.service.AccountsService;
 import com.sakurapuare.boatmanagement.service.AuthService;
-import com.sakurapuare.boatmanagement.service.CaptchaService;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthContext;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.captcha.CaptchaSenderContext;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import com.sakurapuare.boatmanagement.utils.JWTUtils;
-import com.sakurapuare.boatmanagement.utils.WechatUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +29,12 @@ import java.util.Map;
 public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> implements AuthService {
 
     private static final AccountsTableDef accountsTableDef = new AccountsTableDef();
-    private final AccountsMapper userMapper;
-    private final CaptchaService captchaService;
-    private final WechatUtils wechatUtils;
-    private final UserCertifyMapper userCertifyMapper;
+    private final AccountsService accountsService;
+    private final CaptchaSenderContext captchaSenderContext;
+
+    private final AuthContext authContext;
 
     private Accounts authContext(AuthStatus status, AuthRequestDTO authRequestDTO) {
-        AuthContext authContext = new AuthContext(captchaService, userMapper, wechatUtils);
-
         String username = authRequestDTO.getUsername();
         AuthName name = AuthNameUtils.getAuthName(username);
         status.setName(name);
@@ -67,10 +63,9 @@ public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> imple
 
     @Override
     public boolean sendCode(NameRequestDTO nameRequestDTO) {
-        CaptchaSenderContext context = new CaptchaSenderContext(captchaService, userMapper);
-        context.setStrategy(nameRequestDTO);
+        captchaSenderContext.setStrategy(nameRequestDTO);
 
-        return context.sendCaptcha(nameRequestDTO);
+        return captchaSenderContext.sendCaptcha(nameRequestDTO);
     }
 
     @Override
@@ -89,7 +84,9 @@ public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> imple
             return false;
         }
 
-        Accounts account = userMapper.selectOneByQuery(QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));
+        // Accounts account = userMapper.selectOneByQuery(QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));
+        Accounts account = accountsService.getOne(
+                new QueryWrapper().eq(field, nameRequestDTO.getUsername()));
         return account == null;
     }
 

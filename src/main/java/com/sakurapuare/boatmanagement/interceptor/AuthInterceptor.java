@@ -7,6 +7,7 @@ import com.sakurapuare.boatmanagement.service.AccountsService;
 import com.sakurapuare.boatmanagement.utils.RoleUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -18,13 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final AccountsService accountService;
-
-    public AuthInterceptor(AccountsService accountService) {
-        this.accountService = accountService;
-    }
 
     private void writeResponse(HttpServletResponse response, int code, String message) {
         response.setContentType("application/json;charset=UTF-8");

@@ -2,11 +2,8 @@ package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
 import com.sakurapuare.boatmanagement.constant.auth.AuthMethod;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
-import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
-import com.sakurapuare.boatmanagement.service.CaptchaService;
-import com.sakurapuare.boatmanagement.utils.WechatUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,16 +12,16 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AuthContext {
 
-    private final CaptchaService captchaService;
-    private final AccountsMapper userMapper;
-    private final WechatUtils wechatUtils;
+    private final PasswordStrategy passwordStrategy;
+    private final CaptchaStrategy captchaStrategy;
+    private final WechatStrategy wechatStrategy;
     private AuthStrategy strategy;
 
     public void setStrategy(AuthStatus status) {
         switch (status.getMethod()) {
-            case AuthMethod.PASSWORD -> strategy = new PasswordStrategy(userMapper);
-            case AuthMethod.CODE -> strategy = new CaptchaStrategy(captchaService, userMapper);
-            case AuthMethod.WECHAT -> strategy = new WechatStrategy(wechatUtils, userMapper);
+            case AuthMethod.PASSWORD -> strategy = passwordStrategy;
+            case AuthMethod.CODE -> strategy = captchaStrategy;
+            case AuthMethod.WECHAT -> strategy = wechatStrategy;
             default -> throw new UnsupportedOperationException("暂不支持的登录方式");
         }
     }
