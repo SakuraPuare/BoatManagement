@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Captcha;
  * 验证码表 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-10
+ * @since 2025-02-11
  */
 public interface BaseCaptchaService extends IService<Captcha> {
 

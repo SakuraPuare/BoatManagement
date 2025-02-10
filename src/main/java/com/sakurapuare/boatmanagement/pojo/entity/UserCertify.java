@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
  * 用户实名认证表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-10
+ * @since 2025-02-11
  */
 @Data
 @Builder
@@ -57,9 +57,9 @@ public class UserCertify extends BaseEntity implements Serializable {
     private String idCard;
 
     /**
-     * 是否通过
+     * 审核状态
      */
-    @ApiModelProperty("是否通过")
-    private Boolean isApproved;
+    @ApiModelProperty("审核状态")
+    private String status;
 
 }

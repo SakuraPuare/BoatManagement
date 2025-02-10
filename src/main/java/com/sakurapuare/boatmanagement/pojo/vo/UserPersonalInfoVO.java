@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 
 @Data
-public class UserSelfVO {
+public class UserPersonalInfoVO {
     private Long userId;
 
     private String username;

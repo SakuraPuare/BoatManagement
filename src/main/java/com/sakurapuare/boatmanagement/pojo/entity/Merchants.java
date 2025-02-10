@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
  * 商家表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-10
+ * @since 2025-02-11
  */
 @Data
 @Builder

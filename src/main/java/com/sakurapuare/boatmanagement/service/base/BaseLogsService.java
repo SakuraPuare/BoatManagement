@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Logs;
  * 系统日志表 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-10
+ * @since 2025-02-11
  */
 public interface BaseLogsService extends IService<Logs> {
 

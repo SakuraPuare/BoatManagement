@@ -9,7 +9,7 @@ import java.io.Serial;
  * 用户实名认证表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-10
+ * @since 2025-02-11
  */
 public class UserCertifyTableDef extends TableDef {
 
@@ -30,6 +30,11 @@ public class UserCertifyTableDef extends TableDef {
     public final QueryColumn ID_CARD = new QueryColumn(this, "id_card");
 
     /**
+     * 审核状态
+     */
+    public final QueryColumn STATUS = new QueryColumn(this, "status");
+
+    /**
      * 关联用户
      */
     public final QueryColumn USER_ID = new QueryColumn(this, "user_id");
@@ -40,11 +45,6 @@ public class UserCertifyTableDef extends TableDef {
     public final QueryColumn REAL_NAME = new QueryColumn(this, "real_name");
 
     /**
-     * 是否通过
-     */
-    public final QueryColumn IS_APPROVED = new QueryColumn(this, "is_approved");
-
-    /**
      * 所有字段。
      */
     public final QueryColumn ALL_COLUMNS = new QueryColumn(this, "*");
@@ -52,7 +52,7 @@ public class UserCertifyTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USER_ID, REAL_NAME, ID_CARD, IS_APPROVED};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USER_ID, REAL_NAME, ID_CARD, STATUS};
 
     public UserCertifyTableDef() {
         super("", "user_certify");

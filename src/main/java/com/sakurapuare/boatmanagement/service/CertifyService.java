@@ -2,6 +2,8 @@ package com.sakurapuare.boatmanagement.service;
 
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
+import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
+import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
 
 public interface CertifyService {
 
@@ -11,6 +13,11 @@ public interface CertifyService {
 
     void certifyVendor(UnitCertifyRequestDTO unitCertifyRequestDTO);
 
-    void certifyAdmin();
+    UserCertifyVO getUserCertify();
+
+    UnitCertifyVO getMerchantCertify();
+
+    UnitCertifyVO getVendorCertify();
+
 
 }

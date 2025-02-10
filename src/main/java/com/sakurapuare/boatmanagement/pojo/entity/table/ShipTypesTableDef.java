@@ -9,7 +9,7 @@ import java.io.Serial;
  * 船只类型表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-10
+ * @since 2025-02-11
  */
 public class ShipTypesTableDef extends TableDef {
 

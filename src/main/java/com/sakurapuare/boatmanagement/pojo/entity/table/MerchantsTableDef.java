@@ -9,7 +9,7 @@ import java.io.Serial;
  * 商家表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-10
+ * @since 2025-02-11
  */
 public class MerchantsTableDef extends TableDef {
 

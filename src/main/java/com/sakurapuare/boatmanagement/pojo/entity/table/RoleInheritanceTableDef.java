@@ -9,7 +9,7 @@ import java.io.Serial;
  * 角色继承关系表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-10
+ * @since 2025-02-11
  */
 public class RoleInheritanceTableDef extends TableDef {
 

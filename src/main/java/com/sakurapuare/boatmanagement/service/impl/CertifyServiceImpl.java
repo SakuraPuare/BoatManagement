@@ -15,7 +15,10 @@ import com.sakurapuare.boatmanagement.pojo.entity.UserCertify;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
 import com.sakurapuare.boatmanagement.pojo.entity.table.MerchantsTableDef;
 import com.sakurapuare.boatmanagement.pojo.entity.table.UnitsTableDef;
+import com.sakurapuare.boatmanagement.pojo.entity.table.UserCertifyTableDef;
 import com.sakurapuare.boatmanagement.pojo.entity.table.VendorsTableDef;
+import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
+import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
 import com.sakurapuare.boatmanagement.service.CertifyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -32,6 +35,7 @@ public class CertifyServiceImpl implements CertifyService {
     private static final UnitsTableDef unitsTableDef = new UnitsTableDef();
     private static final MerchantsTableDef merchantsTableDef = new MerchantsTableDef();
     private static final VendorsTableDef vendorsTableDef = new VendorsTableDef();
+    private static final UserCertifyTableDef userCertifyTableDef = new UserCertifyTableDef();
     private final UserCertifyMapper userCertifyMapper;
     private final UnitsMapper unitMapper;
     private final MerchantsMapper merchantsMapper;
@@ -39,12 +43,22 @@ public class CertifyServiceImpl implements CertifyService {
 
     @Override
     public void certifyUser(UserCertifyRequestDTO request) {
-        UserCertify userCertify = UserCertify.builder()
-                .userId(UserContext.getAccount().getId())
-                .realName(request.getRealName())
-                .idCard(request.getIdCard())
-                .build();
-        userCertifyMapper.insert(userCertify);
+        UserCertify userCertify = userCertifyMapper.selectOneByQuery(
+                new QueryWrapper().eq(userCertifyTableDef.USER_ID.getName(), UserContext.getAccount().getId()));
+
+        if (userCertify != null) {
+            validateStatus(userCertify.getStatus(), "用户");
+            BeanUtils.copyProperties(request, userCertify);
+            userCertify.setStatus(CertifyStatus.PENDING);
+        } else {
+            userCertify = UserCertify.builder()
+                    .userId(UserContext.getAccount().getId())
+                    .realName(request.getRealName())
+                    .idCard(request.getIdCard())
+                    .status(CertifyStatus.PENDING)
+                    .build();
+        }
+        userCertifyMapper.insertOrUpdateSelective(userCertify);
     }
 
     @Override
@@ -83,6 +97,7 @@ public class CertifyServiceImpl implements CertifyService {
                     .legalPerson(request.getLegalPerson())
                     .address(request.getAddress())
                     .contactPhone(request.getContactPhone())
+                    .adminUserId(UserContext.getAccount().getId())
                     .build();
         }
         unitMapper.insertOrUpdateSelective(unit);
@@ -114,7 +129,7 @@ public class CertifyServiceImpl implements CertifyService {
     }
 
     private void validateStatus(String status, String role) {
-        if (CertifyStatus.CERTIFIED.equals(status)) {
+        if (CertifyStatus.APPROVED.equals(status)) {
             throw new IllegalArgumentException(String.format("%s已认证", role));
         }
         if (CertifyStatus.PENDING.equals(status)) {
@@ -155,8 +170,44 @@ public class CertifyServiceImpl implements CertifyService {
     }
 
     @Override
-    public void certifyAdmin() {
+    public UserCertifyVO getUserCertify() {
+        UserCertifyVO userCertifyVO = new UserCertifyVO();
+        UserCertify userCertify = userCertifyMapper.selectOneByQuery(
+                new QueryWrapper().eq(userCertifyTableDef.USER_ID.getName(), UserContext.getAccount().getId()));
+        if (userCertify == null) {
+            userCertifyVO.setStatus(CertifyStatus.NOT_EXIST);
+        } else {
+            userCertifyVO.setCertify(userCertify);
+            BeanUtils.copyProperties(userCertify, userCertifyVO);
+        }
+        return userCertifyVO;
+    }
 
+    @Override
+    public UnitCertifyVO getMerchantCertify() {
+        return getUnitCertify();
+    }
+
+    @Override
+    public UnitCertifyVO getVendorCertify() {
+        return getUnitCertify();
+    }
+
+    // 抽取公共方法处理Unit认证
+    private UnitCertifyVO getUnitCertify() {
+        UnitCertifyVO vo = new UnitCertifyVO();
+        Units unit = unitMapper.selectOneByQuery(
+            new QueryWrapper().eq(unitsTableDef.ADMIN_USER_ID.getName(), 
+                UserContext.getAccount().getId())
+        );
+
+        if (unit == null) {
+            vo.setStatus(CertifyStatus.NOT_EXIST);
+        } else {
+            vo.setCertify(unit);
+            BeanUtils.copyProperties(unit, vo);
+        }
+        return vo;
     }
 
 }
