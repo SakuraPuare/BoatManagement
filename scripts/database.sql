@@ -11,6 +11,7 @@ CREATE TABLE accounts (
   `password` VARCHAR(255) COMMENT '密码',
   `phone` VARCHAR(20) COMMENT '手机号',
   `email` VARCHAR(255) COMMENT '邮箱',
+  `role` INT NOT NULL COMMENT '角色MASK',
   `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否激活',
   `is_blocked` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否锁定',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '软删除标记',
@@ -20,6 +21,22 @@ CREATE TABLE accounts (
   INDEX `idx_phone` (`phone`),
   INDEX `idx_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='基础账号表';
+
+INSERT INTO `accounts` (`username`, `password`, `phone`, `email`, `role`, `is_active`, `is_blocked`, `is_deleted`, `created_at`, `updated_at`)
+VALUES ('admin', 'admin', '12345678901', 'admin@example.com', 0xFFFFFF, 1, 0, 0, NOW(), NOW());
+
+CREATE TABLE `user_certify` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
+  `real_name` VARCHAR(50) NOT NULL COMMENT '真实姓名',
+  `id_card` VARCHAR(18) NOT NULL COMMENT '身份证号',
+  `is_approved` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否通过',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户实名认证表';
 
 -- 第三方登录表
 CREATE TABLE `social_auth` (
@@ -118,6 +135,7 @@ CREATE TABLE merchants (
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
   `unit_id` BIGINT UNSIGNED COMMENT '所属单位',
   `shop_name` VARCHAR(255) NOT NULL COMMENT '店铺名称',
+  `status` ENUM('UNCERTIFIED','CERTIFIED','REJECTED') NOT NULL DEFAULT 'UNCERTIFIED' COMMENT '审核状态',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -128,10 +146,11 @@ CREATE TABLE merchants (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商家表';
 
 -- 船主表
-CREATE TABLE owners (
+CREATE TABLE vendors (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
   `unit_id` BIGINT UNSIGNED COMMENT '所属单位',
+  `status` ENUM('UNCERTIFIED','CERTIFIED','REJECTED') NOT NULL DEFAULT 'UNCERTIFIED' COMMENT '审核状态',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -171,7 +190,7 @@ CREATE TABLE ships (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT '船只名称',
   `type_id` INT UNSIGNED NOT NULL COMMENT '船只类型',
-  `owner_id` BIGINT UNSIGNED NOT NULL COMMENT '船主ID',
+  `vendor_id` BIGINT UNSIGNED NOT NULL COMMENT '船主ID',
   `unit_id` BIGINT UNSIGNED NOT NULL COMMENT '所属单位',
   `length` DECIMAL(10,2) COMMENT '船身长度（米）',
   `width` DECIMAL(10,2) COMMENT '船身宽度（米）',
@@ -182,7 +201,7 @@ CREATE TABLE ships (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`type_id`) REFERENCES ship_types(`id`),
-  FOREIGN KEY (`owner_id`) REFERENCES owners(`id`),
+  FOREIGN KEY (`vendor_id`) REFERENCES vendors(`id`),
   FOREIGN KEY (`unit_id`) REFERENCES units(`id`),
   INDEX `idx_unit` (`unit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='船只表';

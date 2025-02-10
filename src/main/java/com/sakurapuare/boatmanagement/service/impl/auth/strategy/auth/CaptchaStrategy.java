@@ -2,6 +2,7 @@ package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 
 import cn.hutool.core.util.RandomUtil;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
@@ -45,6 +46,7 @@ public class CaptchaStrategy implements AuthStrategy {
                 account = Accounts.builder()
                         .username(username)
                         .phone(username)
+                        .role(UserRole.USER)
                         .password(RandomUtil.randomString(10))
                         .isActive(true)
                         .isBlocked(false)

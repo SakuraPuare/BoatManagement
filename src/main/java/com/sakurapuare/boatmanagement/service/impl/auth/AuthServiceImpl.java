@@ -7,6 +7,7 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
 import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
+import com.sakurapuare.boatmanagement.mapper.UserCertifyMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.WxLoginDTO;
@@ -33,6 +34,7 @@ public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> imple
     private final AccountsMapper userMapper;
     private final CaptchaService captchaService;
     private final WechatUtils wechatUtils;
+    private final UserCertifyMapper userCertifyMapper;
 
     private Accounts authContext(AuthStatus status, AuthRequestDTO authRequestDTO) {
         AuthContext authContext = new AuthContext(captchaService, userMapper, wechatUtils);

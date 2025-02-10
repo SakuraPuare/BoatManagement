@@ -56,4 +56,10 @@ public class Merchants extends BaseEntity implements Serializable {
     @ApiModelProperty("店铺名称")
     private String shopName;
 
+    /**
+     * 审核状态
+     */
+    @ApiModelProperty("审核状态")
+    private String status;
+
 }

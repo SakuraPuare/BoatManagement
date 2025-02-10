@@ -11,7 +11,7 @@ import java.io.Serial;
  * @author sakurapuare
  * @since 2025-02-10
  */
-public class OwnersTableDef extends TableDef {
+public class VendorsTableDef extends TableDef {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -19,10 +19,15 @@ public class OwnersTableDef extends TableDef {
     /**
      * 船主表
      */
-    public static final OwnersTableDef OWNERS = new OwnersTableDef();
+    public static final VendorsTableDef VENDORS = new VendorsTableDef();
 
     
     public final QueryColumn ID = new QueryColumn(this, "id");
+
+    /**
+     * 审核状态
+     */
+    public final QueryColumn STATUS = new QueryColumn(this, "status");
 
     /**
      * 所属单位
@@ -42,19 +47,19 @@ public class OwnersTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USER_ID, UNIT_ID};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USER_ID, UNIT_ID, STATUS};
 
-    public OwnersTableDef() {
-        super("", "owners");
+    public VendorsTableDef() {
+        super("", "vendors");
     }
 
-    private OwnersTableDef(String schema, String name, String alisa) {
+    private VendorsTableDef(String schema, String name, String alisa) {
         super(schema, name, alisa);
     }
 
-    public OwnersTableDef as(String alias) {
+    public VendorsTableDef as(String alias) {
         String key = getNameWithSchema() + "." + alias;
-        return getCache(key, k -> new OwnersTableDef("", "owners", alias));
+        return getCache(key, k -> new VendorsTableDef("", "vendors", alias));
     }
 
 }

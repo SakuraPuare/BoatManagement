@@ -5,7 +5,6 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import java.io.Serial;
 
@@ -18,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 船只表 实体类。
+ * 船主表 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-10
@@ -28,9 +27,9 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("船只表")
-@Table("ships")
-public class Ships extends BaseEntity implements Serializable {
+@ApiModel("船主表")
+@Table("vendors")
+public class Vendors extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -40,22 +39,10 @@ public class Ships extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 船只名称
+     * 关联用户
      */
-    @ApiModelProperty("船只名称")
-    private String name;
-
-    /**
-     * 船只类型
-     */
-    @ApiModelProperty("船只类型")
-    private Long typeId;
-
-    /**
-     * 船主ID
-     */
-    @ApiModelProperty("船主ID")
-    private Long vendorId;
+    @ApiModelProperty("关联用户")
+    private Long userId;
 
     /**
      * 所属单位
@@ -64,27 +51,9 @@ public class Ships extends BaseEntity implements Serializable {
     private Long unitId;
 
     /**
-     * 船身长度（米）
+     * 审核状态
      */
-    @ApiModelProperty("船身长度（米）")
-    private BigDecimal length;
-
-    /**
-     * 船身宽度（米）
-     */
-    @ApiModelProperty("船身宽度（米）")
-    private BigDecimal width;
-
-    /**
-     * 最大载重（吨）
-     */
-    @ApiModelProperty("最大载重（吨）")
-    private BigDecimal maxLoad;
-
-    /**
-     * 最大续航（公里）
-     */
-    @ApiModelProperty("最大续航（公里）")
-    private BigDecimal maxEndurance;
+    @ApiModelProperty("审核状态")
+    private String status;
 
 }

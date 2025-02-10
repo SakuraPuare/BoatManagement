@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 船主表 实体类。
+ * 用户实名认证表 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-10
@@ -27,9 +27,9 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("船主表")
-@Table("owners")
-public class Owners extends BaseEntity implements Serializable {
+@ApiModel("用户实名认证表")
+@Table("user_certify")
+public class UserCertify extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -45,9 +45,21 @@ public class Owners extends BaseEntity implements Serializable {
     private Long userId;
 
     /**
-     * 所属单位
+     * 真实姓名
      */
-    @ApiModelProperty("所属单位")
-    private Long unitId;
+    @ApiModelProperty("真实姓名")
+    private String realName;
+
+    /**
+     * 身份证号
+     */
+    @ApiModelProperty("身份证号")
+    private String idCard;
+
+    /**
+     * 是否通过
+     */
+    @ApiModelProperty("是否通过")
+    private Boolean isApproved;
 
 }

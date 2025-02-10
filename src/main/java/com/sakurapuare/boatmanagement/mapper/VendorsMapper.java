@@ -1,7 +1,7 @@
 package com.sakurapuare.boatmanagement.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.sakurapuare.boatmanagement.pojo.entity.Owners;
+import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
 
 /**
  * 船主表 映射层。
@@ -9,6 +9,6 @@ import com.sakurapuare.boatmanagement.pojo.entity.Owners;
  * @author sakurapuare
  * @since 2025-02-10
  */
-public interface OwnersMapper extends BaseMapper<Owners> {
+public interface VendorsMapper extends BaseMapper<Vendors> {
 
 }

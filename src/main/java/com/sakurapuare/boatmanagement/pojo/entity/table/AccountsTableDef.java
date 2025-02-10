@@ -27,6 +27,11 @@ public class AccountsTableDef extends TableDef {
     public final QueryColumn ID = new QueryColumn(this, "id");
 
     /**
+     * 角色MASK
+     */
+    public final QueryColumn ROLE = new QueryColumn(this, "role");
+
+    /**
      * 邮箱
      */
     public final QueryColumn EMAIL = new QueryColumn(this, "email");
@@ -64,7 +69,7 @@ public class AccountsTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USERNAME, PASSWORD, PHONE, EMAIL, IS_ACTIVE, IS_BLOCKED};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, USERNAME, PASSWORD, PHONE, EMAIL, ROLE, IS_ACTIVE, IS_BLOCKED};
 
     public AccountsTableDef() {
         super("", "accounts");

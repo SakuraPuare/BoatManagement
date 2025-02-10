@@ -1,9 +1,9 @@
 package com.sakurapuare.boatmanagement.service.base.impl;
 
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.sakurapuare.boatmanagement.pojo.entity.Owners;
-import com.sakurapuare.boatmanagement.mapper.OwnersMapper;
-import com.sakurapuare.boatmanagement.service.base.BaseOwnersService;
+import com.sakurapuare.boatmanagement.pojo.entity.UserCertify;
+import com.sakurapuare.boatmanagement.mapper.UserCertifyMapper;
+import com.sakurapuare.boatmanagement.service.base.BaseUserCertifyService;
 import org.springframework.stereotype.Service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -16,14 +16,14 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 船主表 服务层实现。
+ * 用户实名认证表 服务层实现。
  *
  * @author sakurapuare
  * @since 2025-02-10
  */
 @Service
-@CacheConfig(cacheNames = "owners")
-public class BaseOwnersServiceImpl extends ServiceImpl<OwnersMapper, Owners>  implements BaseOwnersService{
+@CacheConfig(cacheNames = "userCertify")
+public class BaseUserCertifyServiceImpl extends ServiceImpl<UserCertifyMapper, UserCertify>  implements BaseUserCertifyService{
 
 
     @Override
@@ -46,31 +46,31 @@ public class BaseOwnersServiceImpl extends ServiceImpl<OwnersMapper, Owners>  im
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean update(Owners entity, QueryWrapper query) {
+    public boolean update(UserCertify entity, QueryWrapper query) {
         return super.update(entity, query);
     }
 
     @Override
     @CacheEvict(key = "#entity.id")
-    public boolean updateById(Owners entity, boolean ignoreNulls) {
+    public boolean updateById(UserCertify entity, boolean ignoreNulls) {
         return super.updateById(entity, ignoreNulls);
     }
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean updateBatch(Collection<Owners> entities, int batchSize) {
+    public boolean updateBatch(Collection<UserCertify> entities, int batchSize) {
         return super.updateBatch(entities, batchSize);
     }
 
     @Override
     @Cacheable(key = "#id")
-    public Owners getById(Serializable id) {
+    public UserCertify getById(Serializable id) {
         return super.getById(id);
     }
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public Owners getOne(QueryWrapper query) {
+    public UserCertify getOne(QueryWrapper query) {
         return super.getOne(query);
     }
 
@@ -106,7 +106,7 @@ public class BaseOwnersServiceImpl extends ServiceImpl<OwnersMapper, Owners>  im
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public List<Owners> list(QueryWrapper query) {
+    public List<UserCertify> list(QueryWrapper query) {
         return super.list(query);
     }
 
@@ -121,7 +121,7 @@ public class BaseOwnersServiceImpl extends ServiceImpl<OwnersMapper, Owners>  im
      */
     @Override
     @Deprecated
-    public List<Owners> listByIds(Collection<? extends Serializable> ids) {
+    public List<UserCertify> listByIds(Collection<? extends Serializable> ids) {
         return super.listByIds(ids);
     }
 

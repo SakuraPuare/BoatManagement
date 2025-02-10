@@ -57,7 +57,7 @@ public class ShipsTableDef extends TableDef {
     /**
      * 船主ID
      */
-    public final QueryColumn OWNER_ID = new QueryColumn(this, "owner_id");
+    public final QueryColumn VENDOR_ID = new QueryColumn(this, "vendor_id");
 
     /**
      * 最大续航（公里）
@@ -72,7 +72,7 @@ public class ShipsTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, NAME, TYPE_ID, OWNER_ID, UNIT_ID, LENGTH, WIDTH, MAX_LOAD, MAX_ENDURANCE};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, NAME, TYPE_ID, VENDOR_ID, UNIT_ID, LENGTH, WIDTH, MAX_LOAD, MAX_ENDURANCE};
 
     public ShipsTableDef() {
         super("", "ships");

@@ -66,6 +66,12 @@ public class Accounts extends BaseEntity implements Serializable {
     private String email;
 
     /**
+     * 角色MASK
+     */
+    @ApiModelProperty("角色MASK")
+    private Integer role;
+
+    /**
      * 是否激活
      */
     @ApiModelProperty("是否激活")

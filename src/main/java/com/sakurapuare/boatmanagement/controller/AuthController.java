@@ -46,7 +46,7 @@ public class AuthController {
         if (!isAvailable) {
             return Response.error(CODE_FORBIDDEN, "用户名已存在");
         }
-        return Response.success("用户名可用", isAvailable);
+        return Response.success("用户名可用", true);
     }
 
     @PostMapping("login")

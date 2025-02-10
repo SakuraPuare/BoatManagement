@@ -5,7 +5,6 @@ public class UserRole {
     public static final int BASE_USER = 1;
     public static final int BASE_MERCHANT = 1 << 1;
     public static final int BASE_VENDOR = 1 << 2;
-
     public static final int BASE_SUPER_ADMIN = 0xFFFFFF;
 
     public static final int USER = BASE_USER;
