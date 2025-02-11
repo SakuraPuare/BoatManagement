@@ -3,10 +3,10 @@ package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
-import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
+import com.sakurapuare.boatmanagement.service.AccountsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class PasswordStrategy implements AuthStrategy {
 
     private static final AccountsTableDef accountsTableDef = new AccountsTableDef();
 
-    private final AccountsMapper accountsMapper;
+    private final AccountsService accountsService;
 
 
     @Override
@@ -29,7 +29,7 @@ public class PasswordStrategy implements AuthStrategy {
 
         Accounts account = null;
         if (status.getType() == AuthType.LOGIN) {
-            account = accountsMapper.selectOneByQuery(
+            account = accountsService.getOne(
                     QueryWrapper.create()
                             .eq(field, username)
                             .eq(accountsTableDef.PASSWORD.getName(), password));
@@ -38,7 +38,7 @@ public class PasswordStrategy implements AuthStrategy {
                 throw new IllegalArgumentException("账号或密码错误");
             }
         } else {
-            account = accountsMapper.selectOneByQuery(
+            account = accountsService.getOne(
                     QueryWrapper.create()
                             .eq(field, username));
 
@@ -53,7 +53,7 @@ public class PasswordStrategy implements AuthStrategy {
                     .isBlocked(false)
                     .build();
 
-            accountsMapper.insertSelective(account);
+            accountsService.save(account);
         }
 
         return account;

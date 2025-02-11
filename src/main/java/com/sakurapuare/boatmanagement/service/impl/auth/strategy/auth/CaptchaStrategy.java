@@ -5,9 +5,9 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
-import com.sakurapuare.boatmanagement.mapper.AccountsMapper;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
+import com.sakurapuare.boatmanagement.service.AccountsService;
 import com.sakurapuare.boatmanagement.service.CaptchaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class CaptchaStrategy implements AuthStrategy {
 
     private final CaptchaService captchaService;
 
-    private final AccountsMapper accountsMapper;
+    private final AccountsService accountsService;
 
     @Override
     public Accounts auth(AuthStatus status, AuthRequestDTO authRequestDTO) {
@@ -33,7 +33,7 @@ public class CaptchaStrategy implements AuthStrategy {
 
         field = AuthStrategy.getFieldName(status);
 
-        Accounts account = accountsMapper.selectOneByQuery(
+        Accounts account = accountsService.getOne(
                 QueryWrapper.create()
                         .eq(field, authRequestDTO.getUsername()));
 
@@ -48,7 +48,7 @@ public class CaptchaStrategy implements AuthStrategy {
                         .isBlocked(false)
                         .build();
 
-                accountsMapper.insertSelective(account);
+                accountsService.save(account);
             }
             return account;
         }

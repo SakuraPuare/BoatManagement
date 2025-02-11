@@ -39,7 +39,6 @@ public class CertifyServiceImpl implements CertifyService {
     private final BaseMerchantsService baseMerchantsService;
     private final BaseVendorsService baseVendorsService;
 
-
     @Override
     public void certifyUser(UserCertifyRequestDTO request) {
         UserCertify userCertify = baseUserCertifyService.getOne(
@@ -225,7 +224,7 @@ public class CertifyServiceImpl implements CertifyService {
     @Override
     public void joinUnit(String types, Long unitId) {
         validateUnitType(types);
-        Units unit = validateAndGetUnit(types, unitId);
+        validateAndGetUnit(types, unitId);
 
         switch (types) {
             case UnitsTypes.MERCHANT:
@@ -274,7 +273,7 @@ public class CertifyServiceImpl implements CertifyService {
         }
     }
 
-    private Units validateAndGetUnit(String types, Long unitId) {
+    private void validateAndGetUnit(String types, Long unitId) {
         Units unit = unitsService.getById(unitId);
         if (unit == null) {
             throw new IllegalArgumentException("单位不存在");
@@ -282,10 +281,9 @@ public class CertifyServiceImpl implements CertifyService {
         if (!unit.getTypes().equals(types)) {
             throw new IllegalArgumentException("单位类型不正确");
         }
-        // if (unit.getId().equals(unitId)) {
-        // throw new IllegalArgumentException("您已加入该单位");
-        // }
-        return unit;
+        if (unit.getStatus().equals(CertifyStatus.PENDING)) {
+            throw new IllegalArgumentException("单位审核中");
+        }
     }
 
     private <T> void handleJoinUnit(IService<T> baseService, Class<T> entityClass, Long unitId) {
@@ -306,13 +304,14 @@ public class CertifyServiceImpl implements CertifyService {
                 throw new RuntimeException("创建实体失败", e);
             }
         } else {
-            // 更新现有实体
-            Units unit = unitsService.getById(unitId);
-            if (userId.equals(unit.getAdminUserId())) {
-                throw new IllegalArgumentException("加入其他单位之前，请先转让单位");
+            Long entityUnitId = (Long) getFieldValue(entity, "unitId");
+            if (entityUnitId != null) {
+                throw new IllegalArgumentException("您已加入其他单位，请先离开此单位");
             }
+
             try {
                 entityClass.getMethod("setUnitId", Long.class).invoke(entity, unitId);
+                entityClass.getMethod("setStatus", String.class).invoke(entity, CertifyStatus.PENDING);
                 baseService.updateById(entity);
             } catch (Exception e) {
                 throw new RuntimeException("更新实体失败", e);
@@ -334,7 +333,8 @@ public class CertifyServiceImpl implements CertifyService {
         validateUnitTransfer(unit, currentUserId);
 
         T targetEntity = baseService.getOne(
-                new QueryWrapper().eq("user_id", targetUserId));
+                new QueryWrapper().eq("user_id", targetUserId)
+                        .eq("status", CertifyStatus.APPROVED));
         if (targetEntity == null) {
             throw new IllegalArgumentException("目标员工不存在");
         }
