@@ -1,0 +1,62 @@
+package com.sakurapuare.boatmanagement.controller.admin;
+
+import com.mybatisflex.core.paginate.Page;
+import com.sakurapuare.boatmanagement.common.Response;
+import com.sakurapuare.boatmanagement.pojo.entity.BoatTypes;
+import com.sakurapuare.boatmanagement.service.BoatTypesService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/admin/boat-type")
+@Tag(name = "管理员-船舶类型模块", description = "船舶类型模块")
+@RequiredArgsConstructor
+public class AdminBoatTypeController {
+
+    private final BoatTypesService boatTypeService;
+
+    @GetMapping("/list")
+    @Operation(summary = "获取船舶类型列表")
+    public Response<List<BoatTypes>> list() {
+        return Response.success("获取船舶类型列表成功", boatTypeService.list());
+    }
+
+    @GetMapping("/list/page")
+    @Operation(summary = "获取船舶类型列表分页")
+    public Response<Page<BoatTypes>> listPage(@RequestParam(defaultValue = "1") Integer page,
+                                              @RequestParam(defaultValue = "10") Integer size) {
+        return Response.success("获取船舶类型列表分页成功", boatTypeService.page(new Page<>(page, size)));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "获取船舶类型详情")
+    public Response<BoatTypes> get(@PathVariable Long id) {
+        return Response.success("获取船舶类型详情成功", boatTypeService.getById(id));
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "更新船舶类型")
+    public Response<BoatTypes> update(@PathVariable Long id, @RequestBody BoatTypes boatType) {
+        boatType.setId(id);
+        boatTypeService.updateById(boatType);
+        return Response.success("更新船舶类型成功", boatType);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除船舶类型")
+    public Response<Boolean> delete(@PathVariable Long id) {
+        boatTypeService.removeById(id);
+        return Response.success("删除船舶类型成功", true);
+    }
+
+    @PostMapping("/create")
+    @Operation(summary = "创建船舶类型")
+    public Response<BoatTypes> create(@RequestBody BoatTypes boatType) {
+        boatTypeService.save(boatType);
+        return Response.success("创建船舶类型成功", boatType);
+    }
+}

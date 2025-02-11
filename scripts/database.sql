@@ -180,7 +180,7 @@ CREATE TABLE docks (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='码头表';
 
 -- 船只类型表
-CREATE TABLE ship_types (
+CREATE TABLE boat_types (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `type_name` VARCHAR(50) NOT NULL UNIQUE COMMENT '类型名称',
   `description` VARCHAR(255) COMMENT '类型描述',
@@ -191,7 +191,7 @@ CREATE TABLE ship_types (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='船只类型表';
 
 -- 船只表
-CREATE TABLE ships (
+CREATE TABLE boats (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT '船只名称',
   `type_id` INT UNSIGNED NOT NULL COMMENT '船只类型',
@@ -205,7 +205,7 @@ CREATE TABLE ships (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`type_id`) REFERENCES ship_types(`id`),
+  FOREIGN KEY (`type_id`) REFERENCES boat_types(`id`),
   FOREIGN KEY (`vendor_id`) REFERENCES vendors(`id`),
   FOREIGN KEY (`unit_id`) REFERENCES units(`id`),
   INDEX `idx_unit` (`unit_id`)
@@ -216,7 +216,7 @@ CREATE TABLE orders (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_no` VARCHAR(32) NOT NULL UNIQUE COMMENT '订单编号',
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户',
-  `ship_id` BIGINT UNSIGNED COMMENT '指定船只',
+  `boat_id` BIGINT UNSIGNED COMMENT '指定船只',
   `start_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '起始码头',
   `end_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '目的码头',
   `start_time` DATETIME NOT NULL COMMENT '租用开始时间',
@@ -229,7 +229,7 @@ CREATE TABLE orders (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
-  FOREIGN KEY (`ship_id`) REFERENCES ships(`id`),
+  FOREIGN KEY (`boat_id`) REFERENCES boats(`id`),
   FOREIGN KEY (`start_dock_id`) REFERENCES docks(`id`),
   FOREIGN KEY (`end_dock_id`) REFERENCES docks(`id`),
   INDEX `idx_user_status` (`user_id`, `status`),

@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
  * 商家表 映射层。
  *
  * @author sakurapuare
- * @since 2025-02-11
+ * @since 2025-02-12
  */
 public interface MerchantsMapper extends BaseMapper<Merchants> {
 

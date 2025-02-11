@@ -18,10 +18,10 @@ import com.sakurapuare.boatmanagement.pojo.entity.table.VendorsTableDef;
 import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
 import com.sakurapuare.boatmanagement.service.CertifyService;
-import com.sakurapuare.boatmanagement.service.base.BaseMerchantsService;
-import com.sakurapuare.boatmanagement.service.base.BaseUnitsService;
-import com.sakurapuare.boatmanagement.service.base.BaseUserCertifyService;
-import com.sakurapuare.boatmanagement.service.base.BaseVendorsService;
+import com.sakurapuare.boatmanagement.service.MerchantsService;
+import com.sakurapuare.boatmanagement.service.UnitsService;
+import com.sakurapuare.boatmanagement.service.UserCertifyService;
+import com.sakurapuare.boatmanagement.service.VendorsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -34,10 +34,10 @@ public class CertifyServiceImpl implements CertifyService {
     private static final MerchantsTableDef merchantsTableDef = new MerchantsTableDef();
     private static final VendorsTableDef vendorsTableDef = new VendorsTableDef();
     private static final UserCertifyTableDef userCertifyTableDef = new UserCertifyTableDef();
-    private final BaseUserCertifyService baseUserCertifyService;
-    private final BaseUnitsService unitsService;
-    private final BaseMerchantsService baseMerchantsService;
-    private final BaseVendorsService baseVendorsService;
+    private final UserCertifyService baseUserCertifyService;
+    private final UnitsService unitsService;
+    private final MerchantsService baseMerchantsService;
+    private final VendorsService baseVendorsService;
 
     @Override
     public void certifyUser(UserCertifyRequestDTO request) {

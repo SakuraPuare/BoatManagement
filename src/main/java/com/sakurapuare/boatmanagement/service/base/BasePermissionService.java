@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Permission;
  * 权限表 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-11
+ * @since 2025-02-12
  */
 public interface BasePermissionService extends IService<Permission> {
 

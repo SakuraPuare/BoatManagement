@@ -1,0 +1,97 @@
+#!/bin/bash
+source ./scripts/init.sh
+
+entity_path="$spring_path/pojo/entity"
+dto_path="$spring_path/pojo/dto"
+vo_path="$spring_path/pojo/vo"
+
+#  获取@ApiModelProperty 和 他的下一行
+function get_api_model_property_name() {
+    local entity_name="$1"
+    local input_file="$entity_path/$entity_name.java"
+
+    # 使用awk处理文件
+    awk '
+        # 当找到@ApiModelProperty行时
+        /@ApiModelProperty/ {
+            # 保存当前行
+            property_line=$0
+            # 读取下一行
+            getline next_line
+            # 打印两行,用特殊分隔符分开
+            print property_line "\n"  next_line "\n"
+        }
+    ' "$input_file"
+    
+    # return 
+    echo "$property_line"
+    echo "$next_line"
+}
+
+function generate_file() {
+    local entity_name="$1"
+    local api_model_property_name="$2"
+    local api_model_name="$3"
+    local sql_import_list="$4"
+    local math_import_list="$5"
+    
+    
+    for type in "dto" "vo"; do
+        if [ "$type" == "dto" ]; then
+            file_path="$dto_path"
+        else
+            file_path="$vo_path"
+        fi
+        file_name="$entity_name$(echo $type | tr '[:lower:]' '[:upper:]')"
+        file_real_name="$file_name.java"
+
+        if [ -f "$file_path/$file_real_name" ]; then
+            echo "文件已存在: $file_path/$file_real_name"
+            continue
+        fi
+        template_before="package com.sakurapuare.boatmanagement.pojo.$type;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;"
+
+template_after="@Data
+@ApiModel(\"${api_model_name}\")
+public class ${file_name} {
+${api_model_property_name}
+}
+"
+        # 生成dto文件
+        echo "$template_before" > "$file_path/$file_real_name"
+        sql_import_list=$(echo "$sql_import_list" | sed '/^[[:space:]]*$/d')
+        math_import_list=$(echo "$math_import_list" | sed '/^[[:space:]]*$/d')
+
+        echo -e "$sql_import_list" >> "$file_path/$file_real_name"
+        echo -e "$math_import_list" >> "$file_path/$file_real_name"
+
+        echo "$template_after" >> "$file_path/$file_real_name"
+        echo "生成文件: $file_path/$file_real_name"
+    done
+}
+
+# 函数 根据entity文件生成dto文件
+function generate() {
+    local entity_name="$1"
+
+    # 获取@ApiModel
+    api_model_name=$(sed -n 's/.*@ApiModel("\(.*\)").*/\1/p' "$entity_path/$entity_name.java")
+    # 获取@ApiModelProperty 和 他的下一行
+    api_model_property_name=$(get_api_model_property_name "$entity_name")
+    # 获取所有import java*
+    sql_import_list=$(sed -n 's/^import java\.sql\(.*\);/\1;/p' "$entity_path/$entity_name.java" | sed 's/^/import java.sql/')
+    math_import_list=$(sed -n 's/^import java\.math\(.*\);/\1;/p' "$entity_path/$entity_name.java" | sed 's/^/import java.math/')
+
+    # 生成dto文件
+    generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$sql_import_list" "$math_import_list"
+}
+
+# 过滤BaseEntity
+fd -t f . $entity_path -d 1 -E "BaseEntity.java" | while read -r file; do 
+    entity_name=$(basename "$file" | sed -n 's/\(.*\)\.java/\1/p')
+    generate "$entity_name"
+done

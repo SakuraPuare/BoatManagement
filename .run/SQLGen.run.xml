@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SQLGen" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="com.sakurapuare.boatmanagement.SQLGen" />
+    <module name="boatmanagement" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.sakurapuare.boatmanagement.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_外部工具_导入数据库" />
+    </method>
+  </configuration>
+</component>

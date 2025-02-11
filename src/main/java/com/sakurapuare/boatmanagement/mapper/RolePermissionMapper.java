@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.RolePermission;
  * 角色权限关联表 映射层。
  *
  * @author sakurapuare
- * @since 2025-02-11
+ * @since 2025-02-12
  */
 public interface RolePermissionMapper extends BaseMapper<RolePermission> {
 

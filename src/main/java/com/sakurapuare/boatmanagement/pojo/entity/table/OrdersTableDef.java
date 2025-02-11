@@ -9,7 +9,7 @@ import java.io.Serial;
  * 订单表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-11
+ * @since 2025-02-12
  */
 public class OrdersTableDef extends TableDef {
 
@@ -32,7 +32,7 @@ public class OrdersTableDef extends TableDef {
     /**
      * 指定船只
      */
-    public final QueryColumn SHIP_ID = new QueryColumn(this, "ship_id");
+    public final QueryColumn BOAT_ID = new QueryColumn(this, "boat_id");
 
     
     public final QueryColumn STATUS = new QueryColumn(this, "status");
@@ -80,7 +80,7 @@ public class OrdersTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, ORDER_NO, USER_ID, SHIP_ID, START_DOCK_ID, END_DOCK_ID, START_TIME, END_TIME, TOTAL_AMOUNT, STATUS, TYPE};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, ORDER_NO, USER_ID, BOAT_ID, START_DOCK_ID, END_DOCK_ID, START_TIME, END_TIME, TOTAL_AMOUNT, STATUS, TYPE};
 
     public OrdersTableDef() {
         super("", "orders");

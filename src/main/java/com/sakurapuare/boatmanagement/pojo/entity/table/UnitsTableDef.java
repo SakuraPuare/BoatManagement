@@ -9,7 +9,7 @@ import java.io.Serial;
  * 单位表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-11
+ * @since 2025-02-12
  */
 public class UnitsTableDef extends TableDef {
 

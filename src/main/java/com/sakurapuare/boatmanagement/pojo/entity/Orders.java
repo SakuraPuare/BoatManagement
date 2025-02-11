@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
  * 订单表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-11
+ * @since 2025-02-12
  */
 @Data
 @Builder
@@ -56,7 +56,7 @@ public class Orders extends BaseEntity implements Serializable {
      * 指定船只
      */
     @ApiModelProperty("指定船只")
-    private Long shipId;
+    private Long boatId;
 
     /**
      * 起始码头
