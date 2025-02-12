@@ -35,6 +35,8 @@ function generate_file() {
     local sql_import_list="$4"
     local math_import_list="$5"
     
+    mkdir -p "$dto_path/base"
+    mkdir -p "$vo_path/base"
     
     for type in "dto" "vo"; do
         if [ "$type" == "dto" ]; then
@@ -49,7 +51,7 @@ function generate_file() {
             echo "文件已存在: $file_path/$file_real_name"
             continue
         fi
-        template_before="package com.sakurapuare.boatmanagement.pojo.$type;
+        template_before="package com.sakurapuare.$project_name.pojo.$type.base;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -61,16 +63,15 @@ public class ${file_name} {
 ${api_model_property_name}
 }
 "
-        # 生成dto文件
-        echo "$template_before" > "$file_path/$file_real_name"
+        echo "$template_before" > "$file_path/base/$file_real_name"
         sql_import_list=$(echo "$sql_import_list" | sed '/^[[:space:]]*$/d')
         math_import_list=$(echo "$math_import_list" | sed '/^[[:space:]]*$/d')
 
-        echo -e "$sql_import_list" >> "$file_path/$file_real_name"
-        echo -e "$math_import_list" >> "$file_path/$file_real_name"
+        echo -e "$sql_import_list" >> "$file_path/base/$file_real_name"
+        echo -e "$math_import_list" >> "$file_path/base/$file_real_name"
 
-        echo "$template_after" >> "$file_path/$file_real_name"
-        echo "生成文件: $file_path/$file_real_name"
+        echo "$template_after" >> "$file_path/base/$file_real_name"
+        echo "生成文件: $file_path/base/$file_real_name"
     done
 }
 
