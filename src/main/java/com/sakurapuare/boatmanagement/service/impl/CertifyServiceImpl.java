@@ -1,39 +1,40 @@
 package com.sakurapuare.boatmanagement.service.impl;
 
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
 import com.sakurapuare.boatmanagement.common.UserContext;
 import com.sakurapuare.boatmanagement.constant.CertifyStatus;
 import com.sakurapuare.boatmanagement.constant.UnitsTypes;
+import com.sakurapuare.boatmanagement.pojo.dto.CertifyQueryDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
 import com.sakurapuare.boatmanagement.pojo.entity.Units;
 import com.sakurapuare.boatmanagement.pojo.entity.UserCertify;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
-import com.sakurapuare.boatmanagement.pojo.entity.table.MerchantsTableDef;
-import com.sakurapuare.boatmanagement.pojo.entity.table.UnitsTableDef;
-import com.sakurapuare.boatmanagement.pojo.entity.table.UserCertifyTableDef;
-import com.sakurapuare.boatmanagement.pojo.entity.table.VendorsTableDef;
 import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.UnitsVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
-import com.sakurapuare.boatmanagement.service.CertifyService;
-import com.sakurapuare.boatmanagement.service.MerchantsService;
-import com.sakurapuare.boatmanagement.service.UnitsService;
-import com.sakurapuare.boatmanagement.service.UserCertifyService;
-import com.sakurapuare.boatmanagement.service.VendorsService;
+import com.sakurapuare.boatmanagement.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.sakurapuare.boatmanagement.pojo.entity.table.MerchantsTableDef.MERCHANTS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.UnitsTableDef.UNITS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.UserCertifyTableDef.USER_CERTIFY;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.VendorsTableDef.VENDORS;
 
 @Service
 @RequiredArgsConstructor
 public class CertifyServiceImpl implements CertifyService {
 
-    private static final UnitsTableDef unitsTableDef = new UnitsTableDef();
-    private static final MerchantsTableDef merchantsTableDef = new MerchantsTableDef();
-    private static final VendorsTableDef vendorsTableDef = new VendorsTableDef();
-    private static final UserCertifyTableDef userCertifyTableDef = new UserCertifyTableDef();
     private final UserCertifyService baseUserCertifyService;
     private final UnitsService unitsService;
     private final MerchantsService baseMerchantsService;
@@ -42,7 +43,7 @@ public class CertifyServiceImpl implements CertifyService {
     @Override
     public void certifyUser(UserCertifyRequestDTO request) {
         UserCertify userCertify = baseUserCertifyService.getOne(
-                new QueryWrapper().eq(userCertifyTableDef.USER_ID.getName(), UserContext.getAccount().getId()));
+                new QueryWrapper().eq(USER_CERTIFY.USER_ID.getName(), UserContext.getAccount().getId()));
 
         if (userCertify != null) {
             validateStatus(userCertify.getStatus(), "用户");
@@ -83,7 +84,7 @@ public class CertifyServiceImpl implements CertifyService {
     private Units certifyUnit(UnitCertifyRequestDTO request, String types) {
         Units unit = unitsService.getOne(
                 new QueryWrapper()
-                        .eq(unitsTableDef.SOCIAL_CREDIT_CODE.getName(), request.getSocialCreditCode()));
+                        .eq(UNITS.SOCIAL_CREDIT_CODE.getName(), request.getSocialCreditCode()));
 
         if (unit != null) {
             BeanUtils.copyProperties(request, unit);
@@ -106,7 +107,7 @@ public class CertifyServiceImpl implements CertifyService {
 
     private void processMerchant(Long userId, Units unit, String shopName) {
         Merchants merchant = baseMerchantsService.getOne(
-                new QueryWrapper().eq(merchantsTableDef.USER_ID.getName(), userId));
+                new QueryWrapper().eq(MERCHANTS.USER_ID.getName(), userId));
 
         if (merchant != null) {
             validateStatus(merchant.getStatus(), "商户");
@@ -118,7 +119,7 @@ public class CertifyServiceImpl implements CertifyService {
 
     private void processVendor(Long userId, Units unit) {
         Vendors vendor = baseVendorsService.getOne(
-                new QueryWrapper().eq(vendorsTableDef.USER_ID.getName(), userId));
+                new QueryWrapper().eq(VENDORS.USER_ID.getName(), userId));
 
         if (vendor != null) {
             validateStatus(vendor.getStatus(), "供应商");
@@ -171,7 +172,7 @@ public class CertifyServiceImpl implements CertifyService {
     public UserCertifyVO getUserCertify() {
         UserCertifyVO userCertifyVO = new UserCertifyVO();
         UserCertify userCertify = baseUserCertifyService.getOne(
-                new QueryWrapper().eq(userCertifyTableDef.USER_ID.getName(), UserContext.getAccount().getId()));
+                new QueryWrapper().eq(USER_CERTIFY.USER_ID.getName(), UserContext.getAccount().getId()));
         if (userCertify == null) {
             userCertifyVO.setStatus(CertifyStatus.NOT_EXIST);
         } else {
@@ -181,11 +182,20 @@ public class CertifyServiceImpl implements CertifyService {
         return userCertifyVO;
     }
 
+    public UnitCertifyVO buildUnitCertifyVO(Units unit) {
+        UnitCertifyVO vo = new UnitCertifyVO();
+        UnitsVO unitVO = new UnitsVO();
+        BeanUtils.copyProperties(unit, unitVO);
+        BeanUtils.copyProperties(unit, vo);
+        vo.setCertify(unitVO);
+        return vo;
+    }
+
     @Override
     public UnitCertifyVO getMerchantCertify() {
         UnitCertifyVO vo = new UnitCertifyVO();
         Merchants merchant = baseMerchantsService.getOne(
-                new QueryWrapper().eq(merchantsTableDef.USER_ID.getName(), UserContext.getAccount().getId()));
+                new QueryWrapper().eq(MERCHANTS.USER_ID.getName(), UserContext.getAccount().getId()));
 
         if (merchant == null) {
             vo.setStatus(CertifyStatus.NOT_EXIST);
@@ -194,8 +204,7 @@ public class CertifyServiceImpl implements CertifyService {
             if (unit == null) {
                 vo.setStatus(CertifyStatus.NOT_EXIST);
             } else {
-                vo.setCertify(unit);
-                BeanUtils.copyProperties(unit, vo);
+                vo = buildUnitCertifyVO(unit);
             }
         }
         return vo;
@@ -205,7 +214,7 @@ public class CertifyServiceImpl implements CertifyService {
     public UnitCertifyVO getVendorCertify() {
         UnitCertifyVO vo = new UnitCertifyVO();
         Vendors vendor = baseVendorsService.getOne(
-                new QueryWrapper().eq(vendorsTableDef.USER_ID.getName(), UserContext.getAccount().getId()));
+                new QueryWrapper().eq(VENDORS.USER_ID.getName(), UserContext.getAccount().getId()));
 
         if (vendor == null) {
             vo.setStatus(CertifyStatus.NOT_EXIST);
@@ -214,8 +223,7 @@ public class CertifyServiceImpl implements CertifyService {
             if (unit == null) {
                 vo.setStatus(CertifyStatus.NOT_EXIST);
             } else {
-                vo.setCertify(unit);
-                BeanUtils.copyProperties(unit, vo);
+                vo = buildUnitCertifyVO(unit);
             }
         }
         return vo;
@@ -387,5 +395,36 @@ public class CertifyServiceImpl implements CertifyService {
         } catch (Exception e) {
             throw new RuntimeException("获取字段值失败", e);
         }
+    }
+
+    @Override
+    public List<UnitsVO> getListQuery(CertifyQueryDTO queryDTO) {
+        Units queryUnits = new Units();
+        BeanUtils.copyProperties(queryDTO, queryUnits);
+        List<Units> units = unitsService.list(QueryWrapper.create(queryUnits));
+        return units.stream().map(unit -> {
+            UnitsVO vo = new UnitsVO();
+            BeanUtils.copyProperties(unit, vo);
+            return vo;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<UnitsVO> getPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
+        Units queryUnits = new Units();
+        BeanUtils.copyProperties(queryDTO, queryUnits);
+        Page<Units> units = unitsService.page(Page.of(pageNum, pageSize), QueryWrapper.create(queryUnits));
+        
+        List<UnitsVO> unitsVOs = new ArrayList<>(units.getRecords().size());
+        for (Units unit : units.getRecords()) {
+            UnitsVO vo = new UnitsVO();
+            BeanUtils.copyProperties(unit, vo);
+            unitsVOs.add(vo);
+        }
+        
+        Page<UnitsVO> voPage = new Page<>();    
+        BeanUtils.copyProperties(units, voPage);
+        voPage.setRecords(unitsVOs);
+        return voPage;
     }
 }

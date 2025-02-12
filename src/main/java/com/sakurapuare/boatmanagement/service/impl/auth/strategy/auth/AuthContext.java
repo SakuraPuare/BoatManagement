@@ -15,6 +15,7 @@ public class AuthContext {
     private final PasswordStrategy passwordStrategy;
     private final CaptchaStrategy captchaStrategy;
     private final WechatStrategy wechatStrategy;
+    
     private AuthStrategy strategy;
 
     public void setStrategy(AuthStatus status) {

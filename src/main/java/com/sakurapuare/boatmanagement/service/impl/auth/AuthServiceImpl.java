@@ -11,7 +11,6 @@ import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.WxLoginDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
-import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
 import com.sakurapuare.boatmanagement.service.AccountsService;
 import com.sakurapuare.boatmanagement.service.AuthService;
 import com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth.AuthContext;
@@ -24,11 +23,12 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> implements AuthService {
 
-    private static final AccountsTableDef accountsTableDef = new AccountsTableDef();
     private final AccountsService accountsService;
     private final CaptchaSenderContext captchaSenderContext;
 
@@ -74,9 +74,9 @@ public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> imple
 
         String field = null;
         switch (name) {
-            case AuthName.USERNAME -> field = accountsTableDef.USERNAME.getName();
-            case AuthName.PHONE -> field = accountsTableDef.PHONE.getName();
-            case AuthName.EMAIL -> field = accountsTableDef.EMAIL.getName();
+            case AuthName.USERNAME -> field = ACCOUNTS.USERNAME.getName();
+            case AuthName.PHONE -> field = ACCOUNTS.PHONE.getName();
+            case AuthName.EMAIL -> field = ACCOUNTS.EMAIL.getName();
             default -> field = null;
         }
 

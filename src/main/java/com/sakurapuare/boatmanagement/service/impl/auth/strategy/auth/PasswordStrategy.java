@@ -5,19 +5,17 @@ import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
 import com.sakurapuare.boatmanagement.constant.auth.AuthType;
 import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
-import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
 import com.sakurapuare.boatmanagement.service.AccountsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
+
 @Component
 @RequiredArgsConstructor
 public class PasswordStrategy implements AuthStrategy {
-
-    private static final AccountsTableDef accountsTableDef = new AccountsTableDef();
-
+    
     private final AccountsService accountsService;
-
 
     @Override
     public Accounts auth(AuthStatus status, AuthRequestDTO authRequestDTO) {
@@ -26,13 +24,12 @@ public class PasswordStrategy implements AuthStrategy {
 
         String field = AuthStrategy.getFieldName(status);
 
-
         Accounts account = null;
         if (status.getType() == AuthType.LOGIN) {
             account = accountsService.getOne(
                     QueryWrapper.create()
                             .eq(field, username)
-                            .eq(accountsTableDef.PASSWORD.getName(), password));
+                            .eq(ACCOUNTS.PASSWORD.getName(), password));
 
             if (account == null) {
                 throw new IllegalArgumentException("账号或密码错误");

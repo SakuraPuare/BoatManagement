@@ -4,38 +4,27 @@ import cn.hutool.core.util.RandomUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.RequestContext;
 import com.sakurapuare.boatmanagement.constant.CaptchaStatus;
-import com.sakurapuare.boatmanagement.mapper.CaptchaLimitMapper;
-import com.sakurapuare.boatmanagement.mapper.CaptchaMapper;
 import com.sakurapuare.boatmanagement.pojo.entity.Captcha;
 import com.sakurapuare.boatmanagement.pojo.entity.CaptchaLimit;
-import com.sakurapuare.boatmanagement.pojo.entity.table.CaptchaLimitTableDef;
-import com.sakurapuare.boatmanagement.pojo.entity.table.CaptchaTableDef;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseCaptchaServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Objects;
 
+import static com.sakurapuare.boatmanagement.pojo.entity.table.CaptchaLimitTableDef.CAPTCHA_LIMIT;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.CaptchaTableDef.CAPTCHA;
+
 
 @Service
+@RequiredArgsConstructor
 public class CaptchaService extends BaseCaptchaServiceImpl {
 
-    private final CaptchaLimitMapper captchaLimitMapper;
-
-    private final CaptchaMapper captchaMapper;
-
-    private final CaptchaLimitTableDef captchaLimitTableDef = new CaptchaLimitTableDef();
-
-    private final CaptchaTableDef captchaTableDef = new CaptchaTableDef();
-
-    public CaptchaService(CaptchaLimitMapper captchaLimitMapper, CaptchaMapper captchaMapper) {
-        this.captchaLimitMapper = captchaLimitMapper;
-        this.captchaMapper = captchaMapper;
-    }
+    private final CaptchaLimitService captchaLimitService;
 
     public boolean isReachCaptchaLimit(String target) {
-        CaptchaLimit captchaLimit = captchaLimitMapper.selectOneByQuery(
-                QueryWrapper.create().eq(captchaLimitTableDef.TARGET.getName(), target));
+        CaptchaLimit captchaLimit = captchaLimitService.getOne(QueryWrapper.create().eq(CAPTCHA_LIMIT.TARGET.getName(), target));
 
         if (captchaLimit == null) {
             captchaLimit = new CaptchaLimit();
@@ -45,7 +34,7 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
             captchaLimit.setLastRequest(new Timestamp(System.currentTimeMillis()));
             captchaLimit.setIsBlocked(false);
 
-            captchaLimitMapper.insertSelective(captchaLimit);
+            captchaLimitService.save(captchaLimit);
             return false;
         }
 
@@ -57,13 +46,13 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         // 如果发送次数超过 20 次，则锁定
         if (captchaLimit.getCount() >= 20) {
             captchaLimit.setIsBlocked(true);
-            captchaLimitMapper.update(captchaLimit);
+            captchaLimitService.updateById(captchaLimit);
             return true;
         }
 
         captchaLimit.setCount(captchaLimit.getCount() + 1);
         captchaLimit.setLastRequest(new Timestamp(System.currentTimeMillis()));
-        captchaLimitMapper.update(captchaLimit);
+        captchaLimitService.updateById(captchaLimit);
 
         return false;
     }
@@ -81,14 +70,13 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         captcha.setClientIp(RequestContext.getContext().getIp());
         captcha.setTarget(target);
 
-        captchaMapper.insertSelective(captcha);
+        super.save(captcha);
 
         return captcha;
     }
 
     public boolean verifyCode(String target, String code) {
-        Captcha captcha = captchaMapper.selectOneByQuery(
-                QueryWrapper.create().eq(captchaTableDef.TARGET.getName(), target).eq(captchaTableDef.CODE.getName(), code));
+        Captcha captcha = super.getOne(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target).eq(CAPTCHA.CODE.getName(), code));
 
         if (captcha == null) {
             return false;
@@ -103,15 +91,14 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         }
 
         captcha.setStatus(CaptchaStatus.USED);
-        captchaMapper.insertOrUpdateSelective(captcha);
+        super.updateById(captcha);
 
         // clear captcha limit
         // captchaLimitMapper.deleteByQuery(
-        //         QueryWrapper.create().eq(captchaLimitTableDef.TARGET.getName(), target));
+        //         QueryWrapper.create().eq(captchaLimit.TARGET.getName(), target));
 
         // clear captcha
-        captchaMapper.deleteByQuery(
-                QueryWrapper.create().eq(captchaTableDef.TARGET.getName(), target));
+        super.remove(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target));
 
         return true;
     }

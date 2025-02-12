@@ -4,21 +4,22 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
-import com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef;
 import com.sakurapuare.boatmanagement.service.AccountsService;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
+
 @Component
 @RequiredArgsConstructor
 public class CaptchaSenderContext {
 
-    private static final AccountsTableDef accountsTableDef = new AccountsTableDef();
     private final AccountsService accountsService;
     private final EmailCaptchaSender emailCaptchaSender;
     private final PhoneCaptchaSender phoneCaptchaSender;
     private final AllCaptchaSender allCaptchaSender;
+
     private CaptchaSender capthaSender;
 
     public void setStrategy(NameRequestDTO nameRequestDTO) {
@@ -32,7 +33,8 @@ public class CaptchaSenderContext {
             }
             case AuthName.USERNAME -> {
                 Accounts account = accountsService.getOne(
-                        new QueryWrapper().eq(accountsTableDef.USERNAME.getName(), nameRequestDTO.getUsername()));
+                        QueryWrapper.create()
+                                .where(ACCOUNTS.USERNAME.eq(nameRequestDTO.getUsername())));
                 if (account == null) {
                     throw new IllegalArgumentException("不支持的验证码发送方式");
                 }
