@@ -6,7 +6,7 @@ import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
-import com.sakurapuare.boatmanagement.pojo.vo.base.UnitsVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUnitsVO;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ public interface CertifyService {
 
     void leaveUnit(String types);
 
-    List<UnitsVO> getListQuery(CertifyQueryDTO queryDTO);
+    List<BaseUnitsVO> getListQuery(CertifyQueryDTO queryDTO);
 
-    Page<UnitsVO> getPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO);
+    Page<BaseUnitsVO> getPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO);
 
     void audit(String types, Long id);
 }

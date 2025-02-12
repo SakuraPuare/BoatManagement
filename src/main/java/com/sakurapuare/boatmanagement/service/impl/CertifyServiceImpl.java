@@ -11,17 +11,12 @@ import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.pojo.dto.CertifyQueryDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
-import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
-import com.sakurapuare.boatmanagement.pojo.entity.Units;
-import com.sakurapuare.boatmanagement.pojo.entity.UserCertify;
-import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
+import com.sakurapuare.boatmanagement.pojo.entity.*;
 import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
-import com.sakurapuare.boatmanagement.pojo.vo.base.UnitsVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUnitsVO;
 import com.sakurapuare.boatmanagement.service.*;
 import com.sakurapuare.boatmanagement.utils.RoleUtils;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -30,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
 import static com.sakurapuare.boatmanagement.pojo.entity.table.MerchantsTableDef.MERCHANTS;
 import static com.sakurapuare.boatmanagement.pojo.entity.table.UnitsTableDef.UNITS;
 import static com.sakurapuare.boatmanagement.pojo.entity.table.UserCertifyTableDef.USER_CERTIFY;
@@ -190,7 +184,7 @@ public class CertifyServiceImpl implements CertifyService {
 
     public UnitCertifyVO buildUnitCertifyVO(Units unit) {
         UnitCertifyVO vo = new UnitCertifyVO();
-        UnitsVO unitVO = new UnitsVO();
+        BaseUnitsVO unitVO = new BaseUnitsVO();
         BeanUtils.copyProperties(unit, unitVO);
         BeanUtils.copyProperties(unit, vo);
         vo.setCertify(unitVO);
@@ -404,31 +398,31 @@ public class CertifyServiceImpl implements CertifyService {
     }
 
     @Override
-    public List<UnitsVO> getListQuery(CertifyQueryDTO queryDTO) {
+    public List<BaseUnitsVO> getListQuery(CertifyQueryDTO queryDTO) {
         Units queryUnits = new Units();
         BeanUtils.copyProperties(queryDTO, queryUnits);
         List<Units> units = unitsService.list(QueryWrapper.create(queryUnits));
         return units.stream().map(unit -> {
-            UnitsVO vo = new UnitsVO();
+            BaseUnitsVO vo = new BaseUnitsVO();
             BeanUtils.copyProperties(unit, vo);
             return vo;
         }).collect(Collectors.toList());
     }
 
     @Override
-    public Page<UnitsVO> getPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
+    public Page<BaseUnitsVO> getPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
         Units queryUnits = new Units();
         BeanUtils.copyProperties(queryDTO, queryUnits);
         Page<Units> units = unitsService.page(Page.of(pageNum, pageSize), QueryWrapper.create(queryUnits));
 
-        List<UnitsVO> unitsVOs = new ArrayList<>(units.getRecords().size());
+        List<BaseUnitsVO> unitsVOs = new ArrayList<>(units.getRecords().size());
         for (Units unit : units.getRecords()) {
-            UnitsVO vo = new UnitsVO();
+            BaseUnitsVO vo = new BaseUnitsVO();
             BeanUtils.copyProperties(unit, vo);
             unitsVOs.add(vo);
         }
 
-        Page<UnitsVO> voPage = new Page<>();
+        Page<BaseUnitsVO> voPage = new Page<>();
         BeanUtils.copyProperties(units, voPage);
         voPage.setRecords(unitsVOs);
         return voPage;
@@ -441,7 +435,7 @@ public class CertifyServiceImpl implements CertifyService {
 
         Accounts account = null;
 
-        switch(unit.getTypes()) {
+        switch (unit.getTypes()) {
             case UnitsTypes.MERCHANT: {
                 // 2. 更新商户状态
                 Merchants merchant = merchantsService.getOne(
@@ -452,7 +446,7 @@ public class CertifyServiceImpl implements CertifyService {
                 // 3. 更新账号权限
                 account = accountsService.getById(merchant.getUserId());
                 account.setRole(RoleUtils.addRole(account.getRole(), UserRole.MERCHANT));
-                
+
             }
             case UnitsTypes.VENDOR: {
                 // 2. 更新供应商状态
@@ -476,8 +470,8 @@ public class CertifyServiceImpl implements CertifyService {
 
         Accounts account = null;
 
-        switch(unit.getTypes()) {
-            
+        switch (unit.getTypes()) {
+
             case UnitsTypes.MERCHANT: {
                 // 2. 更新商户状态
                 Merchants merchant = merchantsService.getOne(
