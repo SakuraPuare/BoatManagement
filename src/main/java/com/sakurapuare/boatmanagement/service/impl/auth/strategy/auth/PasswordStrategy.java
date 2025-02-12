@@ -14,7 +14,7 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.
 @Component
 @RequiredArgsConstructor
 public class PasswordStrategy implements AuthStrategy {
-    
+
     private final AccountsService accountsService;
 
     @Override

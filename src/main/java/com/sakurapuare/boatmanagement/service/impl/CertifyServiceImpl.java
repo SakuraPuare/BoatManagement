@@ -4,28 +4,33 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
 import com.sakurapuare.boatmanagement.common.UserContext;
+import com.sakurapuare.boatmanagement.constant.AuditOperation;
 import com.sakurapuare.boatmanagement.constant.CertifyStatus;
 import com.sakurapuare.boatmanagement.constant.UnitsTypes;
+import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.pojo.dto.CertifyQueryDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
+import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
 import com.sakurapuare.boatmanagement.pojo.entity.Units;
 import com.sakurapuare.boatmanagement.pojo.entity.UserCertify;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
 import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
-import com.sakurapuare.boatmanagement.pojo.vo.base.UnitsVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.UnitsVO;
 import com.sakurapuare.boatmanagement.service.*;
+import com.sakurapuare.boatmanagement.utils.RoleUtils;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
 import static com.sakurapuare.boatmanagement.pojo.entity.table.MerchantsTableDef.MERCHANTS;
 import static com.sakurapuare.boatmanagement.pojo.entity.table.UnitsTableDef.UNITS;
 import static com.sakurapuare.boatmanagement.pojo.entity.table.UserCertifyTableDef.USER_CERTIFY;
@@ -35,14 +40,15 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.VendorsTableDef.V
 @RequiredArgsConstructor
 public class CertifyServiceImpl implements CertifyService {
 
-    private final UserCertifyService baseUserCertifyService;
+    private final UserCertifyService userCertifyService;
     private final UnitsService unitsService;
-    private final MerchantsService baseMerchantsService;
-    private final VendorsService baseVendorsService;
+    private final MerchantsService merchantsService;
+    private final VendorsService vendorsService;
+    private final AccountsService accountsService;
 
     @Override
     public void certifyUser(UserCertifyRequestDTO request) {
-        UserCertify userCertify = baseUserCertifyService.getOne(
+        UserCertify userCertify = userCertifyService.getOne(
                 new QueryWrapper().eq(USER_CERTIFY.USER_ID.getName(), UserContext.getAccount().getId()));
 
         if (userCertify != null) {
@@ -57,7 +63,7 @@ public class CertifyServiceImpl implements CertifyService {
                     .status(CertifyStatus.PENDING)
                     .build();
         }
-        baseUserCertifyService.saveOrUpdate(userCertify);
+        userCertifyService.saveOrUpdate(userCertify);
     }
 
     @Override
@@ -106,7 +112,7 @@ public class CertifyServiceImpl implements CertifyService {
     }
 
     private void processMerchant(Long userId, Units unit, String shopName) {
-        Merchants merchant = baseMerchantsService.getOne(
+        Merchants merchant = merchantsService.getOne(
                 new QueryWrapper().eq(MERCHANTS.USER_ID.getName(), userId));
 
         if (merchant != null) {
@@ -118,7 +124,7 @@ public class CertifyServiceImpl implements CertifyService {
     }
 
     private void processVendor(Long userId, Units unit) {
-        Vendors vendor = baseVendorsService.getOne(
+        Vendors vendor = vendorsService.getOne(
                 new QueryWrapper().eq(VENDORS.USER_ID.getName(), userId));
 
         if (vendor != null) {
@@ -141,7 +147,7 @@ public class CertifyServiceImpl implements CertifyService {
     private void updateMerchant(Merchants merchant, Long unitId) {
         merchant.setUnitId(unitId);
         merchant.setStatus(CertifyStatus.PENDING);
-        baseMerchantsService.updateById(merchant);
+        merchantsService.updateById(merchant);
     }
 
     private void createMerchant(Long userId, Long unitId) {
@@ -150,13 +156,13 @@ public class CertifyServiceImpl implements CertifyService {
                 .unitId(unitId)
                 .status(CertifyStatus.PENDING)
                 .build();
-        baseMerchantsService.save(newMerchant);
+        merchantsService.save(newMerchant);
     }
 
     private void updateVendor(Vendors vendor, Long unitId) {
         vendor.setUnitId(unitId);
         vendor.setStatus(CertifyStatus.PENDING);
-        baseVendorsService.updateById(vendor);
+        vendorsService.updateById(vendor);
     }
 
     private void createVendor(Long userId, Long unitId) {
@@ -165,13 +171,13 @@ public class CertifyServiceImpl implements CertifyService {
                 .unitId(unitId)
                 .status(CertifyStatus.PENDING)
                 .build();
-        baseVendorsService.save(newVendor);
+        vendorsService.save(newVendor);
     }
 
     @Override
     public UserCertifyVO getUserCertify() {
         UserCertifyVO userCertifyVO = new UserCertifyVO();
-        UserCertify userCertify = baseUserCertifyService.getOne(
+        UserCertify userCertify = userCertifyService.getOne(
                 new QueryWrapper().eq(USER_CERTIFY.USER_ID.getName(), UserContext.getAccount().getId()));
         if (userCertify == null) {
             userCertifyVO.setStatus(CertifyStatus.NOT_EXIST);
@@ -194,7 +200,7 @@ public class CertifyServiceImpl implements CertifyService {
     @Override
     public UnitCertifyVO getMerchantCertify() {
         UnitCertifyVO vo = new UnitCertifyVO();
-        Merchants merchant = baseMerchantsService.getOne(
+        Merchants merchant = merchantsService.getOne(
                 new QueryWrapper().eq(MERCHANTS.USER_ID.getName(), UserContext.getAccount().getId()));
 
         if (merchant == null) {
@@ -213,7 +219,7 @@ public class CertifyServiceImpl implements CertifyService {
     @Override
     public UnitCertifyVO getVendorCertify() {
         UnitCertifyVO vo = new UnitCertifyVO();
-        Vendors vendor = baseVendorsService.getOne(
+        Vendors vendor = vendorsService.getOne(
                 new QueryWrapper().eq(VENDORS.USER_ID.getName(), UserContext.getAccount().getId()));
 
         if (vendor == null) {
@@ -236,10 +242,10 @@ public class CertifyServiceImpl implements CertifyService {
 
         switch (types) {
             case UnitsTypes.MERCHANT:
-                handleJoinUnit(baseMerchantsService, Merchants.class, unitId);
+                handleJoinUnit(merchantsService, Merchants.class, unitId);
                 break;
             case UnitsTypes.VENDOR:
-                handleJoinUnit(baseVendorsService, Vendors.class, unitId);
+                handleJoinUnit(vendorsService, Vendors.class, unitId);
                 break;
         }
     }
@@ -253,10 +259,10 @@ public class CertifyServiceImpl implements CertifyService {
 
         switch (types) {
             case UnitsTypes.MERCHANT:
-                handleTransferUnit(baseMerchantsService, userId);
+                handleTransferUnit(merchantsService, userId);
                 break;
             case UnitsTypes.VENDOR:
-                handleTransferUnit(baseVendorsService, userId);
+                handleTransferUnit(vendorsService, userId);
                 break;
         }
     }
@@ -267,10 +273,10 @@ public class CertifyServiceImpl implements CertifyService {
 
         switch (types) {
             case UnitsTypes.MERCHANT:
-                handleLeaveUnit(baseMerchantsService);
+                handleLeaveUnit(merchantsService);
                 break;
             case UnitsTypes.VENDOR:
-                handleLeaveUnit(baseVendorsService);
+                handleLeaveUnit(vendorsService);
                 break;
         }
     }
@@ -414,17 +420,103 @@ public class CertifyServiceImpl implements CertifyService {
         Units queryUnits = new Units();
         BeanUtils.copyProperties(queryDTO, queryUnits);
         Page<Units> units = unitsService.page(Page.of(pageNum, pageSize), QueryWrapper.create(queryUnits));
-        
+
         List<UnitsVO> unitsVOs = new ArrayList<>(units.getRecords().size());
         for (Units unit : units.getRecords()) {
             UnitsVO vo = new UnitsVO();
             BeanUtils.copyProperties(unit, vo);
             unitsVOs.add(vo);
         }
-        
-        Page<UnitsVO> voPage = new Page<>();    
+
+        Page<UnitsVO> voPage = new Page<>();
         BeanUtils.copyProperties(units, voPage);
         voPage.setRecords(unitsVOs);
         return voPage;
+    }
+
+    private void approve(Units unit) {
+        // 1. 更新单位状态
+        unit.setStatus(CertifyStatus.APPROVED);
+        unitsService.updateById(unit);
+
+        Accounts account = null;
+
+        switch(unit.getTypes()) {
+            case UnitsTypes.MERCHANT: {
+                // 2. 更新商户状态
+                Merchants merchant = merchantsService.getOne(
+                        new QueryWrapper().eq(MERCHANTS.UNIT_ID.getName(), unit.getId()));
+                merchant.setStatus(CertifyStatus.APPROVED);
+                merchantsService.updateById(merchant);
+
+                // 3. 更新账号权限
+                account = accountsService.getById(merchant.getUserId());
+                account.setRole(RoleUtils.addRole(account.getRole(), UserRole.MERCHANT));
+                
+            }
+            case UnitsTypes.VENDOR: {
+                // 2. 更新供应商状态
+                Vendors vendor = vendorsService.getOne(
+                        new QueryWrapper().eq(VENDORS.UNIT_ID.getName(), unit.getId()));
+                vendor.setStatus(CertifyStatus.APPROVED);
+                vendorsService.updateById(vendor);
+
+                // 3. 更新账号权限
+                account = accountsService.getById(vendor.getUserId());
+                account.setRole(RoleUtils.addRole(account.getRole(), UserRole.VENDOR));
+            }
+        }
+        accountsService.updateById(account);
+    }
+
+    private void reject(Units unit) {
+        // 1. 更新单位状态
+        unit.setStatus(CertifyStatus.REJECTED);
+        unitsService.updateById(unit);
+
+        Accounts account = null;
+
+        switch(unit.getTypes()) {
+            
+            case UnitsTypes.MERCHANT: {
+                // 2. 更新商户状态
+                Merchants merchant = merchantsService.getOne(
+                        new QueryWrapper().eq(MERCHANTS.UNIT_ID.getName(), unit.getId()));
+                merchant.setStatus(CertifyStatus.REJECTED);
+                merchantsService.updateById(merchant);
+
+                // 3. 更新账号权限
+                account = accountsService.getById(merchant.getUserId());
+                account.setRole(RoleUtils.removeRole(account.getRole(), UserRole.MERCHANT));
+            }
+            case UnitsTypes.VENDOR: {
+                Vendors vendor = vendorsService.getOne(
+                        new QueryWrapper().eq(VENDORS.UNIT_ID.getName(), unit.getId()));
+                vendor.setStatus(CertifyStatus.REJECTED);
+                vendorsService.updateById(vendor);
+
+                // 3. 更新账号权限
+                account = accountsService.getById(vendor.getUserId());
+                account.setRole(RoleUtils.removeRole(account.getRole(), UserRole.VENDOR));
+            }
+        }
+        accountsService.updateById(account);
+    }
+
+    @Override
+    public void audit(String types, Long id) {
+        Units unit = unitsService.getById(id);
+        if (unit == null) {
+            throw new IllegalArgumentException("单位不存在");
+        }
+
+        switch (types) {
+            case AuditOperation.APPROVE:
+                approve(unit);
+                break;
+            case AuditOperation.REJECT:
+                reject(unit);
+                break;
+        }
     }
 }
