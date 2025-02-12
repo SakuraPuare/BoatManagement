@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.UserCertify;
  * 用户实名认证表 映射层。
  *
  * @author sakurapuare
- * @since 2025-02-12
+ * @since 2025-02-13
  */
 public interface UserCertifyMapper extends BaseMapper<UserCertify> {
 

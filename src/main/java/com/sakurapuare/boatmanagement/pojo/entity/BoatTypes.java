@@ -5,6 +5,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import java.io.Serial;
 
@@ -20,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * 船只类型表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-12
+ * @since 2025-02-13
  */
 @Data
 @Builder
@@ -49,5 +50,53 @@ public class BoatTypes extends BaseEntity implements Serializable {
      */
     @ApiModelProperty("类型描述")
     private String description;
+
+    /**
+     * 船身长度（米）
+     */
+    @ApiModelProperty("船身长度（米）")
+    private BigDecimal length;
+
+    /**
+     * 船身宽度（米）
+     */
+    @ApiModelProperty("船身宽度（米）")
+    private BigDecimal width;
+
+    /**
+     * 核载人数（人）
+     */
+    @ApiModelProperty("核载人数（人）")
+    private Long grossNumber;
+
+    /**
+     * 最大载重（吨）
+     */
+    @ApiModelProperty("最大载重（吨）")
+    private BigDecimal maxLoad;
+
+    /**
+     * 最大航速（公里/小时）
+     */
+    @ApiModelProperty("最大航速（公里/小时）")
+    private BigDecimal maxSpeed;
+
+    /**
+     * 最大续航（公里）
+     */
+    @ApiModelProperty("最大续航（公里）")
+    private BigDecimal maxEndurance;
+
+    /**
+     * 创建者
+     */
+    @ApiModelProperty("创建者")
+    private Long createdVendorId;
+
+    /**
+     * 创建单位
+     */
+    @ApiModelProperty("创建单位")
+    private Long createdUnitId;
 
 }

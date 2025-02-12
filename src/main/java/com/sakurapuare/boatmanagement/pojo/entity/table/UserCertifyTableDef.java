@@ -9,7 +9,7 @@ import java.io.Serial;
  * 用户实名认证表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-12
+ * @since 2025-02-13
  */
 public class UserCertifyTableDef extends TableDef {
 

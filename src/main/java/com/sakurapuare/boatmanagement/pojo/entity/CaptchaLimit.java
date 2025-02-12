@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * 验证码防刷记录 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-12
+ * @since 2025-02-13
  */
 @Data
 @Builder

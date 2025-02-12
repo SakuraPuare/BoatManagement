@@ -35,21 +35,17 @@ function generate_file() {
     local sql_import_list="$4"
     local math_import_list="$5"
     
-    mkdir -p "$dto_path/base"
-    mkdir -p "$vo_path/base"
-    
     for type in "dto" "vo"; do
         if [ "$type" == "dto" ]; then
             file_path="$dto_path"
         else
             file_path="$vo_path"
         fi
-        file_name="$entity_name$(echo $type | tr '[:lower:]' '[:upper:]')"
+        file_name="Base$entity_name$(echo $type | tr '[:lower:]' '[:upper:]')"
         file_real_name="$file_name.java"
 
         if [ -f "$file_path/$file_real_name" ]; then
-            echo "文件已存在: $file_path/$file_real_name"
-            continue
+            rm "$file_path/$file_real_name"
         fi
         template_before="package com.sakurapuare.$project_name.pojo.$type.base;
 
@@ -90,6 +86,13 @@ function generate() {
     # 生成dto文件
     generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$sql_import_list" "$math_import_list"
 }
+
+
+rm -rf "$dto_path/base"
+rm -rf "$vo_path/base"
+
+mkdir -p "$dto_path/base"
+mkdir -p "$vo_path/base"
 
 # 过滤BaseEntity
 fd -t f . $entity_path -d 1 -E "BaseEntity.java" | while read -r file; do 

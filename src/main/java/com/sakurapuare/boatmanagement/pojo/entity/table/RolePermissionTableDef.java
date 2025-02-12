@@ -9,7 +9,7 @@ import java.io.Serial;
  * 角色权限关联表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-12
+ * @since 2025-02-13
  */
 public class RolePermissionTableDef extends TableDef {
 

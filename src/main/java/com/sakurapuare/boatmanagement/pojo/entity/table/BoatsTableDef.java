@@ -9,7 +9,7 @@ import java.io.Serial;
  * 船只表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-12
+ * @since 2025-02-13
  */
 public class BoatsTableDef extends TableDef {
 
@@ -30,16 +30,6 @@ public class BoatsTableDef extends TableDef {
     public final QueryColumn NAME = new QueryColumn(this, "name");
 
     /**
-     * 船身宽度（米）
-     */
-    public final QueryColumn WIDTH = new QueryColumn(this, "width");
-
-    /**
-     * 船身长度（米）
-     */
-    public final QueryColumn LENGTH = new QueryColumn(this, "length");
-
-    /**
      * 船只类型
      */
     public final QueryColumn TYPE_ID = new QueryColumn(this, "type_id");
@@ -50,19 +40,14 @@ public class BoatsTableDef extends TableDef {
     public final QueryColumn UNIT_ID = new QueryColumn(this, "unit_id");
 
     /**
-     * 最大载重（吨）
-     */
-    public final QueryColumn MAX_LOAD = new QueryColumn(this, "max_load");
-
-    /**
      * 船主ID
      */
     public final QueryColumn VENDOR_ID = new QueryColumn(this, "vendor_id");
 
     /**
-     * 最大续航（公里）
+     * 船只类型
      */
-    public final QueryColumn MAX_ENDURANCE = new QueryColumn(this, "max_endurance");
+    public final QueryColumn BOAT_TYPE_ID = new QueryColumn(this, "boat_type_id");
 
     /**
      * 所有字段。
@@ -72,7 +57,7 @@ public class BoatsTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, NAME, TYPE_ID, VENDOR_ID, UNIT_ID, LENGTH, WIDTH, MAX_LOAD, MAX_ENDURANCE};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, NAME, TYPE_ID, VENDOR_ID, UNIT_ID, BOAT_TYPE_ID};
 
     public BoatsTableDef() {
         super("", "boats");

@@ -19,7 +19,7 @@ import java.util.List;
  * 第三方登录表 服务层实现。
  *
  * @author sakurapuare
- * @since 2025-02-12
+ * @since 2025-02-13
  */
 @Service
 @CacheConfig(cacheNames = "socialAuth")
