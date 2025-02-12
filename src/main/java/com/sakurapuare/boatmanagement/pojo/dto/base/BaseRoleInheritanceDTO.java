@@ -8,10 +8,8 @@ import lombok.Data;
 @Data
 @ApiModel("角色继承关系表")
 public class BaseRoleInheritanceDTO {
-    @ApiModelProperty("")
     private Long parentRoleId;
 
-    @ApiModelProperty("")
     private Long childRoleId;
 }
 

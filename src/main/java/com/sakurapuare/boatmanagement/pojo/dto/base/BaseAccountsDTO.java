@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("基础账号表")
 public class BaseAccountsDTO {
-    @ApiModelProperty("主键ID")
-    private Long id;
 
     @ApiModelProperty("用户名")
     private String username;

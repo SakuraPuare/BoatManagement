@@ -10,20 +10,18 @@ spring:
     # driver-class-name: org.postgresql.Driver
   application:
     name: BoatManagement
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
 server:
   port: 8123
   tomcat:
     uri-encoding: UTF-8
-    remote-ip-header: X-Real-IP
-    protocol-header: X-Forwarded-Proto
-    server-header: X-Forwarded-Server
-    port-header: X-Forwarded-Port 
-    forwarded-header-present: true
-    x-forwarded-for-header: X-Forwarded-For
-    x-forwarded-host-header: X-Forwarded-Host
-    x-forwarded-port-header: X-Forwarded-Port
-    x-forwarded-proto-header: X-Forwarded-Proto
+    remoteip:
+      host-header: X-Forwarded-Host
+      protocol-header: X-Forwarded-Proto
+      port-header: X-Forwarded-Port
 
 # springdoc-openapi项目配置
 springdoc:

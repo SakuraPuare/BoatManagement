@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("用户实名认证表")
 public class BaseUserCertifyDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("关联用户")
     private Long userId;

@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("码头表")
 public class BaseDocksDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("码头名称")
     private String name;

@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("系统日志表")
 public class BaseLogsDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("日志类型")
     private String type;

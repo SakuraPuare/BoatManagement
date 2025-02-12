@@ -71,6 +71,19 @@ ${api_model_property_name}
     done
 }
 
+function post_process() {
+    local dto_path="$1"
+
+    for file in "$dto_path/base"/*.java; do
+        echo "处理文件: $file"
+        # 删除DTO中的     @ApiModelProperty("")
+        # private Long id;
+        sed -i '/@ApiModelProperty("")/d' "$file"
+        sed -i '/private Long id;/d' "$file"
+        echo "处理文件: $file 完成"
+    done
+}
+
 # 函数 根据entity文件生成dto文件
 function generate() {
     local entity_name="$1"
@@ -84,7 +97,7 @@ function generate() {
     math_import_list=$(sed -n 's/^import java\.math\(.*\);/\1;/p' "$entity_path/$entity_name.java" | sed 's/^/import java.math/')
 
     # 生成dto文件
-    generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$sql_import_list" "$math_import_list"
+    generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$sql_import_list" "$math_import_list"   
 }
 
 
@@ -98,4 +111,6 @@ mkdir -p "$vo_path/base"
 fd -t f . $entity_path -d 1 -E "BaseEntity.java" | while read -r file; do 
     entity_name=$(basename "$file" | sed -n 's/\(.*\)\.java/\1/p')
     generate "$entity_name"
+    # echo "$entity_name"
+    post_process "$dto_path"
 done

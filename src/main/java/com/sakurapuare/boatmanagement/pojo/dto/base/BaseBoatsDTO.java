@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("船只表")
 public class BaseBoatsDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("船只名称")
     private String name;

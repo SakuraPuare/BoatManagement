@@ -34,11 +34,8 @@ public class Accounts extends BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键ID
-     */
     @Id(keyType = KeyType.Auto)
-    @ApiModelProperty("主键ID")
+    @ApiModelProperty("")
     private Long id;
 
     /**

@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @ApiModel("基础账号表")
 public class BaseAccountsVO {
-    @ApiModelProperty("主键ID")
+    @ApiModelProperty("")
     private Long id;
 
     @ApiModelProperty("用户名")

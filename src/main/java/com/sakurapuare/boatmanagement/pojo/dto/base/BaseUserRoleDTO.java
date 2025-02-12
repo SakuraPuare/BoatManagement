@@ -8,10 +8,8 @@ import lombok.Data;
 @Data
 @ApiModel("用户角色关联表")
 public class BaseUserRoleDTO {
-    @ApiModelProperty("")
     private Long userId;
 
-    @ApiModelProperty("")
     private Long roleId;
 
     @ApiModelProperty("所属单位")

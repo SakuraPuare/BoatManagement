@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 @Data
 @ApiModel("订单表")
 public class BaseOrdersDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("订单编号")
     private String orderNo;
@@ -35,7 +33,6 @@ public class BaseOrdersDTO {
     @ApiModelProperty("订单总金额")
     private BigDecimal totalAmount;
 
-    @ApiModelProperty("")
     private String status;
 
     @ApiModelProperty("订单类型")

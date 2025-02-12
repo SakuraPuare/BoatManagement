@@ -8,10 +8,7 @@ import lombok.Data;
 @Data
 @ApiModel("第三方登录表")
 public class BaseSocialAuthDTO {
-    @ApiModelProperty("")
-    private Long id;
 
-    @ApiModelProperty("")
     private Long accountId;
 
     @ApiModelProperty("第三方平台")

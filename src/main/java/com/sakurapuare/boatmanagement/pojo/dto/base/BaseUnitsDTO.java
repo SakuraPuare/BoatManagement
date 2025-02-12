@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("单位表")
 public class BaseUnitsDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("对外名称")
     private String name;

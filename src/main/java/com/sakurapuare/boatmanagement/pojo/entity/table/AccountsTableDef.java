@@ -21,9 +21,7 @@ public class AccountsTableDef extends TableDef {
      */
     public static final AccountsTableDef ACCOUNTS = new AccountsTableDef();
 
-    /**
-     * 主键ID
-     */
+    
     public final QueryColumn ID = new QueryColumn(this, "id");
 
     /**

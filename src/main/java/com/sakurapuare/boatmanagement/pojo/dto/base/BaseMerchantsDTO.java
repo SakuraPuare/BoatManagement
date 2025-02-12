@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("商家表")
 public class BaseMerchantsDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("关联用户")
     private Long userId;

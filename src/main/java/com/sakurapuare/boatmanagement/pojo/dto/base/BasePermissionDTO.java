@@ -8,8 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("权限表")
 public class BasePermissionDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("权限名称")
     private String name;

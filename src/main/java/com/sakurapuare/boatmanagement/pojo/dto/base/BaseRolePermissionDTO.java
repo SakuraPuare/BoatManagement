@@ -8,10 +8,8 @@ import lombok.Data;
 @Data
 @ApiModel("角色权限关联表")
 public class BaseRolePermissionDTO {
-    @ApiModelProperty("")
     private Long roleId;
 
-    @ApiModelProperty("")
     private Long permissionId;
 }
 

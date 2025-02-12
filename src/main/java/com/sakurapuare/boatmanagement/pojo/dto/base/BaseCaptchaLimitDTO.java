@@ -8,13 +8,9 @@ import java.sql.Timestamp;
 @Data
 @ApiModel("验证码防刷记录")
 public class BaseCaptchaLimitDTO {
-    @ApiModelProperty("")
-    private Long id;
 
-    @ApiModelProperty("")
     private String target;
 
-    @ApiModelProperty("")
     private String ip;
 
     @ApiModelProperty("请求次数")

@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS boatmanagement;
 USE boatmanagement;
 -- 基础账号表
 CREATE TABLE accounts (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(64) COMMENT '用户名',
   `password` VARCHAR(255) COMMENT '密码',
   `phone` VARCHAR(20) COMMENT '手机号',

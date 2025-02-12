@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 @Data
 @ApiModel("验证码表")
 public class BaseCaptchaDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("接收对象")
     private String target;

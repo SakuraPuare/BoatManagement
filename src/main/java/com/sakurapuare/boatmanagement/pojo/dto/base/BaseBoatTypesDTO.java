@@ -8,8 +8,6 @@ import java.math.BigDecimal;
 @Data
 @ApiModel("船只类型表")
 public class BaseBoatTypesDTO {
-    @ApiModelProperty("")
-    private Long id;
 
     @ApiModelProperty("类型名称")
     private String typeName;
