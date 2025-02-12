@@ -2,11 +2,13 @@ package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
 import com.sakurapuare.boatmanagement.common.Response;
+import com.sakurapuare.boatmanagement.pojo.dto.base.BaseMerchantsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
 import com.sakurapuare.boatmanagement.service.MerchantsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +42,9 @@ public class AdminMerchantController {
 
     @PutMapping("/{id}")
     @Operation(summary = "更新商户")
-    public Response<Merchants> update(@PathVariable Long id, @RequestBody Merchants merchants) {
+    public Response<Merchants> update(@PathVariable Long id, @RequestBody BaseMerchantsDTO baseMerchantsDTO) {
+        Merchants merchants = new Merchants();
+        BeanUtils.copyProperties(baseMerchantsDTO, merchants);
         merchants.setId(id);
         merchantService.updateById(merchants);
         return Response.success("更新商户成功", merchants);
@@ -55,7 +59,9 @@ public class AdminMerchantController {
 
     @PostMapping("/create")
     @Operation(summary = "创建商户")
-    public Response<Merchants> create(@RequestBody Merchants merchants) {
+    public Response<Merchants> create(@RequestBody BaseMerchantsDTO baseMerchantsDTO) {
+        Merchants merchants = new Merchants();
+        BeanUtils.copyProperties(baseMerchantsDTO, merchants);
         merchantService.save(merchants);
         return Response.success("创建商户成功", merchants);
     }

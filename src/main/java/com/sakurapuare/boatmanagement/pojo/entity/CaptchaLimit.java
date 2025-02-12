@@ -57,10 +57,7 @@ public class CaptchaLimit extends BaseEntity implements Serializable {
     @ApiModelProperty("最后请求时间")
     private Timestamp lastRequest;
 
-    /**
-     * 是否锁定
-     */
-    @ApiModelProperty("是否锁定")
+    @ApiModelProperty("")
     private Boolean isBlocked;
 
 }

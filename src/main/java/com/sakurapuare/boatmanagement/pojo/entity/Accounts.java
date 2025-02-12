@@ -68,16 +68,10 @@ public class Accounts extends BaseEntity implements Serializable {
     @ApiModelProperty("角色MASK")
     private Integer role;
 
-    /**
-     * 是否激活
-     */
-    @ApiModelProperty("是否激活")
+    @ApiModelProperty("")
     private Boolean isActive;
 
-    /**
-     * 是否锁定
-     */
-    @ApiModelProperty("是否锁定")
+    @ApiModelProperty("")
     private Boolean isBlocked;
 
 }

@@ -39,9 +39,7 @@ public class AccountsTableDef extends TableDef {
      */
     public final QueryColumn PHONE = new QueryColumn(this, "phone");
 
-    /**
-     * 是否激活
-     */
+    
     public final QueryColumn IS_ACTIVE = new QueryColumn(this, "is_active");
 
     /**
@@ -54,9 +52,7 @@ public class AccountsTableDef extends TableDef {
      */
     public final QueryColumn USERNAME = new QueryColumn(this, "username");
 
-    /**
-     * 是否锁定
-     */
+    
     public final QueryColumn IS_BLOCKED = new QueryColumn(this, "is_blocked");
 
     /**

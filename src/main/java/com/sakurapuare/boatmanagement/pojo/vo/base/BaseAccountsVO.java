@@ -26,10 +26,10 @@ public class BaseAccountsVO {
     @ApiModelProperty("角色MASK")
     private Integer role;
 
-    @ApiModelProperty("是否激活")
+    @ApiModelProperty("")
     private Boolean isActive;
 
-    @ApiModelProperty("是否锁定")
+    @ApiModelProperty("")
     private Boolean isBlocked;
 }
 

@@ -35,9 +35,7 @@ public class CaptchaLimitTableDef extends TableDef {
     
     public final QueryColumn TARGET = new QueryColumn(this, "target");
 
-    /**
-     * 是否锁定
-     */
+    
     public final QueryColumn IS_BLOCKED = new QueryColumn(this, "is_blocked");
 
     /**

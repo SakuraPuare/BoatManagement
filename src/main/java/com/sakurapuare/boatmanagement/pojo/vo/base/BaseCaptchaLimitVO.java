@@ -23,7 +23,7 @@ public class BaseCaptchaLimitVO {
     @ApiModelProperty("最后请求时间")
     private Timestamp lastRequest;
 
-    @ApiModelProperty("是否锁定")
+    @ApiModelProperty("")
     private Boolean isBlocked;
 }
 

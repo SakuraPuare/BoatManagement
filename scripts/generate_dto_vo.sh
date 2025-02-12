@@ -76,10 +76,12 @@ function post_process() {
 
     for file in "$dto_path/base"/*.java; do
         echo "处理文件: $file"
-        # 删除DTO中的     @ApiModelProperty("")
-        # private Long id;
+        # 过滤一些字段
         sed -i '/@ApiModelProperty("")/d' "$file"
         sed -i '/private Long id;/d' "$file"
+        sed -i '/private Boolean isDeleted;/d' "$file"
+        sed -i '/private Boolean isActive;/d' "$file"
+        sed -i '/private Boolean isBlocked;/d' "$file"
         echo "处理文件: $file 完成"
     done
 }

@@ -2,11 +2,13 @@ package com.sakurapuare.boatmanagement.controller.admin;
 
 import com.mybatisflex.core.paginate.Page;
 import com.sakurapuare.boatmanagement.common.Response;
+import com.sakurapuare.boatmanagement.pojo.dto.base.BaseVendorsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
 import com.sakurapuare.boatmanagement.service.VendorsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +42,9 @@ public class AdminVendorController {
 
     @PutMapping("/{id}")
     @Operation(summary = "更新供应商")
-    public Response<Vendors> update(@PathVariable Long id, @RequestBody Vendors vendors) {
+    public Response<Vendors> update(@PathVariable Long id, @RequestBody BaseVendorsDTO baseVendorsDTO) {
+        Vendors vendors = new Vendors();
+        BeanUtils.copyProperties(baseVendorsDTO, vendors);
         vendors.setId(id);
         vendorService.updateById(vendors);
         return Response.success("更新供应商成功", vendors);
@@ -55,7 +59,9 @@ public class AdminVendorController {
 
     @PostMapping("/create")
     @Operation(summary = "创建供应商")
-    public Response<Vendors> create(@RequestBody Vendors vendors) {
+    public Response<Vendors> create(@RequestBody BaseVendorsDTO baseVendorsDTO) {
+        Vendors vendors = new Vendors();
+        BeanUtils.copyProperties(baseVendorsDTO, vendors);
         vendorService.save(vendors);
         return Response.success("创建供应商成功", vendors);
     }

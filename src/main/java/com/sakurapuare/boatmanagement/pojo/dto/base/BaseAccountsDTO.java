@@ -24,10 +24,6 @@ public class BaseAccountsDTO {
     @ApiModelProperty("角色MASK")
     private Integer role;
 
-    @ApiModelProperty("是否激活")
-    private Boolean isActive;
 
-    @ApiModelProperty("是否锁定")
-    private Boolean isBlocked;
 }
 

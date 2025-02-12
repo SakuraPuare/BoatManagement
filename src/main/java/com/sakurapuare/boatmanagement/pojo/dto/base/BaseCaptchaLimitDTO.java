@@ -19,7 +19,5 @@ public class BaseCaptchaLimitDTO {
     @ApiModelProperty("最后请求时间")
     private Timestamp lastRequest;
 
-    @ApiModelProperty("是否锁定")
-    private Boolean isBlocked;
 }
 
