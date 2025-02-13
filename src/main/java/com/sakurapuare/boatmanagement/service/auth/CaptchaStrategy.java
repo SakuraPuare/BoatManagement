@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
+package com.sakurapuare.boatmanagement.service.auth;
 
 import cn.hutool.core.util.RandomUtil;
 import com.mybatisflex.core.query.QueryWrapper;

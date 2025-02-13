@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.service.impl.auth.strategy.captcha;
+package com.sakurapuare.boatmanagement.service.captcha;
 
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Captcha;
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class PhoneCaptchaSender implements CaptchaSender {
+public class EmailCaptchaSender implements CaptchaSender {
 
     private final CaptchaService captchaService;
 
     @Override
     public boolean sendCaptcha(NameRequestDTO nameRequestDTO) {
-        // TODO: send code to phone
+        // TODO: Send email
 
         Captcha captha = captchaService.generateCaptcha(nameRequestDTO.getUsername());
         return false;

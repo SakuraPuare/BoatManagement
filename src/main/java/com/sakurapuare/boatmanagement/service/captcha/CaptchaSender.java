@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.service.impl.auth.strategy.captcha;
+package com.sakurapuare.boatmanagement.service.captcha;
 
 import com.sakurapuare.boatmanagement.pojo.dto.NameRequestDTO;
 

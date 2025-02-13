@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.service.impl.auth.strategy.captcha;
+package com.sakurapuare.boatmanagement.service.captcha;
 
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;

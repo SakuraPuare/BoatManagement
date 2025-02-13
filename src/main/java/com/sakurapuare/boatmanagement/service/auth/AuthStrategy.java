@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.service.impl.auth.strategy.auth;
+package com.sakurapuare.boatmanagement.service.auth;
 
 import com.sakurapuare.boatmanagement.constant.auth.AuthName;
 import com.sakurapuare.boatmanagement.constant.auth.AuthStatus;
