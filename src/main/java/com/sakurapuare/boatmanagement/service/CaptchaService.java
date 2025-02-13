@@ -76,7 +76,7 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
     }
 
     public boolean verifyCode(String target, String code) {
-        Captcha captcha = getOne(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target).eq(CAPTCHA.CODE.getName(), code));
+        Captcha captcha = super.getOne(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target).eq(CAPTCHA.CODE.getName(), code));
 
         if (captcha == null) {
             return false;

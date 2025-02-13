@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 用户角色关联表 实体类。
+ * 用户角色关联表_ndto_nvo 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("用户角色关联表")
+@ApiModel("用户角色关联表_ndto_nvo")
 @Table("user_role")
 public class UserRole extends BaseEntity implements Serializable {
 

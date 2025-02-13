@@ -1,14 +1,14 @@
 package com.sakurapuare.boatmanagement.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.sakurapuare.boatmanagement.pojo.entity.Role;
+import com.sakurapuare.boatmanagement.pojo.entity.Goods;
 
 /**
- * 角色表_ndto_nvo 映射层。
+ * 商品表 映射层。
  *
  * @author sakurapuare
  * @since 2025-02-13
  */
-public interface RoleMapper extends BaseMapper<Role> {
+public interface GoodsMapper extends BaseMapper<Goods> {
 
 }

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 用户实名认证表 实体类。
+ * 用户实名认证表_ndto_nvo 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("用户实名认证表")
+@ApiModel("用户实名认证表_ndto_nvo")
 @Table("user_certify")
 public class UserCertify extends BaseEntity implements Serializable {
 

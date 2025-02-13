@@ -44,7 +44,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         // 验证token并获取用户信息
-        Accounts account = null;
+        Accounts account;
         try {
             token = token.replace("Bearer ", "");
             account = accountService.getAccountByToken(token);
@@ -68,10 +68,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 校验权限
         String uri = request.getRequestURI();
         Map<String, Integer> roleMap = new HashMap<>();
-        roleMap.put("/user/", UserRole.USER);
-        roleMap.put("/merchant/", UserRole.MERCHANT);
-        roleMap.put("/vendor/", UserRole.VENDOR);
-        roleMap.put("/admin/", UserRole.ADMIN);
+        roleMap.put("/user", UserRole.USER);
+        roleMap.put("/merchant", UserRole.MERCHANT);
+        roleMap.put("/vendor", UserRole.VENDOR);
+        roleMap.put("/admin", UserRole.ADMIN);
 
         for (Map.Entry<String, Integer> entry : roleMap.entrySet()) {
             if (uri.startsWith(entry.getKey())) {

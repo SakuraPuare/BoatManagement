@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class JWTUtils {
@@ -64,6 +65,6 @@ public class JWTUtils {
     }
 
     public static Long getUserId(String token) {
-        return Long.parseLong(getKey(token, "userId"));
+        return Long.parseLong(Objects.requireNonNull(getKey(token, "userId")));
     }
 }

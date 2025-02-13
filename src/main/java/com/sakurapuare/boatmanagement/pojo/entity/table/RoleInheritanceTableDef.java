@@ -6,7 +6,7 @@ import com.mybatisflex.core.table.TableDef;
 import java.io.Serial;
 
 /**
- * 角色继承关系表 表定义层。
+ * 角色继承关系表_ndto_nvo 表定义层。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -17,7 +17,7 @@ public class RoleInheritanceTableDef extends TableDef {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 角色继承关系表
+     * 角色继承关系表_ndto_nvo
      */
     public static final RoleInheritanceTableDef ROLE_INHERITANCE = new RoleInheritanceTableDef();
 

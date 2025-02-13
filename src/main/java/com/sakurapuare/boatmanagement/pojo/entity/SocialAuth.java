@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 第三方登录表 实体类。
+ * 第三方登录表_ndto_nvo 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("第三方登录表")
+@ApiModel("第三方登录表_ndto_nvo")
 @Table("social_auth")
 public class SocialAuth extends BaseEntity implements Serializable {
 

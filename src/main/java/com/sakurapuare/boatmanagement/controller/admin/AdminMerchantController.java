@@ -27,7 +27,7 @@ public class AdminMerchantController {
         return Response.success("获取商户列表成功", merchantService.list());
     }
 
-    @GetMapping("/list/page")
+    @GetMapping("/page")
     @Operation(summary = "获取商户列表分页")
     public Response<Page<Merchants>> listPage(@RequestParam(defaultValue = "1") Integer page,
                                               @RequestParam(defaultValue = "10") Integer size) {
@@ -52,12 +52,12 @@ public class AdminMerchantController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除商户")
-    public Response<Boolean> delete(@PathVariable Long id) {
+    public Response<String> delete(@PathVariable Long id) {
         merchantService.removeById(id);
-        return Response.success("删除商户成功", true);
+        return Response.success("删除商户成功");
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     @Operation(summary = "创建商户")
     public Response<Merchants> create(@RequestBody BaseMerchantsDTO baseMerchantsDTO) {
         Merchants merchants = new Merchants();

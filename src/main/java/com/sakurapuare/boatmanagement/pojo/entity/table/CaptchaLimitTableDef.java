@@ -6,7 +6,7 @@ import com.mybatisflex.core.table.TableDef;
 import java.io.Serial;
 
 /**
- * 验证码防刷记录 表定义层。
+ * 验证码防刷记录_ndto_nvo 表定义层。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -17,7 +17,7 @@ public class CaptchaLimitTableDef extends TableDef {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 验证码防刷记录
+     * 验证码防刷记录_ndto_nvo
      */
     public static final CaptchaLimitTableDef CAPTCHA_LIMIT = new CaptchaLimitTableDef();
 

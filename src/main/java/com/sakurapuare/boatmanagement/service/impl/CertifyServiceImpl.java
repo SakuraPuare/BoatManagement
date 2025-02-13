@@ -446,7 +446,7 @@ public class CertifyServiceImpl implements CertifyService {
                 // 3. 更新账号权限
                 account = accountsService.getById(merchant.getUserId());
                 account.setRole(UserRole.addRole(account.getRole(), UserRole.MERCHANT));
-
+                break;
             }
             case UnitsTypes.VENDOR: {
                 // 2. 更新供应商状态
@@ -458,6 +458,7 @@ public class CertifyServiceImpl implements CertifyService {
                 // 3. 更新账号权限
                 account = accountsService.getById(vendor.getUserId());
                 account.setRole(UserRole.addRole(account.getRole(), UserRole.VENDOR));
+                break;
             }
         }
         accountsService.updateById(account);
@@ -499,6 +500,10 @@ public class CertifyServiceImpl implements CertifyService {
 
     @Override
     public void audit(String types, Long id) {
+        if (!AuditOperation.isAuditOperation(types)) {
+            throw new IllegalArgumentException("不支持的审核操作");
+        }
+
         Units unit = unitsService.getById(id);
         if (unit == null) {
             throw new IllegalArgumentException("单位不存在");

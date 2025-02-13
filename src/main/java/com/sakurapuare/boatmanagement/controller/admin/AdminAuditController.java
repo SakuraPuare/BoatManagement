@@ -26,7 +26,7 @@ public class AdminAuditController {
         return Response.success("获取认证列表成功", certifyService.getListQuery(queryDTO));
     }
 
-    @GetMapping("/list/page")
+    @GetMapping("/page")
     @Operation(summary = "获取所有认证列表分页")
     public Response<Page<BaseUnitsVO>> listPage(@RequestParam(defaultValue = "1") Integer pageNum,
                                                 @RequestParam(defaultValue = "10") Integer pageSize, CertifyQueryDTO queryDTO) {
@@ -35,9 +35,9 @@ public class AdminAuditController {
 
     @PutMapping("/{id}")
     @Operation(summary = "审核操作")
-    public Response<Boolean> audit(@PathVariable Long id, String types) {
+    public Response<String> audit(@PathVariable Long id, String types) {
         certifyService.audit(types, id);
-        return Response.success("审核完成", true);
+        return Response.success("审核完成");
     }
 
 }

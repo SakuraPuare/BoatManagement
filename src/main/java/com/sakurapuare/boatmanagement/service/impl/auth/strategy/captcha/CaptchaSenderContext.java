@@ -25,12 +25,8 @@ public class CaptchaSenderContext {
     public void setStrategy(NameRequestDTO nameRequestDTO) {
         AuthName name = AuthNameUtils.getAuthName(nameRequestDTO.getUsername());
         switch (name) {
-            case AuthName.EMAIL -> {
-                this.capthaSender = emailCaptchaSender;
-            }
-            case AuthName.PHONE -> {
-                this.capthaSender = phoneCaptchaSender;
-            }
+            case AuthName.EMAIL -> this.capthaSender = emailCaptchaSender;
+            case AuthName.PHONE -> this.capthaSender = phoneCaptchaSender;
             case AuthName.USERNAME -> {
                 Accounts account = accountsService.getOne(
                         QueryWrapper.create()
@@ -47,9 +43,7 @@ public class CaptchaSenderContext {
                     this.capthaSender = allCaptchaSender;
                 }
             }
-            default -> {
-                throw new IllegalArgumentException("不支持的验证码发送方式");
-            }
+            default -> throw new IllegalArgumentException("不支持的验证码发送方式");
         }
     }
 

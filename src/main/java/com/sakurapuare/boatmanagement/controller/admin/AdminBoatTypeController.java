@@ -27,7 +27,7 @@ public class AdminBoatTypeController {
         return Response.success("获取船舶类型列表成功", boatTypeService.list());
     }
 
-    @GetMapping("/list/page")
+    @GetMapping("/page")
     @Operation(summary = "获取船舶类型列表分页")
     public Response<Page<BoatTypes>> listPage(@RequestParam(defaultValue = "1") Integer page,
                                               @RequestParam(defaultValue = "10") Integer size) {
@@ -52,12 +52,12 @@ public class AdminBoatTypeController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除船舶类型")
-    public Response<Boolean> delete(@PathVariable Long id) {
+    public Response<String> delete(@PathVariable Long id) {
         boatTypeService.removeById(id);
-        return Response.success("删除船舶类型成功", true);
+        return Response.success("删除船舶类型成功");
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     @Operation(summary = "创建船舶类型")
     public Response<BoatTypes> create(@RequestBody BaseBoatTypesDTO baseBoatTypeDTO) {
         BoatTypes boatTypes = new BoatTypes();

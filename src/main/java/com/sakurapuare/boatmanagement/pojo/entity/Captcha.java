@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 验证码表 实体类。
+ * 验证码表_ndto_nvo 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("验证码表")
+@ApiModel("验证码表_ndto_nvo")
 @Table("captcha")
 public class Captcha extends BaseEntity implements Serializable {
 

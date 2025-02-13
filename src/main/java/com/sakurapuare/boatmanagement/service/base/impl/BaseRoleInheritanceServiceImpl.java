@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 角色继承关系表 服务层实现。
+ * 角色继承关系表_ndto_nvo 服务层实现。
  *
  * @author sakurapuare
  * @since 2025-02-13

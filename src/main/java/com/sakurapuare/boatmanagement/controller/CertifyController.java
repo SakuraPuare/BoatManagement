@@ -27,9 +27,9 @@ public class CertifyController {
 
     @PostMapping("user")
     @Operation(summary = "用户实名认证")
-    public Response<Boolean> certifyUser(@RequestBody UserCertifyRequestDTO userCertifyRequestDTO) {
+    public Response<String> certifyUser(@RequestBody UserCertifyRequestDTO userCertifyRequestDTO) {
         certifyService.certifyUser(userCertifyRequestDTO);
-        return Response.success("实名认证中", true);
+        return Response.success("实名认证中");
     }
 
     @GetMapping("merchant")
@@ -40,9 +40,9 @@ public class CertifyController {
 
     @PostMapping("merchant")
     @Operation(summary = "商户实名认证")
-    public Response<Boolean> certifyMerchant(@RequestBody UnitCertifyRequestDTO unitCertifyRequestDTO) {
+    public Response<String> certifyMerchant(@RequestBody UnitCertifyRequestDTO unitCertifyRequestDTO) {
         certifyService.certifyMerchant(unitCertifyRequestDTO);
-        return Response.success("实名认证中", true);
+        return Response.success("实名认证中");
     }
 
     @GetMapping("vendor")
@@ -53,29 +53,29 @@ public class CertifyController {
 
     @PostMapping("vendor")
     @Operation(summary = "供应商实名认证")
-    public Response<Boolean> certifyVendor(@RequestBody UnitCertifyRequestDTO unitCertifyRequestDTO) {
+    public Response<String> certifyVendor(@RequestBody UnitCertifyRequestDTO unitCertifyRequestDTO) {
         certifyService.certifyVendor(unitCertifyRequestDTO);
-        return Response.success("实名认证中", true);
+        return Response.success("实名认证中");
     }
 
     @PutMapping("join/{types}/{unitId}")
     @Operation(summary = "加入单位")
-    public Response<Boolean> joinUnit(@PathVariable String types, @PathVariable Long unitId) {
+    public Response<String> joinUnit(@PathVariable String types, @PathVariable Long unitId) {
         certifyService.joinUnit(types, unitId);
-        return Response.success("已加入单位", true);
+        return Response.success("已加入单位");
     }
 
     @PutMapping("transfer/{types}/{userId}")
     @Operation(summary = "转让单位")
-    public Response<Boolean> transferUnit(@PathVariable String types, @PathVariable Long userId) {
+    public Response<String> transferUnit(@PathVariable String types, @PathVariable Long userId) {
         certifyService.transferUnit(types, userId);
-        return Response.success("已转让单位", true);
+        return Response.success("已转让单位");
     }
 
     @DeleteMapping("leave/{types}")
     @Operation(summary = "离开单位")
-    public Response<Boolean> leaveUnit(@PathVariable String types) {
+    public Response<String> leaveUnit(@PathVariable String types) {
         certifyService.leaveUnit(types);
-        return Response.success("已离开单位", true);
+        return Response.success("已离开单位");
     }
 }

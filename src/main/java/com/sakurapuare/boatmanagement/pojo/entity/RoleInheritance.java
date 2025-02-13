@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 角色继承关系表 实体类。
+ * 角色继承关系表_ndto_nvo 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -26,7 +26,7 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("角色继承关系表")
+@ApiModel("角色继承关系表_ndto_nvo")
 @Table("role_inheritance")
 public class RoleInheritance extends BaseEntity implements Serializable {
 

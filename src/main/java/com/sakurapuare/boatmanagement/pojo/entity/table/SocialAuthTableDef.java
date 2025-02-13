@@ -6,7 +6,7 @@ import com.mybatisflex.core.table.TableDef;
 import java.io.Serial;
 
 /**
- * 第三方登录表 表定义层。
+ * 第三方登录表_ndto_nvo 表定义层。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -17,7 +17,7 @@ public class SocialAuthTableDef extends TableDef {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 第三方登录表
+     * 第三方登录表_ndto_nvo
      */
     public static final SocialAuthTableDef SOCIAL_AUTH = new SocialAuthTableDef();
 

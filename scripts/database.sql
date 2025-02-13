@@ -101,7 +101,7 @@ CREATE TABLE `user_certify` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '用户实名认证表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '用户实名认证表_ndto_nvo';
 -- 第三方登录表
 CREATE TABLE `social_auth` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -115,7 +115,7 @@ CREATE TABLE `social_auth` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_platform_openid` (`platform`, `open_id`),
   FOREIGN KEY (`account_id`) REFERENCES accounts (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '第三方登录表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '第三方登录表_ndto_nvo';
 -- RBAC权限系统
 CREATE TABLE `role` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -125,7 +125,7 @@ CREATE TABLE `role` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '角色表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '角色表_ndto_nvo';
 CREATE TABLE `permission` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL UNIQUE COMMENT '权限名称',
@@ -135,7 +135,7 @@ CREATE TABLE `permission` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '权限表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '权限表_ndto_nvo';
 CREATE TABLE `role_permission` (
   `role_id` INT UNSIGNED NOT NULL,
   `permission_id` INT UNSIGNED NOT NULL,
@@ -145,7 +145,7 @@ CREATE TABLE `role_permission` (
   PRIMARY KEY (`role_id`, `permission_id`),
   FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '角色权限关联表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '角色权限关联表_ndto_nvo';
 -- 角色继承表（实现多继承）
 CREATE TABLE `role_inheritance` (
   `parent_role_id` INT UNSIGNED NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE `role_inheritance` (
   PRIMARY KEY (`parent_role_id`, `child_role_id`),
   FOREIGN KEY (`parent_role_id`) REFERENCES `role` (`id`),
   FOREIGN KEY (`child_role_id`) REFERENCES `role` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '角色继承关系表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '角色继承关系表_ndto_nvo';
 -- 用户角色关联表（带单位）
 CREATE TABLE `user_role` (
   `user_id` BIGINT UNSIGNED NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE `user_role` (
   PRIMARY KEY (`user_id`, `role_id`, `unit_id`),
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
   FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '用户角色关联表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '用户角色关联表_ndto_nvo';
 -- 单位表
 CREATE TABLE units (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -188,6 +188,47 @@ CREATE TABLE units (
   FOREIGN KEY (`admin_user_id`) REFERENCES accounts (`id`),
   INDEX `idx_social_credit_code` (`social_credit_code`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '单位表';
+INSERT INTO `units` (
+    `name`,
+    `unit_name`,
+    `social_credit_code`,
+    `legal_person`,
+    `address`,
+    `contact_phone`,
+    `status`,
+    `admin_user_id`,
+    `types`,
+    `is_deleted`,
+    `created_at`,
+    `updated_at`
+) VALUES (
+    '单位1',
+    '单位1',
+    '12345678901',
+    '单位1',
+    '单位1',
+    '12345678901',
+    'APPROVED',
+    1,
+    'MERCHANT',
+    0,
+    NOW(),
+    NOW()
+),
+(
+    '单位2',
+    '单位2',
+    '12345678902',
+    '单位2',
+    '单位2',
+    '12345678902',
+    'APPROVED',
+    2,
+    'VENDOR',
+    0,
+    NOW(),
+    NOW()
+);
 -- 商家表
 CREATE TABLE merchants (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -201,7 +242,29 @@ CREATE TABLE merchants (
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
   FOREIGN KEY (`unit_id`) REFERENCES units (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '商家表';
--- 船主表
+INSERT INTO `merchants` (
+    `user_id`,
+    `unit_id`,
+    `status`,
+    `is_deleted`,
+    `created_at`,
+    `updated_at`
+) VALUES (
+    2,
+    1,
+    'APPROVED',
+    0,
+    NOW(),
+    NOW()
+),
+(
+    3,
+    1,
+    'APPROVED',
+    0,
+    NOW(),
+    NOW()
+);
 CREATE TABLE vendors (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
@@ -214,7 +277,21 @@ CREATE TABLE vendors (
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
   FOREIGN KEY (`unit_id`) REFERENCES units (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '船主表';
--- 码头表
+INSERT INTO `vendors` (
+    `user_id`,
+    `unit_id`,
+    `status`,
+    `is_deleted`,
+    `created_at`,
+    `updated_at`
+) VALUES (
+    4,
+    1,
+    'APPROVED',
+    0,
+    NOW(),
+    NOW()
+);
 CREATE TABLE docks (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT '码头名称',
@@ -304,7 +381,7 @@ CREATE TABLE logs (
   INDEX `idx_log_time` (`created_at`),
   INDEX `idx_type_level` (`type`, `level`),
   FOREIGN KEY (`operator_id`) REFERENCES accounts (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '系统日志表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '系统日志表_ndto_nvo';
 -- 验证码表
 CREATE TABLE `captcha` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -320,7 +397,7 @@ CREATE TABLE `captcha` (
   INDEX `idx_target` (`target`),
   INDEX `idx_expire_time` (`expire_at`),
   INDEX `idx_status` (`status`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '验证码表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '验证码表_ndto_nvo';
 -- 防刷记录表
 CREATE TABLE `captcha_limit` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -334,4 +411,19 @@ CREATE TABLE `captcha_limit` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `idx_last_request` (`last_request`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '验证码防刷记录';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '验证码防刷记录_ndto_nvo';
+CREATE TABLE `goods` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL COMMENT '商品名称',
+  `description` TEXT COMMENT '商品描述',
+  `price` DECIMAL(12, 2) NOT NULL COMMENT '商品价格',
+  `stock` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '库存_serverside',
+  `sales` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '销量_serverside',
+  `created_merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '创建商家_serverside',
+  `created_unit_id` BIGINT UNSIGNED NOT NULL COMMENT '创建单位_serverside',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`created_merchant_id`) REFERENCES merchants (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '商品表';

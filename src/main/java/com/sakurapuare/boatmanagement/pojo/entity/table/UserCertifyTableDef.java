@@ -6,7 +6,7 @@ import com.mybatisflex.core.table.TableDef;
 import java.io.Serial;
 
 /**
- * 用户实名认证表 表定义层。
+ * 用户实名认证表_ndto_nvo 表定义层。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -17,7 +17,7 @@ public class UserCertifyTableDef extends TableDef {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户实名认证表
+     * 用户实名认证表_ndto_nvo
      */
     public static final UserCertifyTableDef USER_CERTIFY = new UserCertifyTableDef();
 

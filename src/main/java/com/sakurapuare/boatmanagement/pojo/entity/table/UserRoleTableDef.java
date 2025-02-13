@@ -6,7 +6,7 @@ import com.mybatisflex.core.table.TableDef;
 import java.io.Serial;
 
 /**
- * 用户角色关联表 表定义层。
+ * 用户角色关联表_ndto_nvo 表定义层。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -17,7 +17,7 @@ public class UserRoleTableDef extends TableDef {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户角色关联表
+     * 用户角色关联表_ndto_nvo
      */
     public static final UserRoleTableDef USER_ROLE = new UserRoleTableDef();
 

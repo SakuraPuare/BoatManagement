@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 用户实名认证表 服务层实现。
+ * 用户实名认证表_ndto_nvo 服务层实现。
  *
  * @author sakurapuare
  * @since 2025-02-13

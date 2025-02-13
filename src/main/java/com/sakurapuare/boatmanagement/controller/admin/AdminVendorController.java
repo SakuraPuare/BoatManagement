@@ -27,7 +27,7 @@ public class AdminVendorController {
         return Response.success("获取供应商列表成功", vendorService.list());
     }
 
-    @GetMapping("/list/page")
+    @GetMapping("/page")
     @Operation(summary = "获取供应商列表分页")
     public Response<Page<Vendors>> listPage(@RequestParam(defaultValue = "1") Integer page,
                                             @RequestParam(defaultValue = "10") Integer size) {
@@ -52,12 +52,12 @@ public class AdminVendorController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除供应商")
-    public Response<Boolean> delete(@PathVariable Long id) {
+    public Response<String> delete(@PathVariable Long id) {
         vendorService.removeById(id);
-        return Response.success("删除供应商成功", true);
+        return Response.success("删除供应商成功");
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     @Operation(summary = "创建供应商")
     public Response<Vendors> create(@RequestBody BaseVendorsDTO baseVendorsDTO) {
         Vendors vendors = new Vendors();

@@ -6,7 +6,7 @@ import com.mybatisflex.core.table.TableDef;
 import java.io.Serial;
 
 /**
- * 系统日志表 表定义层。
+ * 系统日志表_ndto_nvo 表定义层。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -17,7 +17,7 @@ public class LogsTableDef extends TableDef {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 系统日志表
+     * 系统日志表_ndto_nvo
      */
     public static final LogsTableDef LOGS = new LogsTableDef();
 

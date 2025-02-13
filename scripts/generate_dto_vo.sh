@@ -36,6 +36,12 @@ function generate_file() {
     local math_import_list="$5"
     
     for type in "dto" "vo"; do
+        # 如果存在_n$type，则跳过生成
+        if grep -q "_n$type" "$entity_path/$entity_name.java"; then
+            # 跳过
+            continue
+        fi
+        
         if [ "$type" == "dto" ]; then
             file_path="$dto_path"
         else
@@ -82,6 +88,8 @@ function post_process() {
         sed -i '/private Boolean isDeleted;/d' "$file"
         sed -i '/private Boolean isActive;/d' "$file"
         sed -i '/private Boolean isBlocked;/d' "$file"
+        # delete serverside
+        sed -i '/@ApiModelProperty(".*_serverside")/,+1d' "$file"
         echo "处理文件: $file 完成"
     done
 }

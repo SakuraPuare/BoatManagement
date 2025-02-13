@@ -72,7 +72,7 @@ public class AuthServiceImpl extends ServiceImpl<AccountsMapper, Accounts> imple
     public boolean checkAvailability(NameRequestDTO nameRequestDTO) {
         AuthName name = AuthNameUtils.getAuthName(nameRequestDTO.getUsername());
 
-        String field = null;
+        String field;
         switch (name) {
             case AuthName.USERNAME -> field = ACCOUNTS.USERNAME.getName();
             case AuthName.PHONE -> field = ACCOUNTS.PHONE.getName();

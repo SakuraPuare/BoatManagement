@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 系统日志表 实体类。
+ * 系统日志表_ndto_nvo 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("系统日志表")
+@ApiModel("系统日志表_ndto_nvo")
 @Table("logs")
 public class Logs extends BaseEntity implements Serializable {
 

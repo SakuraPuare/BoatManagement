@@ -12,6 +12,6 @@ public class AccountsService extends BaseAccountsServiceImpl {
     public Accounts getAccountByToken(String token) {
         JSONObject payload = JWTUtils.parseToken(token);
         Long userId = payload.getLong("userId");
-        return getById(userId);
+        return super.getById(userId);
     }
 }

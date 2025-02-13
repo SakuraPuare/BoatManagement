@@ -24,7 +24,7 @@ public class PasswordStrategy implements AuthStrategy {
 
         String field = AuthStrategy.getFieldName(status);
 
-        Accounts account = null;
+        Accounts account;
         if (status.getType() == AuthType.LOGIN) {
             account = accountsService.getOne(
                     QueryWrapper.create()

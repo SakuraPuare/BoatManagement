@@ -4,15 +4,22 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-
+import java.math.BigDecimal;
 @Data
-@ApiModel("角色表")
-public class BaseRoleDTO {
+@ApiModel("商品表")
+public class BaseGoodsDTO {
 
-    @ApiModelProperty("角色名称")
+    @ApiModelProperty("商品名称")
     private String name;
 
-    @ApiModelProperty("角色描述")
+    @ApiModelProperty("商品描述")
     private String description;
+
+    @ApiModelProperty("商品价格")
+    private BigDecimal price;
+
+
+
+
 }
 

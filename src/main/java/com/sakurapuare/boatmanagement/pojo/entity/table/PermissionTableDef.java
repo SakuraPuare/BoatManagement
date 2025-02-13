@@ -6,7 +6,7 @@ import com.mybatisflex.core.table.TableDef;
 import java.io.Serial;
 
 /**
- * 权限表 表定义层。
+ * 权限表_ndto_nvo 表定义层。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -17,7 +17,7 @@ public class PermissionTableDef extends TableDef {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 权限表
+     * 权限表_ndto_nvo
      */
     public static final PermissionTableDef PERMISSION = new PermissionTableDef();
 

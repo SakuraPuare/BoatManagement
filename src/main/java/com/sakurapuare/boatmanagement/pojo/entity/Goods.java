@@ -5,6 +5,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import java.io.Serial;
 
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 权限表_ndto_nvo 实体类。
+ * 商品表 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-13
@@ -27,9 +28,9 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("权限表_ndto_nvo")
-@Table("permission")
-public class Permission extends BaseEntity implements Serializable {
+@ApiModel("商品表")
+@Table("goods")
+public class Goods extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -39,21 +40,45 @@ public class Permission extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 权限名称
+     * 商品名称
      */
-    @ApiModelProperty("权限名称")
+    @ApiModelProperty("商品名称")
     private String name;
 
     /**
-     * 权限代码
+     * 商品描述
      */
-    @ApiModelProperty("权限代码")
-    private String code;
+    @ApiModelProperty("商品描述")
+    private String description;
 
     /**
-     * 权限描述
+     * 商品价格
      */
-    @ApiModelProperty("权限描述")
-    private String description;
+    @ApiModelProperty("商品价格")
+    private BigDecimal price;
+
+    /**
+     * 库存_serverside
+     */
+    @ApiModelProperty("库存_serverside")
+    private Long stock;
+
+    /**
+     * 销量_serverside
+     */
+    @ApiModelProperty("销量_serverside")
+    private Long sales;
+
+    /**
+     * 创建商家_serverside
+     */
+    @ApiModelProperty("创建商家_serverside")
+    private Long createdMerchantId;
+
+    /**
+     * 创建单位_serverside
+     */
+    @ApiModelProperty("创建单位_serverside")
+    private Long createdUnitId;
 
 }
