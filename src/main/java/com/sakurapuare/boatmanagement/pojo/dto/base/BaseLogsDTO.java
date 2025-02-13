@@ -18,9 +18,6 @@ public class BaseLogsDTO {
     @ApiModelProperty("日志内容")
     private String content;
 
-    @ApiModelProperty("来源模块")
-    private String source;
-
     @ApiModelProperty("操作人")
     private Long operatorId;
 }

@@ -70,13 +70,13 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         captcha.setClientIp(RequestContext.getContext().getIp());
         captcha.setTarget(target);
 
-        super.save(captcha);
+        save(captcha);
 
         return captcha;
     }
 
     public boolean verifyCode(String target, String code) {
-        Captcha captcha = super.getOne(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target).eq(CAPTCHA.CODE.getName(), code));
+        Captcha captcha = getOne(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target).eq(CAPTCHA.CODE.getName(), code));
 
         if (captcha == null) {
             return false;
@@ -91,14 +91,14 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         }
 
         captcha.setStatus(CaptchaStatus.USED);
-        super.updateById(captcha);
+        updateById(captcha);
 
         // clear captcha limit
         // captchaLimitMapper.deleteByQuery(
         //         QueryWrapper.create().eq(captchaLimit.TARGET.getName(), target));
 
         // clear captcha
-        super.remove(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target));
+        remove(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target));
 
         return true;
     }

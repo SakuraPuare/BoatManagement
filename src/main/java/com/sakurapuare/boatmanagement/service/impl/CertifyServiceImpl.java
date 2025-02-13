@@ -38,6 +38,7 @@ public class CertifyServiceImpl implements CertifyService {
     private final MerchantsService merchantsService;
     private final VendorsService vendorsService;
     private final AccountsService accountsService;
+    private final LogsService logsService;
 
     @Override
     public void certifyUser(UserCertifyRequestDTO request) {
@@ -503,12 +504,16 @@ public class CertifyServiceImpl implements CertifyService {
             throw new IllegalArgumentException("单位不存在");
         }
 
+
+        // add to logs
         switch (types) {
             case AuditOperation.APPROVE:
                 approve(unit);
+                logsService.info(AuditOperation.AUDIT, "审核通过" + unit.getName());
                 break;
             case AuditOperation.REJECT:
                 reject(unit);
+                logsService.info(AuditOperation.AUDIT, "审核拒绝" + unit.getName());
                 break;
         }
     }

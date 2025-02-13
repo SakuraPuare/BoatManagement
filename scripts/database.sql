@@ -296,7 +296,6 @@ CREATE TABLE logs (
   `type` ENUM ('AUDIT', 'OPERATION', 'SYSTEM', 'SECURITY') NOT NULL COMMENT '日志类型',
   `level` ENUM ('INFO', 'WARNING', 'ERROR') NOT NULL COMMENT '日志等级',
   `content` TEXT NOT NULL COMMENT '日志内容',
-  `source` VARCHAR(50) COMMENT '来源模块',
   `operator_id` BIGINT UNSIGNED COMMENT '操作人',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

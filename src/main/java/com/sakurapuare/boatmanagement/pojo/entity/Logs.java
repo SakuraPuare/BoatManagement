@@ -57,12 +57,6 @@ public class Logs extends BaseEntity implements Serializable {
     private String content;
 
     /**
-     * 来源模块
-     */
-    @ApiModelProperty("来源模块")
-    private String source;
-
-    /**
      * 操作人
      */
     @ApiModelProperty("操作人")

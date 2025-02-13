@@ -35,11 +35,6 @@ public class LogsTableDef extends TableDef {
     public final QueryColumn LEVEL = new QueryColumn(this, "level");
 
     /**
-     * 来源模块
-     */
-    public final QueryColumn SOURCE = new QueryColumn(this, "source");
-
-    /**
      * 日志内容
      */
     public final QueryColumn CONTENT = new QueryColumn(this, "content");
@@ -57,7 +52,7 @@ public class LogsTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, TYPE, LEVEL, CONTENT, SOURCE, OPERATOR_ID};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, TYPE, LEVEL, CONTENT, OPERATOR_ID};
 
     public LogsTableDef() {
         super("", "logs");
