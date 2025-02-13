@@ -16,7 +16,6 @@ import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUnitsVO;
 import com.sakurapuare.boatmanagement.service.*;
-import com.sakurapuare.boatmanagement.utils.RoleUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -445,7 +444,7 @@ public class CertifyServiceImpl implements CertifyService {
 
                 // 3. 更新账号权限
                 account = accountsService.getById(merchant.getUserId());
-                account.setRole(RoleUtils.addRole(account.getRole(), UserRole.MERCHANT));
+                account.setRole(UserRole.addRole(account.getRole(), UserRole.MERCHANT));
 
             }
             case UnitsTypes.VENDOR: {
@@ -457,7 +456,7 @@ public class CertifyServiceImpl implements CertifyService {
 
                 // 3. 更新账号权限
                 account = accountsService.getById(vendor.getUserId());
-                account.setRole(RoleUtils.addRole(account.getRole(), UserRole.VENDOR));
+                account.setRole(UserRole.addRole(account.getRole(), UserRole.VENDOR));
             }
         }
         accountsService.updateById(account);
@@ -481,7 +480,7 @@ public class CertifyServiceImpl implements CertifyService {
 
                 // 3. 更新账号权限
                 account = accountsService.getById(merchant.getUserId());
-                account.setRole(RoleUtils.removeRole(account.getRole(), UserRole.MERCHANT));
+                account.setRole(UserRole.removeRole(account.getRole(), UserRole.MERCHANT));
             }
             case UnitsTypes.VENDOR: {
                 Vendors vendor = vendorsService.getOne(
@@ -491,7 +490,7 @@ public class CertifyServiceImpl implements CertifyService {
 
                 // 3. 更新账号权限
                 account = accountsService.getById(vendor.getUserId());
-                account.setRole(RoleUtils.removeRole(account.getRole(), UserRole.VENDOR));
+                account.setRole(UserRole.removeRole(account.getRole(), UserRole.VENDOR));
             }
         }
         accountsService.updateById(account);

@@ -4,7 +4,6 @@ import com.sakurapuare.boatmanagement.common.UserContext;
 import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.service.AccountsService;
-import com.sakurapuare.boatmanagement.utils.RoleUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -76,7 +75,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         for (Map.Entry<String, Integer> entry : roleMap.entrySet()) {
             if (uri.startsWith(entry.getKey())) {
-                if (!RoleUtils.hasRole(account.getRole(), entry.getValue())) {
+                if (!UserRole.hasRole(account.getRole(), entry.getValue())) {
                     writeResponse(response, 401, "权限不足");
                     return false;
                 }
