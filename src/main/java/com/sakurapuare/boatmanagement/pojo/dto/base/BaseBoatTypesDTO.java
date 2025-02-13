@@ -33,10 +33,6 @@ public class BaseBoatTypesDTO {
     @ApiModelProperty("最大续航（公里）")
     private BigDecimal maxEndurance;
 
-    @ApiModelProperty("创建者")
-    private Long createdVendorId;
 
-    @ApiModelProperty("创建单位")
-    private Long createdUnitId;
 }
 

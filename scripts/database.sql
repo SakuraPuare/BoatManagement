@@ -201,7 +201,8 @@ INSERT INTO `units` (
     `is_deleted`,
     `created_at`,
     `updated_at`
-) VALUES (
+  )
+VALUES (
     '单位1',
     '单位1',
     '12345678901',
@@ -214,8 +215,8 @@ INSERT INTO `units` (
     0,
     NOW(),
     NOW()
-),
-(
+  ),
+  (
     '单位2',
     '单位2',
     '12345678902',
@@ -228,7 +229,7 @@ INSERT INTO `units` (
     0,
     NOW(),
     NOW()
-);
+  );
 -- 商家表
 CREATE TABLE merchants (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -249,22 +250,23 @@ INSERT INTO `merchants` (
     `is_deleted`,
     `created_at`,
     `updated_at`
-) VALUES (
+  )
+VALUES (
     2,
     1,
     'APPROVED',
     0,
     NOW(),
     NOW()
-),
-(
+  ),
+  (
     3,
     1,
     'APPROVED',
     0,
     NOW(),
     NOW()
-);
+  );
 CREATE TABLE vendors (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
@@ -284,14 +286,15 @@ INSERT INTO `vendors` (
     `is_deleted`,
     `created_at`,
     `updated_at`
-) VALUES (
+  )
+VALUES (
     4,
     1,
     'APPROVED',
     0,
     NOW(),
     NOW()
-);
+  );
 CREATE TABLE docks (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT '码头名称',
@@ -316,8 +319,8 @@ CREATE TABLE boat_types (
   `max_load` DECIMAL(10, 2) COMMENT '最大载重（吨）',
   `max_speed` DECIMAL(10, 2) COMMENT '最大航速（公里/小时）',
   `max_endurance` DECIMAL(10, 2) COMMENT '最大续航（公里）',
-  `created_vendor_id` BIGINT UNSIGNED COMMENT '创建者',
-  `created_unit_id` BIGINT UNSIGNED COMMENT '创建单位',
+  `created_vendor_id` BIGINT UNSIGNED COMMENT '创建者_serverside',
+  `created_unit_id` BIGINT UNSIGNED COMMENT '创建单位_serverside',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -330,9 +333,10 @@ CREATE TABLE boats (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT '船只名称',
   `type_id` INT UNSIGNED NOT NULL COMMENT '船只类型',
-  `vendor_id` BIGINT UNSIGNED NOT NULL COMMENT '船主ID',
-  `unit_id` BIGINT UNSIGNED NOT NULL COMMENT '所属单位',
   `boat_type_id` INT UNSIGNED NOT NULL COMMENT '船只类型',
+  `dock_id` BIGINT UNSIGNED NOT NULL COMMENT '所属码头',
+  `vendor_id` BIGINT UNSIGNED NOT NULL COMMENT '船主ID_serverside',
+  `unit_id` BIGINT UNSIGNED NOT NULL COMMENT '所属单位_serverside',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -340,7 +344,7 @@ CREATE TABLE boats (
   FOREIGN KEY (`type_id`) REFERENCES boat_types (`id`),
   FOREIGN KEY (`vendor_id`) REFERENCES vendors (`id`),
   FOREIGN KEY (`unit_id`) REFERENCES units (`id`),
-  FOREIGN KEY (`boat_type_id`) REFERENCES boat_types (`id`),
+  FOREIGN KEY (`dock_id`) REFERENCES docks (`id`),
   INDEX `idx_unit` (`unit_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '船只表';
 -- 订单表

@@ -9,7 +9,7 @@ import java.io.Serial;
  * 船只类型表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-13
+ * @since 2025-02-14
  */
 public class BoatTypesTableDef extends TableDef {
 
@@ -65,12 +65,12 @@ public class BoatTypesTableDef extends TableDef {
     public final QueryColumn MAX_ENDURANCE = new QueryColumn(this, "max_endurance");
 
     /**
-     * 创建单位
+     * 创建单位_serverside
      */
     public final QueryColumn CREATED_UNIT_ID = new QueryColumn(this, "created_unit_id");
 
     /**
-     * 创建者
+     * 创建者_serverside
      */
     public final QueryColumn CREATED_VENDOR_ID = new QueryColumn(this, "created_vendor_id");
 

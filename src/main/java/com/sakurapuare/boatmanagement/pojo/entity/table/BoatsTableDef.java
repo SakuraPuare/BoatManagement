@@ -9,7 +9,7 @@ import java.io.Serial;
  * 船只表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-13
+ * @since 2025-02-14
  */
 public class BoatsTableDef extends TableDef {
 
@@ -30,17 +30,22 @@ public class BoatsTableDef extends TableDef {
     public final QueryColumn NAME = new QueryColumn(this, "name");
 
     /**
+     * 所属码头
+     */
+    public final QueryColumn DOCK_ID = new QueryColumn(this, "dock_id");
+
+    /**
      * 船只类型
      */
     public final QueryColumn TYPE_ID = new QueryColumn(this, "type_id");
 
     /**
-     * 所属单位
+     * 所属单位_serverside
      */
     public final QueryColumn UNIT_ID = new QueryColumn(this, "unit_id");
 
     /**
-     * 船主ID
+     * 船主ID_serverside
      */
     public final QueryColumn VENDOR_ID = new QueryColumn(this, "vendor_id");
 
@@ -57,7 +62,7 @@ public class BoatsTableDef extends TableDef {
     /**
      * 默认字段，不包含逻辑删除或者 large 等字段。
      */
-    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, NAME, TYPE_ID, VENDOR_ID, UNIT_ID, BOAT_TYPE_ID};
+    public final QueryColumn[] DEFAULT_COLUMNS = new QueryColumn[]{ID, NAME, TYPE_ID, BOAT_TYPE_ID, DOCK_ID, VENDOR_ID, UNIT_ID};
 
     public BoatsTableDef() {
         super("", "boats");

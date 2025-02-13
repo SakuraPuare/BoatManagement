@@ -26,6 +26,10 @@ public class GoodsService extends BaseGoodsServiceImpl {
 
     private final UnitsService unitsService;
 
+    /*
+     * 管理员函数
+     */
+
     private Merchants getMerchant() {
         return merchantsService.getOne(
                 QueryWrapper.create().eq(MERCHANTS.USER_ID.getName(), UserContext.getAccount().getId()));
@@ -47,54 +51,75 @@ public class GoodsService extends BaseGoodsServiceImpl {
         return unit;
     }
 
-    public Goods getGoods(Long id) {
+    public Goods getMerchantsGoods(Long id) {
         Units unit = getUnit();
         return super.getOne(
                 QueryWrapper.create().eq(GOODS.CREATED_UNIT_ID.getName(), unit.getId()).eq(GOODS.ID.getName(), id));
     }
 
-    public List<BaseGoodsVO> getMerchantsGoodsList() {
+    public List<BaseGoodsVO> getMerchantsGoodsList(BaseGoodsDTO queryDTO) {
         Units unit = getUnit();
-
+        Goods query = new Goods();
+        BeanUtils.copyProperties(queryDTO, query);
+        QueryWrapper queryWrapper = QueryWrapper.create(query);
         return super.listAs(
-                QueryWrapper.create().eq(GOODS.CREATED_UNIT_ID.getName(), unit.getId()),
+                queryWrapper.eq(GOODS.CREATED_UNIT_ID.getName(), unit.getId()),
                 BaseGoodsVO.class);
     }
 
-    public Page<BaseGoodsVO> getMerchantsGoodsPage(Integer pageNum, Integer pageSize) {
+    public Page<BaseGoodsVO> getMerchantsGoodsPage(Integer pageNum, Integer pageSize, BaseGoodsDTO queryDTO) {
         Units unit = getUnit();
+        Goods query = new Goods();
+        BeanUtils.copyProperties(queryDTO, query);
+        QueryWrapper queryWrapper = QueryWrapper.create(query);
 
         return super.pageAs(
                 Page.of(pageNum, pageSize),
-                QueryWrapper.create().eq(GOODS.CREATED_UNIT_ID.getName(), unit.getId()),
+                queryWrapper.eq(GOODS.CREATED_UNIT_ID.getName(), unit.getId()),
                 BaseGoodsVO.class);
     }
 
-    public void addGoods(BaseGoodsDTO goods) {
+    public BaseGoodsVO getMerchantsGoodsById(Long id) {
+        Goods goods = getMerchantsGoods(id);
+        if (goods == null) {
+            throw new RuntimeException("商品不存在");
+        }
+        BaseGoodsVO baseGoodsVO = new BaseGoodsVO();
+        BeanUtils.copyProperties(goods, baseGoodsVO);
+        return baseGoodsVO;
+    }
+
+    public void addMerchantsGoods(BaseGoodsDTO goods) {
         Merchants merchant = getMerchant();
         Units unit = getUnit(merchant);
         Goods newGoods = new Goods();
         BeanUtils.copyProperties(goods, newGoods);
         newGoods.setCreatedUnitId(unit.getId());
         newGoods.setCreatedMerchantId(merchant.getId());
-        save(newGoods);
+        super.save(newGoods);
     }
 
-    public void updateGoods(Long id, BaseGoodsDTO goods) {
-        Goods oldGoods = getGoods(id);
-        if (oldGoods == null) {
+    private void verifyId(Long id) {
+        if (id == null) {
+            throw new RuntimeException("商品ID不能为空");
+        }
+
+        Goods goods = getMerchantsGoods(id);
+        if (goods == null) {
             throw new RuntimeException("商品不存在");
         }
+    }
+
+    public void updateMerchantsGoods(Long id, BaseGoodsDTO goods) {
+        verifyId(id);
+        Goods oldGoods = getMerchantsGoods(id);
         BeanUtils.copyProperties(goods, oldGoods);
-        oldGoods.setId(id);
-        updateById(oldGoods);
+        super.updateById(oldGoods);
     }
 
-    public void deleteGoods(Long id) {
-        Goods oldGoods = getGoods(id);
-        if (oldGoods == null) {
-            throw new RuntimeException("商品不存在");
-        }
-        removeById(id);
+    public void deleteMerchantsGoods(Long id) {
+        verifyId(id);
+        super.removeById(id);
     }
+
 }

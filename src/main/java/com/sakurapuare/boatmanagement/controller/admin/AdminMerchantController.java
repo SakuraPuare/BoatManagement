@@ -4,6 +4,7 @@ import com.mybatisflex.core.paginate.Page;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseMerchantsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseMerchantsVO;
 import com.sakurapuare.boatmanagement.service.MerchantsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,46 +24,44 @@ public class AdminMerchantController {
 
     @GetMapping("/list")
     @Operation(summary = "获取商户列表")
-    public Response<List<Merchants>> list() {
-        return Response.success("获取商户列表成功", merchantService.list());
+    public Response<List<BaseMerchantsVO>> list(@RequestParam BaseMerchantsDTO queryDTO) {
+        return Response.success("获取商户列表成功", merchantService.getListQuery(queryDTO));
     }
 
     @GetMapping("/page")
     @Operation(summary = "获取商户列表分页")
-    public Response<Page<Merchants>> listPage(@RequestParam(defaultValue = "1") Integer page,
-                                              @RequestParam(defaultValue = "10") Integer size) {
-        return Response.success("获取商户列表分页成功", merchantService.page(new Page<>(page, size)));
+    public Response<Page<BaseMerchantsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
+                                                    @RequestParam(defaultValue = "10") Integer size, @RequestParam BaseMerchantsDTO queryDTO) {
+        return Response.success("获取商户列表分页成功", merchantService.getPageQuery(page, size, queryDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取商户详情")
-    public Response<Merchants> get(@PathVariable Long id) {
-        return Response.success("获取商户详情成功", merchantService.getById(id));
+    public Response<BaseMerchantsVO> get(@PathVariable Long id) {
+        Merchants merchants = merchantService.getById(id);
+        BaseMerchantsVO merchantsVO = new BaseMerchantsVO();
+        BeanUtils.copyProperties(merchants, merchantsVO);
+        return Response.success("获取商户详情成功", merchantsVO);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "更新商户")
-    public Response<Merchants> update(@PathVariable Long id, @RequestBody BaseMerchantsDTO baseMerchantsDTO) {
-        Merchants merchants = new Merchants();
-        BeanUtils.copyProperties(baseMerchantsDTO, merchants);
-        merchants.setId(id);
-        merchantService.updateById(merchants);
-        return Response.success("更新商户成功", merchants);
+    public Response<String> update(@PathVariable Long id, @RequestBody BaseMerchantsDTO baseMerchantsDTO) {
+        merchantService.updateMerchant(id, baseMerchantsDTO);
+        return Response.success("更新商户成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除商户")
     public Response<String> delete(@PathVariable Long id) {
-        merchantService.removeById(id);
+        merchantService.deleteMerchant(id);
         return Response.success("删除商户成功");
     }
 
     @PostMapping("/")
     @Operation(summary = "创建商户")
-    public Response<Merchants> create(@RequestBody BaseMerchantsDTO baseMerchantsDTO) {
-        Merchants merchants = new Merchants();
-        BeanUtils.copyProperties(baseMerchantsDTO, merchants);
-        merchantService.save(merchants);
-        return Response.success("创建商户成功", merchants);
+    public Response<String> create(@RequestBody BaseMerchantsDTO baseMerchantsDTO) {
+        merchantService.addMerchant(baseMerchantsDTO);
+        return Response.success("创建商户成功");
     }
 }

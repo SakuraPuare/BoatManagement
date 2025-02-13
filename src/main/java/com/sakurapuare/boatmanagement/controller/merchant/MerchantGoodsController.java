@@ -20,39 +20,46 @@ public class MerchantGoodsController {
 
     private final GoodsService goodsService;
 
-
     @GetMapping("/list")
     @Operation(summary = "获取商家商品列表")
-    public Response<List<BaseGoodsVO>> getGoods() {
-        List<BaseGoodsVO> goods = goodsService.getMerchantsGoodsList();
+    public Response<List<BaseGoodsVO>> getGoods(@RequestParam BaseGoodsDTO queryDTO) {
+        List<BaseGoodsVO> goods = goodsService.getMerchantsGoodsList(queryDTO);
         return Response.success(goods);
     }
 
     @GetMapping("/page")
     @Operation(summary = "获取商家商品列表分页")
-    public Response<Page<BaseGoodsVO>> getGoodsPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize) {
-        Page<BaseGoodsVO> page = goodsService.getMerchantsGoodsPage(pageNum, pageSize);
+    public Response<Page<BaseGoodsVO>> getGoodsPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
+                                                    @RequestParam BaseGoodsDTO queryDTO) {
+        Page<BaseGoodsVO> page = goodsService.getMerchantsGoodsPage(pageNum, pageSize, queryDTO);
         return Response.success(page);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "获取商品详情")
+    public Response<BaseGoodsVO> getGoodsById(@PathVariable Long id) {
+        BaseGoodsVO goods = goodsService.getMerchantsGoodsById(id);
+        return Response.success(goods);
     }
 
     @PostMapping("/")
     @Operation(summary = "添加商品")
-    public Response<String> addGoods(@RequestBody BaseGoodsDTO goods) {
-        goodsService.addGoods(goods);
-        return Response.success("添加成功");
+    public Response<String> addMerchantsGoods(@RequestBody BaseGoodsDTO goods) {
+        goodsService.addMerchantsGoods(goods);
+        return Response.success("添加商品成功");
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "更新商品")
-    public Response<BaseGoodsVO> updateGoods(@PathVariable Long id, @RequestBody BaseGoodsDTO goods) {
-        goodsService.updateGoods(id, goods);
-        return Response.success();
+    public Response<String> updateMerchantsGoods(@PathVariable Long id, @RequestBody BaseGoodsDTO goods) {
+        goodsService.updateMerchantsGoods(id, goods);
+        return Response.success("更新商品成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除商品")
-    public Response<BaseGoodsVO> deleteGoods(@PathVariable Long id) {
-        goodsService.deleteGoods(id);
-        return Response.success();
+    public Response<String> deleteMerchantsGoods(@PathVariable Long id) {
+        goodsService.deleteMerchantsGoods(id);
+        return Response.success("删除商品成功");
     }
 }

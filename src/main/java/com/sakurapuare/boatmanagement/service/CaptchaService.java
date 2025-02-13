@@ -70,7 +70,7 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         captcha.setClientIp(RequestContext.getContext().getIp());
         captcha.setTarget(target);
 
-        save(captcha);
+        super.save(captcha);
 
         return captcha;
     }
@@ -91,14 +91,14 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         }
 
         captcha.setStatus(CaptchaStatus.USED);
-        updateById(captcha);
+        super.updateById(captcha);
 
         // clear captcha limit
         // captchaLimitMapper.deleteByQuery(
         //         QueryWrapper.create().eq(captchaLimit.TARGET.getName(), target));
 
         // clear captcha
-        remove(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target));
+        super.remove(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target));
 
         return true;
     }

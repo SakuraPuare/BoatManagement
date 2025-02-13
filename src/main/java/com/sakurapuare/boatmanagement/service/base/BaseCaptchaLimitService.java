@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.CaptchaLimit;
  * 验证码防刷记录_ndto_nvo 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-13
+ * @since 2025-02-14
  */
 public interface BaseCaptchaLimitService extends IService<CaptchaLimit> {
 

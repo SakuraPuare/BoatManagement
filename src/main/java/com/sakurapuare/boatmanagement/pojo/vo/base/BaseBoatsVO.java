@@ -17,13 +17,16 @@ public class BaseBoatsVO {
     @ApiModelProperty("船只类型")
     private Long typeId;
 
-    @ApiModelProperty("船主ID")
-    private Long vendorId;
-
-    @ApiModelProperty("所属单位")
-    private Long unitId;
-
     @ApiModelProperty("船只类型")
     private Long boatTypeId;
+
+    @ApiModelProperty("所属码头")
+    private Long dockId;
+
+    @ApiModelProperty("船主ID_serverside")
+    private Long vendorId;
+
+    @ApiModelProperty("所属单位_serverside")
+    private Long unitId;
 }
 

@@ -22,14 +22,14 @@ public class AdminAuditController {
 
     @GetMapping("/list")
     @Operation(summary = "获取所有认证列表")
-    public Response<List<BaseUnitsVO>> list(CertifyQueryDTO queryDTO) {
+    public Response<List<BaseUnitsVO>> list(@RequestParam CertifyQueryDTO queryDTO) {
         return Response.success("获取认证列表成功", certifyService.getListQuery(queryDTO));
     }
 
     @GetMapping("/page")
     @Operation(summary = "获取所有认证列表分页")
     public Response<Page<BaseUnitsVO>> listPage(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                @RequestParam(defaultValue = "10") Integer pageSize, CertifyQueryDTO queryDTO) {
+                                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestParam CertifyQueryDTO queryDTO) {
         return Response.success("获取认证列表成功", certifyService.getPageQuery(pageNum, pageSize, queryDTO));
     }
 

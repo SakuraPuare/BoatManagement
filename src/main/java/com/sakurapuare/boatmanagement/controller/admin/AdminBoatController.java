@@ -4,6 +4,7 @@ import com.mybatisflex.core.paginate.Page;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Boats;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatsVO;
 import com.sakurapuare.boatmanagement.service.BoatsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,47 +24,45 @@ public class AdminBoatController {
 
     @GetMapping("/list")
     @Operation(summary = "获取船舶列表")
-    public Response<List<Boats>> list() {
-        return Response.success("获取船舶列表成功", boatService.list());
+    public Response<List<BaseBoatsVO>> list(@RequestParam BaseBoatsDTO queryDTO) {
+        return Response.success("获取船舶列表成功", boatService.getListQuery(queryDTO));
     }
 
     @GetMapping("/page")
     @Operation(summary = "获取船舶列表分页")
-    public Response<Page<Boats>> listPage(@RequestParam(defaultValue = "1") Integer page,
-                                          @RequestParam(defaultValue = "10") Integer size) {
-        return Response.success("获取船舶列表分页成功", boatService.page(new Page<>(page, size)));
+    public Response<Page<BaseBoatsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
+                                                @RequestParam(defaultValue = "10") Integer size, @RequestParam BaseBoatsDTO queryDTO) {
+        return Response.success("获取船舶列表分页成功", boatService.getPageQuery(page, size, queryDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取船舶详情")
-    public Response<Boats> get(@PathVariable Long id) {
-        return Response.success("获取船舶详情成功", boatService.getById(id));
+    public Response<BaseBoatsVO> get(@PathVariable Long id) {
+        Boats boats = boatService.getById(id);
+        BaseBoatsVO boatsVO = new BaseBoatsVO();
+        BeanUtils.copyProperties(boats, boatsVO);
+        return Response.success("获取船舶详情成功", boatsVO);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "更新船舶")
-    public Response<Boats> update(@PathVariable Long id, @RequestBody BaseBoatsDTO baseBoatsDTO) {
-        Boats boats = new Boats();
-        BeanUtils.copyProperties(baseBoatsDTO, boats);
-        boats.setId(id);
-        boatService.updateById(boats);
-        return Response.success("更新船舶成功", boats);
+    public Response<String> update(@PathVariable Long id, @RequestBody BaseBoatsDTO baseBoatsDTO) {
+        boatService.updateBoat(id, baseBoatsDTO);
+        return Response.success("更新船舶成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除船舶")
     public Response<String> delete(@PathVariable Long id) {
-        boatService.removeById(id);
+        boatService.deleteBoat(id);
         return Response.success("删除船舶成功");
     }
 
     @PostMapping("/")
     @Operation(summary = "创建船舶")
-    public Response<Boats> create(@RequestBody BaseBoatsDTO baseBoatsDTO) {
-        Boats boats = new Boats();
-        BeanUtils.copyProperties(baseBoatsDTO, boats);
-        boatService.save(boats);
-        return Response.success("创建船舶成功", boats);
+    public Response<String> create(@RequestBody BaseBoatsDTO baseBoatsDTO) {
+        boatService.addBoat(baseBoatsDTO);
+        return Response.success("创建船舶成功");
     }
 
 }

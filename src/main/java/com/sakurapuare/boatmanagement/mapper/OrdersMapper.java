@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Orders;
  * 订单表 映射层。
  *
  * @author sakurapuare
- * @since 2025-02-13
+ * @since 2025-02-14
  */
 public interface OrdersMapper extends BaseMapper<Orders> {
 

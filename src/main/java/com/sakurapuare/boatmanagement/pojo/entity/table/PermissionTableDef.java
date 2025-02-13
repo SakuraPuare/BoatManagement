@@ -9,7 +9,7 @@ import java.io.Serial;
  * 权限表_ndto_nvo 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-13
+ * @since 2025-02-14
  */
 public class PermissionTableDef extends TableDef {
 

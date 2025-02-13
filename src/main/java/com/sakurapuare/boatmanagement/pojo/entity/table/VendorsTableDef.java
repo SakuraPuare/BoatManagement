@@ -9,7 +9,7 @@ import java.io.Serial;
  * 船主表 表定义层。
  *
  * @author sakurapuare
- * @since 2025-02-13
+ * @since 2025-02-14
  */
 public class VendorsTableDef extends TableDef {
 

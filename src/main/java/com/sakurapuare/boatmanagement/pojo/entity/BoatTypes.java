@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * 船只类型表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-13
+ * @since 2025-02-14
  */
 @Data
 @Builder
@@ -88,15 +88,15 @@ public class BoatTypes extends BaseEntity implements Serializable {
     private BigDecimal maxEndurance;
 
     /**
-     * 创建者
+     * 创建者_serverside
      */
-    @ApiModelProperty("创建者")
+    @ApiModelProperty("创建者_serverside")
     private Long createdVendorId;
 
     /**
-     * 创建单位
+     * 创建单位_serverside
      */
-    @ApiModelProperty("创建单位")
+    @ApiModelProperty("创建单位_serverside")
     private Long createdUnitId;
 
 }
