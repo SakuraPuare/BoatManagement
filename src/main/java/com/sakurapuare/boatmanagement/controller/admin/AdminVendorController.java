@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/vendor")
-@Tag(name = "管理员-供应商模块", description = "供应商模块")
+@Tag(name = "AdminVendor", description = "供应商模块")
 @RequiredArgsConstructor
 public class AdminVendorController {
 

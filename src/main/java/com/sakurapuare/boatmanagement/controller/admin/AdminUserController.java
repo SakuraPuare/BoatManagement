@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/user")
-@Tag(name = "管理员-用户模块", description = "用户模块")
+@Tag(name = "AdminUser", description = "用户模块")
 @RequiredArgsConstructor
 public class AdminUserController {
 

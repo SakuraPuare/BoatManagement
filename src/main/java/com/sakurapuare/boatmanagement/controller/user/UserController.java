@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
-@Tag(name = "用户-用户模块", description = "用户模块")
+@RequestMapping("/user/info")
+@Tag(name = "UserInfo", description = "用户模块")
 @RequiredArgsConstructor
 public class UserController {
 

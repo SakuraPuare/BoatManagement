@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/boat")
-@Tag(name = "管理员-船舶模块", description = "船舶模块")
+@Tag(name = "AdminBoat", description = "船舶模块")
 @RequiredArgsConstructor
 public class AdminBoatController {
 

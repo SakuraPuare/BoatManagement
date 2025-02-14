@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/certify")
-@Tag(name = "资质认证", description = "资质认证模块")
+@Tag(name = "CertifyController", description = "资质认证模块")
 @RequiredArgsConstructor
 public class CertifyController {
 

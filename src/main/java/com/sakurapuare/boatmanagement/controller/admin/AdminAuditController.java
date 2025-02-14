@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/audit")
-@Tag(name = "管理员-审核模块", description = "审核模块")
+@Tag(name = "AdminAudit", description = "审核模块")
 @RequiredArgsConstructor
 public class AdminAuditController {
 

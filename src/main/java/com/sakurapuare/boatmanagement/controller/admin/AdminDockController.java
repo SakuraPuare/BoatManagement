@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/dock")
-@Tag(name = "管理员-码头模块", description = "码头模块")
+@Tag(name = "AdminDock", description = "码头模块")
 @RequiredArgsConstructor
 public class AdminDockController {
 

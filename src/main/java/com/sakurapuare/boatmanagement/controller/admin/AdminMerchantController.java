@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/merchant")
-@Tag(name = "管理员-商户模块", description = "商户模块")
+@Tag(name = "AdminMerchant", description = "商户模块")
 @RequiredArgsConstructor
 public class AdminMerchantController {
 
