@@ -40,12 +40,6 @@ public class Orders extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 订单ID_serverside
-     */
-    @ApiModelProperty("订单ID_serverside")
-    private String orderId;
-
-    /**
      * 下单用户_serverside
      */
     @ApiModelProperty("下单用户_serverside")

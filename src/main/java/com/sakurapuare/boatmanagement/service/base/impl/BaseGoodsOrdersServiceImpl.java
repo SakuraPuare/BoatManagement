@@ -1,9 +1,9 @@
 package com.sakurapuare.boatmanagement.service.base.impl;
 
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.sakurapuare.boatmanagement.pojo.entity.UserCertify;
-import com.sakurapuare.boatmanagement.mapper.UserCertifyMapper;
-import com.sakurapuare.boatmanagement.service.base.BaseUserCertifyService;
+import com.sakurapuare.boatmanagement.pojo.entity.GoodsOrders;
+import com.sakurapuare.boatmanagement.mapper.GoodsOrdersMapper;
+import com.sakurapuare.boatmanagement.service.base.BaseGoodsOrdersService;
 import org.springframework.stereotype.Service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -16,14 +16,14 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 用户实名认证表_ndto 服务层实现。
+ * 商品订单表 服务层实现。
  *
  * @author sakurapuare
  * @since 2025-02-16
  */
 @Service
-@CacheConfig(cacheNames = "userCertify")
-public class BaseUserCertifyServiceImpl extends ServiceImpl<UserCertifyMapper, UserCertify>  implements BaseUserCertifyService{
+@CacheConfig(cacheNames = "goodsOrders")
+public class BaseGoodsOrdersServiceImpl extends ServiceImpl<GoodsOrdersMapper, GoodsOrders>  implements BaseGoodsOrdersService{
 
 
     @Override
@@ -46,31 +46,31 @@ public class BaseUserCertifyServiceImpl extends ServiceImpl<UserCertifyMapper, U
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean update(UserCertify entity, QueryWrapper query) {
+    public boolean update(GoodsOrders entity, QueryWrapper query) {
         return super.update(entity, query);
     }
 
     @Override
     @CacheEvict(key = "#entity.id")
-    public boolean updateById(UserCertify entity, boolean ignoreNulls) {
+    public boolean updateById(GoodsOrders entity, boolean ignoreNulls) {
         return super.updateById(entity, ignoreNulls);
     }
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean updateBatch(Collection<UserCertify> entities, int batchSize) {
+    public boolean updateBatch(Collection<GoodsOrders> entities, int batchSize) {
         return super.updateBatch(entities, batchSize);
     }
 
     @Override
     @Cacheable(key = "#id")
-    public UserCertify getById(Serializable id) {
+    public GoodsOrders getById(Serializable id) {
         return super.getById(id);
     }
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public UserCertify getOne(QueryWrapper query) {
+    public GoodsOrders getOne(QueryWrapper query) {
         return super.getOne(query);
     }
 
@@ -106,7 +106,7 @@ public class BaseUserCertifyServiceImpl extends ServiceImpl<UserCertifyMapper, U
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public List<UserCertify> list(QueryWrapper query) {
+    public List<GoodsOrders> list(QueryWrapper query) {
         return super.list(query);
     }
 
@@ -121,7 +121,7 @@ public class BaseUserCertifyServiceImpl extends ServiceImpl<UserCertifyMapper, U
      */
     @Override
     @Deprecated
-    public List<UserCertify> listByIds(Collection<? extends Serializable> ids) {
+    public List<GoodsOrders> listByIds(Collection<? extends Serializable> ids) {
         return super.listByIds(ids);
     }
 

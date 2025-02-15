@@ -12,9 +12,9 @@ import com.sakurapuare.boatmanagement.pojo.dto.CertifyQueryDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.*;
-import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
-import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
+import com.sakurapuare.boatmanagement.pojo.vo.BaseCertifyVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUnitsVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUserCertifyVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -165,21 +165,23 @@ public class CertifyService {
     }
 
 
-    public UserCertifyVO getUserCertify() {
-        UserCertifyVO userCertifyVO = new UserCertifyVO();
+    public BaseCertifyVO<BaseUserCertifyVO> getUserCertify() {
+        BaseCertifyVO<BaseUserCertifyVO> userCertifyVO = new BaseCertifyVO<>();
         UserCertify userCertify = userCertifyService.getOne(
                 new QueryWrapper().eq(USER_CERTIFY.USER_ID.getName(), UserContext.getAccount().getId()));
+        BaseUserCertifyVO baseUserCertifyVO = new BaseUserCertifyVO();
         if (userCertify == null) {
             userCertifyVO.setStatus(CertifyStatus.NOT_EXIST);
         } else {
-            userCertifyVO.setCertify(userCertify);
-            BeanUtils.copyProperties(userCertify, userCertifyVO);
+            BeanUtils.copyProperties(userCertify, baseUserCertifyVO);
+            userCertifyVO.setCertify(baseUserCertifyVO);
         }
+
         return userCertifyVO;
     }
 
-    public UnitCertifyVO buildUnitCertifyVO(Units unit) {
-        UnitCertifyVO vo = new UnitCertifyVO();
+    public BaseCertifyVO<BaseUnitsVO> buildUnitCertifyVO(Units unit) {
+        BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
         BaseUnitsVO unitVO = new BaseUnitsVO();
         BeanUtils.copyProperties(unit, unitVO);
         BeanUtils.copyProperties(unit, vo);
@@ -188,8 +190,8 @@ public class CertifyService {
     }
 
 
-    public UnitCertifyVO getMerchantCertify() {
-        UnitCertifyVO vo = new UnitCertifyVO();
+    public BaseCertifyVO<BaseUnitsVO> getMerchantCertify() {
+        BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
         Merchants merchant = merchantsService.getOne(
                 new QueryWrapper().eq(MERCHANTS.USER_ID.getName(), UserContext.getAccount().getId()));
 
@@ -207,8 +209,8 @@ public class CertifyService {
     }
 
 
-    public UnitCertifyVO getVendorCertify() {
-        UnitCertifyVO vo = new UnitCertifyVO();
+    public BaseCertifyVO<BaseUnitsVO> getVendorCertify() {
+        BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
         Vendors vendor = vendorsService.getOne(
                 new QueryWrapper().eq(VENDORS.USER_ID.getName(), UserContext.getAccount().getId()));
 

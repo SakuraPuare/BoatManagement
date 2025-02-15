@@ -107,15 +107,13 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
     public List<BaseBoatTypesVO> getVendorBoatTypesList(BaseBoatTypesDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
 
-        List<BaseBoatTypesVO> boatTypes = super.listAs(queryWrapper, BaseBoatTypesVO.class);
-        return boatTypes;
+        return super.listAs(queryWrapper, BaseBoatTypesVO.class);
     }
 
     public Page<BaseBoatTypesVO> getVendorBoatTypesPage(Integer pageNum, Integer pageSize, BaseBoatTypesDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
 
-        Page<BaseBoatTypesVO> boatTypes = super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatTypesVO.class);
-        return boatTypes;
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatTypesVO.class);
     }
 
     public void addVendorBoatType(BaseBoatTypesDTO boatTypesDTO) {

@@ -3,8 +3,9 @@ package com.sakurapuare.boatmanagement.controller;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
-import com.sakurapuare.boatmanagement.pojo.vo.UnitCertifyVO;
-import com.sakurapuare.boatmanagement.pojo.vo.UserCertifyVO;
+import com.sakurapuare.boatmanagement.pojo.vo.BaseCertifyVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUnitsVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUserCertifyVO;
 import com.sakurapuare.boatmanagement.service.CertifyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,8 +22,8 @@ public class CertifyController {
 
     @GetMapping("user")
     @Operation(summary = "获取用户实名认证信息")
-    public Response<UserCertifyVO> getUserCertify() {
-        return Response.success(certifyService.getUserCertify());
+    public Response<BaseUserCertifyVO> getUserCertify() {
+        return Response.success(certifyService.getUserCertify().getCertify());
     }
 
     @PostMapping("user")
@@ -34,7 +35,7 @@ public class CertifyController {
 
     @GetMapping("merchant")
     @Operation(summary = "获取商户实名认证信息")
-    public Response<UnitCertifyVO> getMerchantCertify() {
+    public Response<BaseCertifyVO<BaseUnitsVO>> getMerchantCertify() {
         return Response.success(certifyService.getMerchantCertify());
     }
 
@@ -47,7 +48,7 @@ public class CertifyController {
 
     @GetMapping("vendor")
     @Operation(summary = "获取供应商实名认证信息")
-    public Response<UnitCertifyVO> getVendorCertify() {
+    public Response<BaseCertifyVO<BaseUnitsVO>> getVendorCertify() {
         return Response.success(certifyService.getVendorCertify());
     }
 

@@ -3,8 +3,9 @@ package com.sakurapuare.boatmanagement.pojo.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
+import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import java.io.Serial;
 
@@ -17,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 用户实名认证表_ndto 实体类。
+ * 商品订单表 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-16
@@ -27,9 +28,9 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("用户实名认证表_ndto")
-@Table("user_certify")
-public class UserCertify extends BaseEntity implements Serializable {
+@ApiModel("商品订单表")
+@Table("goods_orders")
+public class GoodsOrders extends BaseOrder implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -39,27 +40,18 @@ public class UserCertify extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 关联用户
+     * 订单信息：id:数量,id:数量,id:数量
      */
-    @ApiModelProperty("关联用户")
-    private Long userId;
+    @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
+    private String orderInfo;
 
-    /**
-     * 真实姓名
-     */
-    @ApiModelProperty("真实姓名")
-    private String realName;
+    @ApiModelProperty("")
+    private Boolean isDeleted;
 
-    /**
-     * 身份证号
-     */
-    @ApiModelProperty("身份证号")
-    private String idCard;
+    @ApiModelProperty("")
+    private Timestamp createdAt;
 
-    /**
-     * 审核状态
-     */
-    @ApiModelProperty("审核状态")
-    private String status;
+    @ApiModelProperty("")
+    private Timestamp updatedAt;
 
 }

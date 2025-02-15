@@ -5,7 +5,7 @@ import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.common.UserContext;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.vo.UserInfoVO;
-import com.sakurapuare.boatmanagement.pojo.vo.UserPersonalInfoVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseAccountsVO;
 import com.sakurapuare.boatmanagement.service.AccountsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +31,10 @@ public class UserInfoController {
     }
 
     @GetMapping("/me")
-    public Response<UserPersonalInfoVO> getMe() {
+    public Response<BaseAccountsVO> getMe() {
         Accounts account = UserContext.getAccount();
 
-        UserPersonalInfoVO userSelfVO = new UserPersonalInfoVO();
+        BaseAccountsVO userSelfVO = new BaseAccountsVO();
         BeanUtil.copyProperties(account, userSelfVO);
 
         return Response.success(userSelfVO);
