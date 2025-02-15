@@ -22,16 +22,16 @@ public class AdminUserController {
 
     private final AccountsService accountsService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取用户列表")
-    public Response<List<BaseAccountsVO>> list(@RequestParam BaseAccountsDTO queryDTO) {
+    public Response<List<BaseAccountsVO>> list(@RequestBody BaseAccountsDTO queryDTO) {
         return Response.success("获取用户列表成功", accountsService.getListQuery(queryDTO));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取用户列表分页")
     public Response<Page<BaseAccountsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
-                                                   @RequestParam(defaultValue = "10") Integer size, @RequestParam BaseAccountsDTO queryDTO) {
+                                                   @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseAccountsDTO queryDTO) {
         return Response.success("获取用户列表分页成功", accountsService.getPageQuery(page, size, queryDTO));
     }
 

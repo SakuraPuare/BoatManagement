@@ -20,17 +20,17 @@ public class MerchantGoodsController {
 
     private final GoodsService goodsService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取商家商品列表")
-    public Response<List<BaseGoodsVO>> getGoods(@RequestParam BaseGoodsDTO queryDTO) {
+    public Response<List<BaseGoodsVO>> getGoods(@RequestBody BaseGoodsDTO queryDTO) {
         List<BaseGoodsVO> goods = goodsService.getMerchantsGoodsList(queryDTO);
         return Response.success(goods);
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取商家商品列表分页")
     public Response<Page<BaseGoodsVO>> getGoodsPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
-                                                    @RequestParam BaseGoodsDTO queryDTO) {
+                                                    @RequestBody BaseGoodsDTO queryDTO) {
         Page<BaseGoodsVO> page = goodsService.getMerchantsGoodsPage(pageNum, pageSize, queryDTO);
         return Response.success(page);
     }

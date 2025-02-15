@@ -22,16 +22,16 @@ public class AdminBoatTypeController {
 
     private final BoatTypesService boatTypesService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取船舶类型列表")
-    public Response<List<BaseBoatTypesVO>> list(@RequestParam BaseBoatTypesDTO queryDTO) {
+    public Response<List<BaseBoatTypesVO>> list(@RequestBody BaseBoatTypesDTO queryDTO) {
         return Response.success("获取船舶类型列表成功", boatTypesService.getListQuery(queryDTO));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取船舶类型列表分页")
     public Response<Page<BaseBoatTypesVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
-                                                    @RequestParam(defaultValue = "10") Integer size, @RequestParam BaseBoatTypesDTO queryDTO) {
+                                                    @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseBoatTypesDTO queryDTO) {
         return Response.success("获取船舶类型列表分页成功", boatTypesService.getPageQuery(page, size, queryDTO));
     }
 

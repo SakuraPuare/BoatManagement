@@ -22,16 +22,16 @@ public class AdminVendorController {
 
     private final VendorsService vendorService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取供应商列表")
-    public Response<List<BaseVendorsVO>> list(@RequestParam BaseVendorsDTO queryDTO) {
+    public Response<List<BaseVendorsVO>> list(@RequestBody BaseVendorsDTO queryDTO) {
         return Response.success("获取供应商列表成功", vendorService.getListQuery(queryDTO));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取供应商列表分页")
     public Response<Page<BaseVendorsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
-                                                  @RequestParam(defaultValue = "10") Integer size, @RequestParam BaseVendorsDTO queryDTO) {
+                                                  @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseVendorsDTO queryDTO) {
         return Response.success("获取供应商列表分页成功", vendorService.getPageQuery(page, size, queryDTO));
     }
 

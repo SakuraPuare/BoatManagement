@@ -21,16 +21,16 @@ public class VendorBoatController {
 
     private final BoatsService boatsService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取供应商船舶列表")
-    public Response<List<BaseBoatsVO>> getVendorBoats(@RequestParam BaseBoatsDTO queryDTO) {
+    public Response<List<BaseBoatsVO>> getVendorBoats(@RequestBody BaseBoatsDTO queryDTO) {
         return Response.success(boatsService.getVendorBoatsList(queryDTO));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取供应商船舶列表分页")
     public Response<Page<BaseBoatsVO>> getVendorBoatsPage(@RequestParam Integer pageNum,
-                                                          @RequestParam Integer pageSize, @RequestParam BaseBoatsDTO queryDTO) {
+                                                          @RequestBody Integer pageSize, @RequestParam BaseBoatsDTO queryDTO) {
         return Response.success(boatsService.getVendorBoatsPage(pageNum, pageSize, queryDTO));
     }
 

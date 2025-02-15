@@ -22,16 +22,16 @@ public class AdminMerchantController {
 
     private final MerchantsService merchantService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取商户列表")
-    public Response<List<BaseMerchantsVO>> list(@RequestParam BaseMerchantsDTO queryDTO) {
+    public Response<List<BaseMerchantsVO>> list(@RequestBody BaseMerchantsDTO queryDTO) {
         return Response.success("获取商户列表成功", merchantService.getListQuery(queryDTO));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取商户列表分页")
     public Response<Page<BaseMerchantsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
-                                                    @RequestParam(defaultValue = "10") Integer size, @RequestParam BaseMerchantsDTO queryDTO) {
+                                                    @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseMerchantsDTO queryDTO) {
         return Response.success("获取商户列表分页成功", merchantService.getPageQuery(page, size, queryDTO));
     }
 

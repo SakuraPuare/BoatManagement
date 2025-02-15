@@ -22,16 +22,16 @@ public class AdminDockController {
 
     private final DocksService docksService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取码头列表")
-    public Response<List<BaseDocksVO>> getDocks(@RequestParam BaseDocksDTO queryDTO) {
+    public Response<List<BaseDocksVO>> getDocks(@RequestBody BaseDocksDTO queryDTO) {
         return Response.success("获取码头列表成功", docksService.getListQuery(queryDTO));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取码头列表分页")
     public Response<Page<BaseDocksVO>> getDocksPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
-                                                    @RequestParam BaseDocksDTO queryDTO) {
+                                                    @RequestBody BaseDocksDTO queryDTO) {
         return Response.success("获取码头列表分页成功", docksService.getPageQuery(pageNum, pageSize, queryDTO));
     }
 
