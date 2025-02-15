@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 @Data
 public class UserPersonalInfoVO {
-    private Long userId;
+    private Long id;
 
     private String username;
 

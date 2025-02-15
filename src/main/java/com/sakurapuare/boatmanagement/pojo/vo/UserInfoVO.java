@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserInfoVO {
-    private Long userId;
+    private Long id;
 
     private String username;
 }

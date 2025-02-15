@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user/info")
 @Tag(name = "UserInfo", description = "用户模块")
 @RequiredArgsConstructor
-public class UserController {
+public class UserInfoController {
 
     private final AccountsService accountsService;
 
