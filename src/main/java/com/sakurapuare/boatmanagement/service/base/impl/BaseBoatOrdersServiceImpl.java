@@ -1,9 +1,9 @@
 package com.sakurapuare.boatmanagement.service.base.impl;
 
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.sakurapuare.boatmanagement.pojo.entity.Permission;
-import com.sakurapuare.boatmanagement.mapper.PermissionMapper;
-import com.sakurapuare.boatmanagement.service.base.BasePermissionService;
+import com.sakurapuare.boatmanagement.pojo.entity.BoatOrders;
+import com.sakurapuare.boatmanagement.mapper.BoatOrdersMapper;
+import com.sakurapuare.boatmanagement.service.base.BaseBoatOrdersService;
 import org.springframework.stereotype.Service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -16,14 +16,14 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 权限表_ndto_nvo 服务层实现。
+ * 订单表 服务层实现。
  *
  * @author sakurapuare
  * @since 2025-02-16
  */
 @Service
-@CacheConfig(cacheNames = "permission")
-public class BasePermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission>  implements BasePermissionService{
+@CacheConfig(cacheNames = "boatOrders")
+public class BaseBoatOrdersServiceImpl extends ServiceImpl<BoatOrdersMapper, BoatOrders>  implements BaseBoatOrdersService{
 
 
     @Override
@@ -46,31 +46,31 @@ public class BasePermissionServiceImpl extends ServiceImpl<PermissionMapper, Per
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean update(Permission entity, QueryWrapper query) {
+    public boolean update(BoatOrders entity, QueryWrapper query) {
         return super.update(entity, query);
     }
 
     @Override
     @CacheEvict(key = "#entity.id")
-    public boolean updateById(Permission entity, boolean ignoreNulls) {
+    public boolean updateById(BoatOrders entity, boolean ignoreNulls) {
         return super.updateById(entity, ignoreNulls);
     }
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean updateBatch(Collection<Permission> entities, int batchSize) {
+    public boolean updateBatch(Collection<BoatOrders> entities, int batchSize) {
         return super.updateBatch(entities, batchSize);
     }
 
     @Override
     @Cacheable(key = "#id")
-    public Permission getById(Serializable id) {
+    public BoatOrders getById(Serializable id) {
         return super.getById(id);
     }
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public Permission getOne(QueryWrapper query) {
+    public BoatOrders getOne(QueryWrapper query) {
         return super.getOne(query);
     }
 
@@ -106,7 +106,7 @@ public class BasePermissionServiceImpl extends ServiceImpl<PermissionMapper, Per
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public List<Permission> list(QueryWrapper query) {
+    public List<BoatOrders> list(QueryWrapper query) {
         return super.list(query);
     }
 
@@ -121,7 +121,7 @@ public class BasePermissionServiceImpl extends ServiceImpl<PermissionMapper, Per
      */
     @Override
     @Deprecated
-    public List<Permission> listByIds(Collection<? extends Serializable> ids) {
+    public List<BoatOrders> listByIds(Collection<? extends Serializable> ids) {
         return super.listByIds(ids);
     }
 

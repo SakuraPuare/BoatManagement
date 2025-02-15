@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("船只表")
 public class BaseBoatsVO {
-    @ApiModelProperty("")
     private Long id;
 
     @ApiModelProperty("船只名称")

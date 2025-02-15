@@ -1,19 +1,14 @@
-package com.sakurapuare.boatmanagement.pojo.dto.base;
+package com.sakurapuare.boatmanagement.pojo.vo.base;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.sql.Timestamp;
-import java.math.BigDecimal;
+
 @Data
 @ApiModel("订单表")
-public class BaseOrdersDTO {
-
-    @ApiModelProperty("订单编号")
-    private String orderNo;
-
-    @ApiModelProperty("下单用户")
-    private Long userId;
+public class BaseBoatOrdersVO {
+    private Long id;
 
     @ApiModelProperty("指定船只")
     private Long boatId;
@@ -30,12 +25,12 @@ public class BaseOrdersDTO {
     @ApiModelProperty("租用结束时间")
     private Timestamp endTime;
 
-    @ApiModelProperty("订单总金额")
-    private BigDecimal totalAmount;
-
-    private String status;
-
     @ApiModelProperty("订单类型")
     private String type;
+
+
+    private Timestamp createdAt;
+
+    private Timestamp updatedAt;
 }
 

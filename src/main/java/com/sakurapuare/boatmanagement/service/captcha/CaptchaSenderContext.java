@@ -9,7 +9,7 @@ import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.ACCOUNTS;
 
 @Component
 @RequiredArgsConstructor
@@ -20,13 +20,13 @@ public class CaptchaSenderContext {
     private final PhoneCaptchaSender phoneCaptchaSender;
     private final AllCaptchaSender allCaptchaSender;
 
-    private CaptchaSender capthaSender;
+    private CaptchaSender captchaSender;
 
     public void setStrategy(NameRequestDTO nameRequestDTO) {
         AuthName name = AuthNameUtils.getAuthName(nameRequestDTO.getUsername());
         switch (name) {
-            case AuthName.EMAIL -> this.capthaSender = emailCaptchaSender;
-            case AuthName.PHONE -> this.capthaSender = phoneCaptchaSender;
+            case AuthName.EMAIL -> this.captchaSender = emailCaptchaSender;
+            case AuthName.PHONE -> this.captchaSender = phoneCaptchaSender;
             case AuthName.USERNAME -> {
                 Accounts account = accountsService.getOne(
                         QueryWrapper.create()
@@ -36,11 +36,11 @@ public class CaptchaSenderContext {
                 }
 
                 if (account.getEmail() != null) {
-                    this.capthaSender = emailCaptchaSender;
+                    this.captchaSender = emailCaptchaSender;
                 } else if (account.getPhone() != null) {
-                    this.capthaSender = phoneCaptchaSender;
+                    this.captchaSender = phoneCaptchaSender;
                 } else {
-                    this.capthaSender = allCaptchaSender;
+                    this.captchaSender = allCaptchaSender;
                 }
             }
             default -> throw new IllegalArgumentException("不支持的验证码发送方式");
@@ -48,7 +48,7 @@ public class CaptchaSenderContext {
     }
 
     public boolean sendCaptcha(NameRequestDTO nameRequestDTO) {
-        return capthaSender.sendCaptcha(nameRequestDTO);
+        return captchaSender.sendCaptcha(nameRequestDTO);
     }
 
 }

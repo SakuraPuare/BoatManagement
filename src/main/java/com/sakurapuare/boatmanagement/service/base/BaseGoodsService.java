@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Goods;
  * 商品表 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-14
+ * @since 2025-02-16
  */
 public interface BaseGoodsService extends IService<Goods> {
 

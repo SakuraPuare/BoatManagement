@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.ACCOUNTS;
 
 @Service
 @RequiredArgsConstructor

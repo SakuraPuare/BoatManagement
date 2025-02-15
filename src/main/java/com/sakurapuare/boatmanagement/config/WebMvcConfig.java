@@ -28,19 +28,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                         "/auth/**",
                         "/error",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
                         "/doc.html",
                         "/webjars/**",
                         "/swagger-resources/**",
                         "/favicon.ico",
-                        // Knife4j
-                        "/api/doc.html",
-                        "/api/swagger-resources/**",
-                        "/api/v3/api-docs/**",
-                        "/api/swagger-ui/**"
-                )
-                .excludePathPatterns("/login", "/register", "/register");
+                        "/swagger-ui*/**",
+                        "/v3/api-docs/**",
+                        "/v3/api-docs.yaml",
+                        "/swagger-ui.html"
+                );
 
         registry.addInterceptor(requestInfoInterceptor)
                 .addPathPatterns("/**");

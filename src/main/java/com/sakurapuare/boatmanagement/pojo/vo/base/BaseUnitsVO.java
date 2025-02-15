@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("单位表")
 public class BaseUnitsVO {
-    @ApiModelProperty("")
     private Long id;
 
     @ApiModelProperty("对外名称")

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.GoodsTableDef.GOODS;
-import static com.sakurapuare.boatmanagement.pojo.entity.table.MerchantsTableDef.MERCHANTS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.GOODS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.MERCHANTS;
 
 @Service
 @RequiredArgsConstructor

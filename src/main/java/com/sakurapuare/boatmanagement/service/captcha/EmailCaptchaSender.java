@@ -16,7 +16,7 @@ public class EmailCaptchaSender implements CaptchaSender {
     public boolean sendCaptcha(NameRequestDTO nameRequestDTO) {
         // TODO: Send email
 
-        Captcha captha = captchaService.generateCaptcha(nameRequestDTO.getUsername());
+        Captcha captcha = captchaService.generateCaptcha(nameRequestDTO.getUsername());
         return false;
     }
 

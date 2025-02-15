@@ -8,7 +8,6 @@ import lombok.Data;
 @Data
 @ApiModel("基础账号表")
 public class BaseAccountsVO {
-    @ApiModelProperty("")
     private Long id;
 
     @ApiModelProperty("用户名")
@@ -26,10 +25,8 @@ public class BaseAccountsVO {
     @ApiModelProperty("角色MASK")
     private Integer role;
 
-    @ApiModelProperty("")
     private Boolean isActive;
 
-    @ApiModelProperty("")
     private Boolean isBlocked;
 }
 

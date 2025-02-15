@@ -6,7 +6,7 @@ import com.sakurapuare.boatmanagement.pojo.dto.AuthRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import org.springframework.stereotype.Component;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.ACCOUNTS;
 
 @Component
 public interface AuthStrategy {

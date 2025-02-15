@@ -16,7 +16,7 @@ public class PhoneCaptchaSender implements CaptchaSender {
     public boolean sendCaptcha(NameRequestDTO nameRequestDTO) {
         // TODO: send code to phone
 
-        Captcha captha = captchaService.generateCaptcha(nameRequestDTO.getUsername());
+        Captcha captcha = captchaService.generateCaptcha(nameRequestDTO.getUsername());
         return false;
     }
 

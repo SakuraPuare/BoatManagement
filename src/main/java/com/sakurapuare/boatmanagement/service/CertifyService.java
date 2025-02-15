@@ -23,10 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.MerchantsTableDef.MERCHANTS;
-import static com.sakurapuare.boatmanagement.pojo.entity.table.UnitsTableDef.UNITS;
-import static com.sakurapuare.boatmanagement.pojo.entity.table.UserCertifyTableDef.USER_CERTIFY;
-import static com.sakurapuare.boatmanagement.pojo.entity.table.VendorsTableDef.VENDORS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.*;
 
 @Service
 @RequiredArgsConstructor

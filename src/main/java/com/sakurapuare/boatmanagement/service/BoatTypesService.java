@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.BoatTypesTableDef.BOAT_TYPES;
-import static com.sakurapuare.boatmanagement.pojo.entity.table.VendorsTableDef.VENDORS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.BOAT_TYPES;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.VENDORS;
 
 @Service
 @RequiredArgsConstructor
@@ -135,7 +135,7 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         verifyId(id);
 
         // 必须属于当前供应商
-        if (!getById(id).getCreatedVendorId().equals(getVendor().getId())) {
+        if (!super.getById(id).getCreatedVendorId().equals(getVendor().getId())) {
             throw new IllegalArgumentException("船舶类型不属于当前供应商");
         }
     }

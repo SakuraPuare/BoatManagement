@@ -4,6 +4,7 @@ import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
+import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.math.BigInteger;
@@ -34,12 +35,12 @@ public class SQLGen {
         GlobalConfig globalConfig = new GlobalConfig();
 
         globalConfig.enableEntity();
-        globalConfig.enableMapper();
+//        globalConfig.enableMapper();
         globalConfig.enableService();
         globalConfig.enableServiceImpl();
 //        globalConfig.enableController();
-        globalConfig.enableTableDef();
-        globalConfig.enableMapperXml();
+//        globalConfig.enableTableDef();
+//        globalConfig.enableMapperXml();
 
         // 设置根包
         globalConfig.setBasePackage("com.sakurapuare.boatmanagement");
@@ -50,7 +51,13 @@ public class SQLGen {
                 .setEntityPackage("com.sakurapuare.boatmanagement.pojo.entity");
 
         globalConfig.getEntityConfig()
-                .setSuperClass(BaseEntity.class)
+                .setSuperClassFactory(table -> {
+                    // if table name contain _order, return BaseOrder.class
+                    if (table.getName().contains("_order")) {
+                        return BaseOrder.class;
+                    }
+                    return BaseEntity.class;
+                })
                 .setOverwriteEnable(true)
                 .setWithLombok(true)
                 .setWithSwagger(true)

@@ -9,7 +9,7 @@ import com.sakurapuare.boatmanagement.service.AccountsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.AccountsTableDef.ACCOUNTS;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.ACCOUNTS;
 
 @Component
 @RequiredArgsConstructor

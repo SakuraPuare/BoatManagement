@@ -6,7 +6,6 @@ import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
 import java.io.Serial;
 
@@ -19,17 +18,17 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 订单表 实体类。
+ * 订单表_ndto_nvo 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-14
+ * @since 2025-02-16
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("订单表")
+@ApiModel("订单表_ndto_nvo")
 @Table("orders")
 public class Orders extends BaseEntity implements Serializable {
 
@@ -41,60 +40,33 @@ public class Orders extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 订单编号
+     * 订单ID_serverside
      */
-    @ApiModelProperty("订单编号")
-    private String orderNo;
+    @ApiModelProperty("订单ID_serverside")
+    private String orderId;
 
     /**
-     * 下单用户
+     * 下单用户_serverside
      */
-    @ApiModelProperty("下单用户")
+    @ApiModelProperty("下单用户_serverside")
     private Long userId;
 
     /**
-     * 指定船只
+     * 折扣_serverside
      */
-    @ApiModelProperty("指定船只")
-    private Long boatId;
+    @ApiModelProperty("折扣_serverside")
+    private BigDecimal discount;
 
     /**
-     * 起始码头
+     * 订单总金额_serverside
      */
-    @ApiModelProperty("起始码头")
-    private Long startDockId;
+    @ApiModelProperty("订单总金额_serverside")
+    private BigDecimal price;
 
     /**
-     * 目的码头
+     * 订单状态_serverside
      */
-    @ApiModelProperty("目的码头")
-    private Long endDockId;
-
-    /**
-     * 租用开始时间
-     */
-    @ApiModelProperty("租用开始时间")
-    private Timestamp startTime;
-
-    /**
-     * 租用结束时间
-     */
-    @ApiModelProperty("租用结束时间")
-    private Timestamp endTime;
-
-    /**
-     * 订单总金额
-     */
-    @ApiModelProperty("订单总金额")
-    private BigDecimal totalAmount;
-
-    @ApiModelProperty("")
+    @ApiModelProperty("订单状态_serverside")
     private String status;
-
-    /**
-     * 订单类型
-     */
-    @ApiModelProperty("订单类型")
-    private String type;
 
 }

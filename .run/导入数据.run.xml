@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="导入数据" type="DatabaseScript">
+    <script-file value="$PROJECT_DIR$/scripts/database.sql" />
+    <script-mode>FILE</script-mode>
+    <data-source id="033c484c-5e9b-4d7a-a487-50babb736228" namespace="schema/&quot;boatmanagement&quot;" />
+    <method v="2" />
+  </configuration>
+</component>

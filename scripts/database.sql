@@ -350,27 +350,45 @@ CREATE TABLE boats (
 -- 订单表
 CREATE TABLE orders (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `order_no` VARCHAR(32) NOT NULL UNIQUE COMMENT '订单编号',
-  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户',
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户_serverside',
+  `discount` DECIMAL(12, 2) NOT NULL COMMENT '折扣_serverside',
+  `price` DECIMAL(12, 2) NOT NULL COMMENT '订单总金额_serverside',
+  `status` ENUM ('PENDING', 'PAID', 'COMPLETED', 'CANCELLED') NOT NULL DEFAULT 'PENDING' COMMENT '订单状态_serverside',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '订单表_ndto_nvo';
+CREATE TABLE boat_orders (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID_serverside',
   `boat_id` BIGINT UNSIGNED COMMENT '指定船只',
   `start_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '起始码头',
   `end_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '目的码头',
   `start_time` DATETIME NOT NULL COMMENT '租用开始时间',
   `end_time` DATETIME NOT NULL COMMENT '租用结束时间',
-  `total_amount` DECIMAL(12, 2) NOT NULL COMMENT '订单总金额',
-  `status` ENUM ('PENDING', 'PAID', 'COMPLETED', 'CANCELLED') NOT NULL DEFAULT 'PENDING',
   `type` ENUM ('REAL_TIME', 'RESERVATION') NOT NULL COMMENT '订单类型',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
+  -- FOREIGN KEY (`order_id`) REFERENCES orders (`order_id`),
   FOREIGN KEY (`boat_id`) REFERENCES boats (`id`),
   FOREIGN KEY (`start_dock_id`) REFERENCES docks (`id`),
   FOREIGN KEY (`end_dock_id`) REFERENCES docks (`id`),
-  INDEX `idx_user_status` (`user_id`, `status`),
   INDEX `idx_time_range` (`start_time`, `end_time`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '订单表';
+CREATE TABLE `goods_orders` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID_serverside',
+  `order_info` TEXT COMMENT '订单信息：id:数量,id:数量,id:数量',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`order_id`) REFERENCES `boat_orders` (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '商品订单表';
 -- 日志表
 CREATE TABLE logs (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

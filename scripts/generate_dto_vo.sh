@@ -1,10 +1,6 @@
 #!/bin/bash
 source ./scripts/init.sh
 
-entity_path="$spring_path/pojo/entity"
-dto_path="$spring_path/pojo/dto"
-vo_path="$spring_path/pojo/vo"
-
 #  获取@ApiModelProperty 和 他的下一行
 function get_api_model_property_name() {
     local entity_name="$1"
@@ -79,20 +75,33 @@ ${api_model_property_name}
 
 function post_process() {
     local dto_path="$1"
+    local vo_path="$2"
 
     for file in "$dto_path/base"/*.java; do
         echo "处理文件: $file"
         # 过滤一些字段
         sed -i '/@ApiModelProperty("")/d' "$file"
         sed -i '/private Long id;/d' "$file"
-        sed -i '/private Boolean isDeleted;/d' "$file"
         sed -i '/private Boolean isActive;/d' "$file"
         sed -i '/private Boolean isBlocked;/d' "$file"
         # delete serverside
         sed -i '/@ApiModelProperty(".*_serverside")/,+1d' "$file"
+        sed -i '/@ApiModelProperty(".*_bothside")/,+1d' "$file"
+        echo "处理文件: $file 完成"
+    done
+
+    for file in "$vo_path/base"/*.java; do
+        echo "处理文件: $file"
+        # 过滤一些字段
+        sed -i '/@ApiModelProperty("")/d' "$file"
+        sed -i '/private Boolean isDeleted;/d' "$file"
+        # delete client side
+        sed -i '/@ApiModelProperty(".*_clientside")/,+1d' "$file"
+        sed -i '/@ApiModelProperty(".*_bothside")/,+1d' "$file"
         echo "处理文件: $file 完成"
     done
 }
+
 
 # 函数 根据entity文件生成dto文件
 function generate() {
@@ -110,6 +119,10 @@ function generate() {
     generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$sql_import_list" "$math_import_list"   
 }
 
+entity_path="$spring_path/pojo/entity"
+dto_path="$spring_path/pojo/dto"
+vo_path="$spring_path/pojo/vo"
+
 
 rm -rf "$dto_path/base"
 rm -rf "$vo_path/base"
@@ -118,9 +131,9 @@ mkdir -p "$dto_path/base"
 mkdir -p "$vo_path/base"
 
 # 过滤BaseEntity
-fd -t f . $entity_path -d 1 -E "BaseEntity.java" | while read -r file; do 
+fd -t f . $entity_path -d 1 -E "Base*.java" | while read -r file; do 
     entity_name=$(basename "$file" | sed -n 's/\(.*\)\.java/\1/p')
     generate "$entity_name"
     # echo "$entity_name"
-    post_process "$dto_path"
+    post_process "$dto_path" "$vo_path"
 done

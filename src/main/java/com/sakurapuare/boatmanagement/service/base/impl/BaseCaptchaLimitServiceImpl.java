@@ -19,7 +19,7 @@ import java.util.List;
  * 验证码防刷记录_ndto_nvo 服务层实现。
  *
  * @author sakurapuare
- * @since 2025-02-14
+ * @since 2025-02-16
  */
 @Service
 @CacheConfig(cacheNames = "captchaLimit")

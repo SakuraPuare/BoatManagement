@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 @Data
 @ApiModel("商品表")
 public class BaseGoodsVO {
-    @ApiModelProperty("")
     private Long id;
 
     @ApiModelProperty("商品名称")

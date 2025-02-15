@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.CaptchaLimitTableDef.CAPTCHA_LIMIT;
-import static com.sakurapuare.boatmanagement.pojo.entity.table.CaptchaTableDef.CAPTCHA;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.CAPTCHA;
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.CAPTCHA_LIMIT;
 
 
 @Service
