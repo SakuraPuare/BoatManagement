@@ -1,8 +1,9 @@
 package com.sakurapuare.boatmanagement.pojo.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 public class BaseCertifyVO<T> {
@@ -11,7 +12,9 @@ public class BaseCertifyVO<T> {
 
     private String status;
 
-    private Timestamp createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
 
-    private Timestamp updatedAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedAt;
 }

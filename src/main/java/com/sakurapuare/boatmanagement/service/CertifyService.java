@@ -36,7 +36,6 @@ public class CertifyService {
     private final AccountsService accountsService;
     private final LogsService logsService;
 
-
     public void certifyUser(UserCertifyRequestDTO request) {
         UserCertify userCertify = userCertifyService.getOne(
                 new QueryWrapper().eq(USER_CERTIFY.USER_ID.getName(), UserContext.getAccount().getId()));
@@ -56,11 +55,9 @@ public class CertifyService {
         userCertifyService.saveOrUpdate(userCertify);
     }
 
-
     public void certifyMerchant(UnitCertifyRequestDTO request) {
         certifyRole(request, UnitsTypes.MERCHANT);
     }
-
 
     public void certifyVendor(UnitCertifyRequestDTO request) {
         certifyRole(request, UnitsTypes.VENDOR);
@@ -164,7 +161,6 @@ public class CertifyService {
         vendorsService.save(newVendor);
     }
 
-
     public BaseCertifyVO<BaseUserCertifyVO> getUserCertify() {
         BaseCertifyVO<BaseUserCertifyVO> userCertifyVO = new BaseCertifyVO<>();
         UserCertify userCertify = userCertifyService.getOne(
@@ -189,7 +185,6 @@ public class CertifyService {
         return vo;
     }
 
-
     public BaseCertifyVO<BaseUnitsVO> getMerchantCertify() {
         BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
         Merchants merchant = merchantsService.getOne(
@@ -207,7 +202,6 @@ public class CertifyService {
         }
         return vo;
     }
-
 
     public BaseCertifyVO<BaseUnitsVO> getVendorCertify() {
         BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
@@ -227,7 +221,6 @@ public class CertifyService {
         return vo;
     }
 
-
     public void joinUnit(String types, Long unitId) {
         validateUnitType(types);
         validateAndGetUnit(types, unitId);
@@ -241,7 +234,6 @@ public class CertifyService {
                 break;
         }
     }
-
 
     public void transferUnit(String types, Long userId) {
         validateUnitType(types);
@@ -258,7 +250,6 @@ public class CertifyService {
                 break;
         }
     }
-
 
     public void leaveUnit(String types) {
         validateUnitType(types);
@@ -395,8 +386,7 @@ public class CertifyService {
         }
     }
 
-
-    public List<BaseUnitsVO> getListQuery(CertifyQueryDTO queryDTO) {
+    public List<BaseUnitsVO> getUnitListQuery(CertifyQueryDTO queryDTO) {
         Units queryUnits = new Units();
         BeanUtils.copyProperties(queryDTO, queryUnits);
         List<Units> units = unitsService.list(QueryWrapper.create(queryUnits));
@@ -407,8 +397,7 @@ public class CertifyService {
         }).collect(Collectors.toList());
     }
 
-
-    public Page<BaseUnitsVO> getPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
+    public Page<BaseUnitsVO> getUnitPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
         Units queryUnits = new Units();
         BeanUtils.copyProperties(queryDTO, queryUnits);
         Page<Units> units = unitsService.page(Page.of(pageNum, pageSize), QueryWrapper.create(queryUnits));
@@ -426,7 +415,7 @@ public class CertifyService {
         return voPage;
     }
 
-    private void approve(Units unit) {
+    private void approveUnit(Units unit) {
         // 1. 更新单位状态
         unit.setStatus(CertifyStatus.APPROVED);
         unitsService.updateById(unit);
@@ -462,7 +451,7 @@ public class CertifyService {
         accountsService.updateById(account);
     }
 
-    private void reject(Units unit) {
+    private void rejectUnit(Units unit) {
         // 1. 更新单位状态
         unit.setStatus(CertifyStatus.REJECTED);
         unitsService.updateById(unit);
@@ -496,8 +485,7 @@ public class CertifyService {
         accountsService.updateById(account);
     }
 
-
-    public void audit(String types, Long id) {
+    public void auditUnit(String types, Long id) {
         if (!AuditOperation.isAuditOperation(types)) {
             throw new IllegalArgumentException("不支持的审核操作");
         }
@@ -507,17 +495,73 @@ public class CertifyService {
             throw new IllegalArgumentException("单位不存在");
         }
 
-
         // add to logs
         switch (types) {
             case AuditOperation.APPROVE:
-                approve(unit);
+                approveUnit(unit);
                 logsService.info(AuditOperation.AUDIT, "审核通过" + unit.getName());
                 break;
             case AuditOperation.REJECT:
-                reject(unit);
+                rejectUnit(unit);
                 logsService.info(AuditOperation.AUDIT, "审核拒绝" + unit.getName());
                 break;
+        }
+    }
+
+    public List<BaseUserCertifyVO> getUserListQuery(CertifyQueryDTO queryDTO) {
+        UserCertify queryUserCertify = new UserCertify();
+        BeanUtils.copyProperties(queryDTO, queryUserCertify);
+        List<UserCertify> userCertifies = userCertifyService.list(QueryWrapper.create(queryUserCertify));
+        return userCertifies.stream().map(userCertify -> {
+            BaseUserCertifyVO vo = new BaseUserCertifyVO();
+            BeanUtils.copyProperties(userCertify, vo);
+            return vo;
+        }).collect(Collectors.toList());
+    }
+
+    public Page<BaseUserCertifyVO> getUserPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
+        UserCertify queryUserCertify = new UserCertify();
+        BeanUtils.copyProperties(queryDTO, queryUserCertify);
+        Page<UserCertify> userCertifies = userCertifyService.page(Page.of(pageNum, pageSize),
+                QueryWrapper.create(queryUserCertify));
+        List<BaseUserCertifyVO> userCertifiesVOs = new ArrayList<>(userCertifies.getRecords().size());
+        for (UserCertify userCertify : userCertifies.getRecords()) {
+            BaseUserCertifyVO vo = new BaseUserCertifyVO();
+            BeanUtils.copyProperties(userCertify, vo);
+            userCertifiesVOs.add(vo);
+        }
+        Page<BaseUserCertifyVO> voPage = new Page<>();
+        BeanUtils.copyProperties(userCertifies, voPage);
+        voPage.setRecords(userCertifiesVOs);
+        return voPage;
+    }
+
+    private void approveUser(UserCertify userCertify) {
+        userCertify.setStatus(CertifyStatus.APPROVED);
+        userCertifyService.updateById(userCertify);
+    }
+
+    private void rejectUser(UserCertify userCertify) {
+        userCertify.setStatus(CertifyStatus.REJECTED);
+        userCertifyService.updateById(userCertify);
+    }
+
+    public void auditUser(String types, Long id) {
+        if (!AuditOperation.isAuditOperation(types)) {
+            throw new IllegalArgumentException("不支持的审核操作");
+        }
+
+        UserCertify userCertify = userCertifyService.getById(id);
+        if (userCertify == null) {
+            throw new IllegalArgumentException("用户不存在");
+        }
+
+        switch (types) {
+            case AuditOperation.APPROVE:
+                approveUser(userCertify);
+                break;
+            case AuditOperation.REJECT:
+                rejectUser(userCertify);
         }
     }
 }
