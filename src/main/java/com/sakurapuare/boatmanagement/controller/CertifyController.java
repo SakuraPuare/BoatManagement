@@ -22,8 +22,8 @@ public class CertifyController {
 
     @GetMapping("user")
     @Operation(summary = "获取用户实名认证信息")
-    public Response<BaseUserCertifyVO> getUserCertify() {
-        return Response.success(certifyService.getUserCertify().getCertify());
+    public Response<BaseCertifyVO<BaseUserCertifyVO>> getUserCertify() {
+        return Response.success(certifyService.getUserCertify());
     }
 
     @PostMapping("user")
