@@ -385,12 +385,14 @@ CREATE TABLE boat_orders (
 CREATE TABLE `goods_orders` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID_serverside',
+  `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '商家ID',
   `order_info` TEXT COMMENT '订单信息：id:数量,id:数量,id:数量',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`order_id`) REFERENCES orders (`id`)
+    FOREIGN KEY (`order_id`) REFERENCES orders (`id`),
+  FOREIGN KEY (`merchant_id`) REFERENCES merchants (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '商品订单表';
 -- 日志表
 CREATE TABLE `logs` (

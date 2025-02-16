@@ -39,6 +39,12 @@ public class GoodsOrders extends BaseOrder implements Serializable {
     private Long id;
 
     /**
+     * 商家ID
+     */
+    @ApiModelProperty("商家ID")
+    private Long merchantId;
+
+    /**
      * 订单信息：id:数量,id:数量,id:数量
      */
     @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")

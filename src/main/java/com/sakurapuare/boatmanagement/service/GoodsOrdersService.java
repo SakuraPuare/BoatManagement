@@ -5,6 +5,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.GoodsOrders;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsOrdersVO;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseGoodsOrdersServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -18,13 +19,72 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.GOODS_ORDE
 @RequiredArgsConstructor
 public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
 
-    public List<BaseGoodsOrdersDTO> getUserGoodsOrders(BaseGoodsOrdersDTO goodsOrderDTO) {
+    /*
+     * 商家函数
+     */
+
+    private QueryWrapper getMerchantQueryWrapper(BaseGoodsOrdersDTO goodsOrderDTO) {
+        QueryWrapper queryWrapper = QueryWrapper.create(goodsOrderDTO);
+        queryWrapper.eq(GOODS_ORDERS.MERCHANT_ID.getName(), UserContext.getAccount().getId());
+        return queryWrapper;
+    }
+
+    public List<BaseGoodsOrdersVO> getMerchantsGoodsOrdersListQuery(BaseGoodsOrdersDTO goodsOrderDTO) {
+        QueryWrapper queryWrapper = getMerchantQueryWrapper(goodsOrderDTO);
+        return super.listAs(queryWrapper, BaseGoodsOrdersVO.class);
+    }
+
+    public Page<BaseGoodsOrdersVO> getMerchantsGoodsOrdersPageQuery(Integer pageNum, Integer pageSize, BaseGoodsOrdersDTO goodsOrderDTO) {
+        QueryWrapper queryWrapper = getMerchantQueryWrapper(goodsOrderDTO);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsOrdersVO.class);
+    }
+
+    private void verifyMerchantId(Long id) {
+        GoodsOrders goodsOrder = super.getById(id);
+        if (goodsOrder == null) {
+            throw new IllegalArgumentException("订单不存在");
+        }
+
+        if (goodsOrder.getMerchantId() != UserContext.getAccount().getId()) {
+            throw new IllegalArgumentException("订单不存在");
+        }
+    }
+
+    public void completeMerchantOrder(Long id) {
+        verifyMerchantId(id);
+        GoodsOrders goodsOrder = super.getById(id);
+        if (goodsOrder.getStatus() == "COMPLETED") {
+            throw new IllegalArgumentException("订单已完成");
+        }
+
+        goodsOrder.setStatus("COMPLETED");
+        super.updateById(goodsOrder);
+        
+    }
+
+    public void cancelMerchantOrder(Long id) {
+        verifyMerchantId(id);
+
+        GoodsOrders goodsOrder = super.getById(id);
+        if (goodsOrder.getStatus() == "CANCELLED") {
+            throw new IllegalArgumentException("订单已取消");
+        }
+
+        goodsOrder.setStatus("CANCELLED");
+        super.updateById(goodsOrder);
+    }
+    
+    /*
+     * 用户函数
+     */
+
+    public List<BaseGoodsOrdersDTO> getUserGoodsOrdersListQuery(BaseGoodsOrdersDTO goodsOrderDTO) {
         QueryWrapper queryWrapper = QueryWrapper.create(goodsOrderDTO);
         queryWrapper.eq(GOODS_ORDERS.USER_ID.getName(), UserContext.getAccount().getId());
         return super.listAs(queryWrapper, BaseGoodsOrdersDTO.class);
     }
 
-    public Page<BaseGoodsOrdersDTO> getUserGoodsOrdersPage(Integer pageNum, Integer pageSize, BaseGoodsOrdersDTO goodsOrderDTO) {
+    public Page<BaseGoodsOrdersDTO> getUserGoodsOrdersPageQuery(Integer pageNum, Integer pageSize, BaseGoodsOrdersDTO goodsOrderDTO) {
         QueryWrapper queryWrapper = QueryWrapper.create(goodsOrderDTO);
         queryWrapper.eq(GOODS_ORDERS.USER_ID.getName(), UserContext.getAccount().getId());
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsOrdersDTO.class);

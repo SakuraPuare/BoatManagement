@@ -33,7 +33,7 @@ public class UserOrderController {
     @PostMapping("/goods/list")
     @Operation(summary = "获取用户商品订单列表", description = "获取用户商品订单列表")
     public Response<List<BaseGoodsOrdersDTO>> getGoodsOrders(@RequestBody BaseGoodsOrdersDTO goodsOrderDTO) {
-        return Response.success("获取订单成功", goodsOrdersService.getUserGoodsOrders(goodsOrderDTO));
+        return Response.success("获取订单成功", goodsOrdersService.getUserGoodsOrdersListQuery(goodsOrderDTO));
     }
 
     @PostMapping("/boat/page")
@@ -51,7 +51,7 @@ public class UserOrderController {
             @RequestParam Integer pageNum,
             @RequestParam Integer pageSize,
             @RequestBody BaseGoodsOrdersDTO goodsOrderDTO) {
-        return Response.success("获取订单成功", goodsOrdersService.getUserGoodsOrdersPage(pageNum, pageSize, goodsOrderDTO));
+        return Response.success("获取订单成功", goodsOrdersService.getUserGoodsOrdersPageQuery(pageNum, pageSize, goodsOrderDTO));
     }
 
     @PostMapping("/boat/")
