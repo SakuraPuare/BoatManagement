@@ -322,6 +322,7 @@ CREATE TABLE boat_types (
   `max_endurance` DECIMAL(10, 2) COMMENT '最大续航（公里）',
   `created_vendor_id` BIGINT UNSIGNED COMMENT '创建者_serverside',
   `created_unit_id` BIGINT UNSIGNED COMMENT '创建单位_serverside',
+  `status` ENUM ('ENABLED', 'DISABLED') NOT NULL DEFAULT 'ENABLED' COMMENT '状态',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

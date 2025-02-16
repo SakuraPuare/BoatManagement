@@ -35,5 +35,8 @@ public class BaseBoatTypesDTO {
     private BigDecimal maxEndurance;
 
 
+
+    @ApiModelProperty("状态")
+    private String status;
 }
 

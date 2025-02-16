@@ -99,4 +99,10 @@ public class BoatTypes extends BaseEntity implements Serializable {
     @ApiModelProperty("创建单位_serverside")
     private Long createdUnitId;
 
+    /**
+     * 状态
+     */
+    @ApiModelProperty("状态")
+    private String status;
+
 }
