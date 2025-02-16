@@ -1,2 +1,2 @@
 
-fd -t f ./scripts/patches -x git apply {}
+fd -t f . ./scripts/patches -x git apply {}
