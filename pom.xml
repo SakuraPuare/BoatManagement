@@ -132,12 +132,11 @@
 			<version>5.11.4</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- 
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
-			<version>3.4.2</version>
-		</dependency> -->
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
 		<dependency>
