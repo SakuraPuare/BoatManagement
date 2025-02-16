@@ -31,5 +31,8 @@ public class BaseBoatsVO extends BaseEntityVO {
 
     @ApiModelProperty("所属单位_serverside")
     private Long unitId;
+
+    @ApiModelProperty("状态")
+    private String status;
 }
 

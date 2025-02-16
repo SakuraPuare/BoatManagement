@@ -23,5 +23,8 @@ public class BaseBoatsDTO {
     private Long dockId;
 
 
+
+    @ApiModelProperty("状态")
+    private String status;
 }
 
