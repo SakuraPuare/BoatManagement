@@ -3,7 +3,7 @@ package com.sakurapuare.boatmanagement.service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
-import com.sakurapuare.boatmanagement.common.UserContext;
+import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.constant.AuditOperation;
 import com.sakurapuare.boatmanagement.constant.CertifyStatus;
 import com.sakurapuare.boatmanagement.constant.UnitsTypes;

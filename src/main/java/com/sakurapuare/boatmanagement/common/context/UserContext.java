@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.common;
+package com.sakurapuare.boatmanagement.common.context;
 
 
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;

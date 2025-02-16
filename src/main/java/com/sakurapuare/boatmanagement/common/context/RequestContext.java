@@ -1,4 +1,6 @@
-package com.sakurapuare.boatmanagement.common;
+package com.sakurapuare.boatmanagement.common.context;
+
+import com.sakurapuare.boatmanagement.common.RequestInfo;
 
 public class RequestContext {
     private static final ThreadLocal<RequestInfo> contextHolder = new ThreadLocal<>();

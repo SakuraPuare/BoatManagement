@@ -1,7 +1,8 @@
 package com.sakurapuare.boatmanagement.interceptor;
 
-import com.sakurapuare.boatmanagement.common.RequestContext;
 import com.sakurapuare.boatmanagement.common.RequestInfo;
+import com.sakurapuare.boatmanagement.common.context.RequestContext;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

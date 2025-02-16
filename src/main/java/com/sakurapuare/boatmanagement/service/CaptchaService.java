@@ -2,7 +2,7 @@ package com.sakurapuare.boatmanagement.service;
 
 import cn.hutool.core.util.RandomUtil;
 import com.mybatisflex.core.query.QueryWrapper;
-import com.sakurapuare.boatmanagement.common.RequestContext;
+import com.sakurapuare.boatmanagement.common.context.RequestContext;
 import com.sakurapuare.boatmanagement.constant.CaptchaStatus;
 import com.sakurapuare.boatmanagement.pojo.entity.Captcha;
 import com.sakurapuare.boatmanagement.pojo.entity.CaptchaLimit;

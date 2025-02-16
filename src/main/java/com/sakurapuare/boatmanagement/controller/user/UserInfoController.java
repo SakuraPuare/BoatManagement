@@ -2,7 +2,7 @@ package com.sakurapuare.boatmanagement.controller.user;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.sakurapuare.boatmanagement.common.Response;
-import com.sakurapuare.boatmanagement.common.UserContext;
+import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.vo.UserInfoVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseAccountsVO;

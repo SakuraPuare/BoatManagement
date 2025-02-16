@@ -1,6 +1,6 @@
 package com.sakurapuare.boatmanagement.service;
 
-import com.sakurapuare.boatmanagement.common.UserContext;
+import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.constant.LogLevel;
 import com.sakurapuare.boatmanagement.pojo.entity.Logs;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseLogsServiceImpl;

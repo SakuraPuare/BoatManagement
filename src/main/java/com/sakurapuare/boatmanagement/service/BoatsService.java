@@ -2,7 +2,7 @@ package com.sakurapuare.boatmanagement.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
-import com.sakurapuare.boatmanagement.common.UserContext;
+import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Boats;
 import com.sakurapuare.boatmanagement.pojo.entity.Units;
