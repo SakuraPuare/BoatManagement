@@ -9,7 +9,7 @@
       </pattern>
     </extension>
     <method v="2">
-      <option name="Make" enabled="true" />
+      <option name="MakeProject" enabled="true" />
     </method>
   </configuration>
 </component>

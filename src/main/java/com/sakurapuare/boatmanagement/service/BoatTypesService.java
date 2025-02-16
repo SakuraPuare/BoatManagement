@@ -96,7 +96,9 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
     }
 
     private QueryWrapper getVendorQueryWrapper(BaseBoatTypesDTO queryDTO) {
-        QueryWrapper queryWrapper = QueryWrapper.create(queryDTO);
+        BoatTypes query = new BoatTypes();
+        BeanUtils.copyProperties(queryDTO, query);
+        QueryWrapper queryWrapper = QueryWrapper.create(query);
         Vendors vendor = getVendor();
         Units unit = getUnit(vendor);
         if (unit == null) {

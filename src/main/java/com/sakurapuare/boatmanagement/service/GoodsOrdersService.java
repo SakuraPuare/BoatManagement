@@ -80,15 +80,21 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
      * 用户函数
      */
 
-    public List<BaseGoodsOrdersDTO> getUserGoodsOrdersListQuery(BaseGoodsOrdersDTO goodsOrderDTO) {
-        QueryWrapper queryWrapper = QueryWrapper.create(goodsOrderDTO);
+    private QueryWrapper getUserQueryWrapper(BaseGoodsOrdersDTO goodsOrderDTO) {
+        GoodsOrders query = new GoodsOrders();
+        BeanUtils.copyProperties(goodsOrderDTO, query);
+        QueryWrapper queryWrapper = QueryWrapper.create(query);
         queryWrapper.eq(GOODS_ORDERS.USER_ID.getName(), UserContext.getAccount().getId());
+        return queryWrapper;
+    }
+
+    public List<BaseGoodsOrdersDTO> getUserGoodsOrdersListQuery(BaseGoodsOrdersDTO goodsOrderDTO) {
+        QueryWrapper queryWrapper = getUserQueryWrapper(goodsOrderDTO);
         return super.listAs(queryWrapper, BaseGoodsOrdersDTO.class);
     }
 
     public Page<BaseGoodsOrdersDTO> getUserGoodsOrdersPageQuery(Integer pageNum, Integer pageSize, BaseGoodsOrdersDTO goodsOrderDTO) {
-        QueryWrapper queryWrapper = QueryWrapper.create(goodsOrderDTO);
-        queryWrapper.eq(GOODS_ORDERS.USER_ID.getName(), UserContext.getAccount().getId());
+        QueryWrapper queryWrapper = getUserQueryWrapper(goodsOrderDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsOrdersDTO.class);
     }
 
