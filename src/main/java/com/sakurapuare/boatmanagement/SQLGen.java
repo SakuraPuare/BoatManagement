@@ -8,6 +8,8 @@ import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import com.zaxxer.hikari.HikariDataSource;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class SQLGen {
 
@@ -25,6 +27,7 @@ public class SQLGen {
 
         // JdbcTypeMapping
         JdbcTypeMapping.registerMapping(BigInteger.class, Long.class);
+        JdbcTypeMapping.registerMapping(Timestamp.class, LocalDateTime.class);
 
         // 生成代码
         generator.generate();

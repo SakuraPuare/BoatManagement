@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
+
 @Data
 @ApiModel("单位表")
 public class BaseUnitsDTO {

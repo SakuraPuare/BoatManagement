@@ -5,7 +5,6 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 import java.io.Serial;
 
@@ -44,14 +43,5 @@ public class GoodsOrders extends BaseOrder implements Serializable {
      */
     @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
     private String orderInfo;
-
-    @ApiModelProperty("")
-    private Boolean isDeleted;
-
-    @ApiModelProperty("")
-    private Timestamp createdAt;
-
-    @ApiModelProperty("")
-    private Timestamp updatedAt;
 
 }

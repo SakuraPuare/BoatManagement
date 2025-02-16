@@ -3,8 +3,9 @@ package com.sakurapuare.boatmanagement.pojo.dto.base;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import java.sql.Timestamp;
 
+
+import java.time.LocalDateTime;
 @Data
 @ApiModel("订单表")
 public class BaseBoatOrdersDTO {
@@ -19,18 +20,12 @@ public class BaseBoatOrdersDTO {
     private Long endDockId;
 
     @ApiModelProperty("租用开始时间")
-    private Timestamp startTime;
+    private LocalDateTime startTime;
 
     @ApiModelProperty("租用结束时间")
-    private Timestamp endTime;
+    private LocalDateTime endTime;
 
     @ApiModelProperty("订单类型")
     private String type;
-
-    private Boolean isDeleted;
-
-    private Timestamp createdAt;
-
-    private Timestamp updatedAt;
 }
 

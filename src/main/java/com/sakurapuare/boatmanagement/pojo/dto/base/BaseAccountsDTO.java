@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
+
 @Data
 @ApiModel("基础账号表")
 public class BaseAccountsDTO {

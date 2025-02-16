@@ -5,7 +5,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import java.io.Serial;
 
@@ -61,27 +61,18 @@ public class BoatOrders extends BaseOrder implements Serializable {
      * 租用开始时间
      */
     @ApiModelProperty("租用开始时间")
-    private Timestamp startTime;
+    private LocalDateTime startTime;
 
     /**
      * 租用结束时间
      */
     @ApiModelProperty("租用结束时间")
-    private Timestamp endTime;
+    private LocalDateTime endTime;
 
     /**
      * 订单类型
      */
     @ApiModelProperty("订单类型")
     private String type;
-
-    @ApiModelProperty("")
-    private Boolean isDeleted;
-
-    @ApiModelProperty("")
-    private Timestamp createdAt;
-
-    @ApiModelProperty("")
-    private Timestamp updatedAt;
 
 }

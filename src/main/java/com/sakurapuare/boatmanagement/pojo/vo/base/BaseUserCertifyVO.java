@@ -1,13 +1,17 @@
 package com.sakurapuare.boatmanagement.pojo.vo.base;
 
+import com.sakurapuare.boatmanagement.pojo.vo.BaseEntityVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 
 
 @Data
 @ApiModel("用户实名认证表_ndto")
-public class BaseUserCertifyVO {
+@EqualsAndHashCode(callSuper = true)
+public class BaseUserCertifyVO extends BaseEntityVO {
     private Long id;
 
     @ApiModelProperty("关联用户")

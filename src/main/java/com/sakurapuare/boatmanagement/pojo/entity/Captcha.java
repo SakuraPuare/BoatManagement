@@ -5,7 +5,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import java.io.Serial;
 
@@ -61,7 +61,7 @@ public class Captcha extends BaseEntity implements Serializable {
      * 过期时间
      */
     @ApiModelProperty("过期时间")
-    private Timestamp expireAt;
+    private LocalDateTime expireAt;
 
     /**
      * 请求IP

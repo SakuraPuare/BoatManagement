@@ -30,7 +30,8 @@ function generate_file() {
     local api_model_name="$3"
     local sql_import_list="$4"
     local math_import_list="$5"
-    
+    local time_import_list="$6"
+
     for type in "dto" "vo"; do
         # 如果存在_n$type，则跳过生成
         if grep -q "_n$type" "$entity_path/$entity_name.java"; then
@@ -49,24 +50,48 @@ function generate_file() {
         if [ -f "$file_path/$file_real_name" ]; then
             rm "$file_path/$file_real_name"
         fi
+
         template_before="package com.sakurapuare.$project_name.pojo.$type.base;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;"
 
-template_after="@Data
+        if [ "$type" == "dto" ]; then
+            template_before="package com.sakurapuare.$project_name.pojo.$type.base;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;"
+            template_after="@Data
 @ApiModel(\"${api_model_name}\")
 public class ${file_name} {
 ${api_model_property_name}
 }
 "
+        else
+            template_before="package com.sakurapuare.$project_name.pojo.$type.base;
+
+import com.sakurapuare.$project_name.pojo.vo.BaseEntityVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;"
+            template_after="@Data
+@ApiModel(\"${api_model_name}\")
+@EqualsAndHashCode(callSuper = true)
+public class ${file_name} extends BaseEntityVO {
+${api_model_property_name}
+}
+"
+        fi
         echo "$template_before" > "$file_path/base/$file_real_name"
         sql_import_list=$(echo "$sql_import_list" | sed '/^[[:space:]]*$/d')
         math_import_list=$(echo "$math_import_list" | sed '/^[[:space:]]*$/d')
 
         echo -e "$sql_import_list" >> "$file_path/base/$file_real_name"
         echo -e "$math_import_list" >> "$file_path/base/$file_real_name"
+        echo -e "$time_import_list" >> "$file_path/base/$file_real_name"
 
         echo "$template_after" >> "$file_path/base/$file_real_name"
         echo "生成文件: $file_path/base/$file_real_name"
@@ -112,9 +137,10 @@ function generate() {
     # 获取所有import java*
     sql_import_list=$(sed -n 's/^import java\.sql\(.*\);/\1;/p' "$entity_path/$entity_name.java" | sed 's/^/import java.sql/')
     math_import_list=$(sed -n 's/^import java\.math\(.*\);/\1;/p' "$entity_path/$entity_name.java" | sed 's/^/import java.math/')
+    time_import_list=$(sed -n 's/^import java\.time\(.*\);/\1;/p' "$entity_path/$entity_name.java" | sed 's/^/import java.time/')
 
     # 生成dto文件
-    generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$sql_import_list" "$math_import_list"   
+    generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$sql_import_list" "$math_import_list" "$time_import_list"
 }
 
 entity_path="$spring_path/pojo/entity"

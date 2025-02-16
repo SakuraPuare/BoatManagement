@@ -10,7 +10,7 @@ import com.sakurapuare.boatmanagement.service.base.impl.BaseCaptchaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.CAPTCHA;
@@ -31,7 +31,7 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
             captchaLimit.setTarget(target);
             captchaLimit.setIp(RequestContext.getContext().getIp());
             captchaLimit.setCount(1L);
-            captchaLimit.setLastRequest(new Timestamp(System.currentTimeMillis()));
+            captchaLimit.setLastRequest(LocalDateTime.now());
             captchaLimit.setIsBlocked(false);
 
             captchaLimitService.save(captchaLimit);
@@ -39,7 +39,7 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         }
 
         // lastRequest 是否在 1 分钟内
-        if (captchaLimit.getLastRequest().getTime() + 60000 > System.currentTimeMillis()) {
+        if (captchaLimit.getLastRequest().isBefore(LocalDateTime.now().minusMinutes(1))) {
             return true;
         }
 
@@ -51,7 +51,7 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
         }
 
         captchaLimit.setCount(captchaLimit.getCount() + 1);
-        captchaLimit.setLastRequest(new Timestamp(System.currentTimeMillis()));
+        captchaLimit.setLastRequest(LocalDateTime.now());
         captchaLimitService.updateById(captchaLimit);
 
         return false;
@@ -66,7 +66,7 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
 
         captcha.setCode(RandomUtil.randomNumbers(6));
         captcha.setStatus(CaptchaStatus.UNUSED);
-        captcha.setExpireAt(new Timestamp(System.currentTimeMillis() + 1000 * 60 * 10));
+        captcha.setExpireAt(LocalDateTime.now().plusMinutes(10));
         captcha.setClientIp(RequestContext.getContext().getIp());
         captcha.setTarget(target);
 
@@ -82,7 +82,7 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
             return false;
         }
 
-        if (captcha.getExpireAt().getTime() < System.currentTimeMillis()) {
+        if (captcha.getExpireAt().isBefore(LocalDateTime.now())) {
             return false;
         }
 

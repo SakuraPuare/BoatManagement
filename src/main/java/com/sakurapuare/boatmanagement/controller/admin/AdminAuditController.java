@@ -50,7 +50,7 @@ public class AdminAuditController {
     @PostMapping("user/page")
     @Operation(summary = "获取所有用户认证列表分页")
     public Response<Page<BaseUserCertifyVO>> listUserPage(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                        @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody CertifyQueryDTO queryDTO) {
+                                                          @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody CertifyQueryDTO queryDTO) {
         return Response.success("获取用户认证列表成功", certifyService.getUserPageQuery(pageNum, pageSize, queryDTO));
     }
 

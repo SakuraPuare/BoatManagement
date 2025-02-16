@@ -5,7 +5,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import java.io.Serial;
 
@@ -55,7 +55,7 @@ public class CaptchaLimit extends BaseEntity implements Serializable {
      * 最后请求时间
      */
     @ApiModelProperty("最后请求时间")
-    private Timestamp lastRequest;
+    private LocalDateTime lastRequest;
 
     @ApiModelProperty("")
     private Boolean isBlocked;

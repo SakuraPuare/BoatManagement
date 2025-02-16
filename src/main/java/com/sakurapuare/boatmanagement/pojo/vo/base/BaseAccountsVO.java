@@ -1,13 +1,17 @@
 package com.sakurapuare.boatmanagement.pojo.vo.base;
 
+import com.sakurapuare.boatmanagement.pojo.vo.BaseEntityVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 
 
 @Data
 @ApiModel("基础账号表")
-public class BaseAccountsVO {
+@EqualsAndHashCode(callSuper = true)
+public class BaseAccountsVO extends BaseEntityVO {
     private Long id;
 
     @ApiModelProperty("用户名")
