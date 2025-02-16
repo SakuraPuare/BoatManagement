@@ -62,4 +62,10 @@ public class Docks extends BaseEntity implements Serializable {
     @ApiModelProperty("联系电话")
     private String contactPhone;
 
+    /**
+     * 状态
+     */
+    @ApiModelProperty("状态")
+    private String status;
+
 }

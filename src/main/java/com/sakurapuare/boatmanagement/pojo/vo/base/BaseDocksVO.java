@@ -25,5 +25,8 @@ public class BaseDocksVO extends BaseEntityVO {
 
     @ApiModelProperty("联系电话")
     private String contactPhone;
+
+    @ApiModelProperty("状态")
+    private String status;
 }
 
