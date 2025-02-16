@@ -82,8 +82,6 @@ function post_process() {
         # 过滤一些字段
         sed -i '/@ApiModelProperty("")/d' "$file"
         sed -i '/private Long id;/d' "$file"
-        sed -i '/private Boolean isActive;/d' "$file"
-        sed -i '/private Boolean isBlocked;/d' "$file"
         # delete serverside
         sed -i '/@ApiModelProperty(".*_serverside")/,+1d' "$file"
         sed -i '/@ApiModelProperty(".*_bothside")/,+1d' "$file"

@@ -24,6 +24,8 @@ public class BaseAccountsDTO {
     @ApiModelProperty("角色MASK")
     private Integer role;
 
+    private Boolean isActive;
 
+    private Boolean isBlocked;
 }
 
