@@ -22,7 +22,7 @@ public class BaseDocksDTO {
     @ApiModelProperty("联系电话")
     private String contactPhone;
 
-    @ApiModelProperty("状态")
-    private String status;
+    @ApiModelProperty("是否启用")
+    private Boolean isEnabled;
 }
 

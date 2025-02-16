@@ -75,9 +75,9 @@ public class Boats extends BaseEntity implements Serializable {
     private Long unitId;
 
     /**
-     * 状态
+     * 是否启用
      */
-    @ApiModelProperty("状态")
-    private String status;
+    @ApiModelProperty("是否启用")
+    private Boolean isEnabled;
 
 }

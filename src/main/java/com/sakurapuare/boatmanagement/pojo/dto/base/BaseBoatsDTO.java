@@ -24,7 +24,7 @@ public class BaseBoatsDTO {
 
 
 
-    @ApiModelProperty("状态")
-    private String status;
+    @ApiModelProperty("是否启用")
+    private Boolean isEnabled;
 }
 
