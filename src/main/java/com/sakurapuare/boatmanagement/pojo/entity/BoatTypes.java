@@ -91,13 +91,13 @@ public class BoatTypes extends BaseEntity implements Serializable {
      * 创建者_serverside
      */
     @ApiModelProperty("创建者_serverside")
-    private Long createdVendorId;
+    private Long vendorId;
 
     /**
      * 创建单位_serverside
      */
     @ApiModelProperty("创建单位_serverside")
-    private Long createdUnitId;
+    private Long unitId;
 
     /**
      * 是否启用

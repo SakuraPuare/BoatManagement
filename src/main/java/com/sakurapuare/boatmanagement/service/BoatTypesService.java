@@ -30,17 +30,20 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
      * 管理员函数
      */
 
+    private QueryWrapper getAdminQueryWrapper(BaseBoatTypesDTO queryDTO) {
+        BoatTypes boatTypes = new BoatTypes();
+        BeanUtils.copyProperties(queryDTO, boatTypes);
+        QueryWrapper queryWrapper = QueryWrapper.create(boatTypes);
+        return queryWrapper;
+    }
+
     public List<BaseBoatTypesVO> getListQuery(BaseBoatTypesDTO queryDTO) {
-        BoatTypes query = new BoatTypes();
-        BeanUtils.copyProperties(queryDTO, query);
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseBoatTypesVO.class);
     }
 
     public Page<BaseBoatTypesVO> getPageQuery(Integer pageNum, Integer pageSize, BaseBoatTypesDTO queryDTO) {
-        BoatTypes query = new BoatTypes();
-        BeanUtils.copyProperties(queryDTO, query);
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatTypesVO.class);
     }
 
@@ -97,9 +100,9 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         Vendors vendor = getVendor();
         Units unit = getUnit(vendor);
         if (unit == null) {
-            queryWrapper.eq(BOAT_TYPES.CREATED_VENDOR_ID.getName(), vendor.getId());
+            queryWrapper.eq(BOAT_TYPES.VENDOR_ID.getName(), vendor.getId());
         } else {
-            queryWrapper.eq(BOAT_TYPES.CREATED_UNIT_ID.getName(), unit.getId());
+            queryWrapper.eq(BOAT_TYPES.UNIT_ID.getName(), unit.getId());
         }
         return queryWrapper;
     }
@@ -121,10 +124,10 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         Units unit = getUnit(vendor);
         BoatTypes boatTypes = new BoatTypes();
         BeanUtils.copyProperties(boatTypesDTO, boatTypes);
-        boatTypes.setCreatedVendorId(vendor.getId());
+        boatTypes.setVendorId(vendor.getId());
 
         if (unit != null) {
-            boatTypes.setCreatedUnitId(unit.getId());
+            boatTypes.setUnitId(unit.getId());
         }
         super.save(boatTypes);
     }
@@ -133,7 +136,7 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         verifyId(id);
 
         // 必须属于当前供应商
-        if (!super.getById(id).getCreatedVendorId().equals(getVendor().getId())) {
+        if (!super.getById(id).getVendorId().equals(getVendor().getId())) {
             throw new IllegalArgumentException("船舶类型不属于当前供应商");
         }
     }

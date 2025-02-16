@@ -51,32 +51,29 @@ public class GoodsService extends BaseGoodsServiceImpl {
         return unit;
     }
 
-    public Goods getMerchantsGoods(Long id) {
+    private QueryWrapper getMerchantQueryWrapper(BaseGoodsDTO queryDTO) {
+        Goods goods = new Goods();
+        BeanUtils.copyProperties(queryDTO, goods);
+        QueryWrapper queryWrapper = QueryWrapper.create(goods);
         Units unit = getUnit();
-        return super.getOne(
-                QueryWrapper.create().eq(GOODS.CREATED_UNIT_ID.getName(), unit.getId()).eq(GOODS.ID.getName(), id));
+        queryWrapper.eq(GOODS.UNIT_ID.getName(), unit.getId());
+        return queryWrapper;
+    }
+
+    public Goods getMerchantsGoods(Long id) {
+        QueryWrapper queryWrapper = getMerchantQueryWrapper(new BaseGoodsDTO());
+        queryWrapper.eq(GOODS.ID.getName(), id);
+        return super.getOne(queryWrapper);
     }
 
     public List<BaseGoodsVO> getMerchantsGoodsList(BaseGoodsDTO queryDTO) {
-        Units unit = getUnit();
-        Goods query = new Goods();
-        BeanUtils.copyProperties(queryDTO, query);
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
-        return super.listAs(
-                queryWrapper.eq(GOODS.CREATED_UNIT_ID.getName(), unit.getId()),
-                BaseGoodsVO.class);
+        QueryWrapper queryWrapper = getMerchantQueryWrapper(queryDTO);
+        return super.listAs(queryWrapper, BaseGoodsVO.class);
     }
 
     public Page<BaseGoodsVO> getMerchantsGoodsPage(Integer pageNum, Integer pageSize, BaseGoodsDTO queryDTO) {
-        Units unit = getUnit();
-        Goods query = new Goods();
-        BeanUtils.copyProperties(queryDTO, query);
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
-
-        return super.pageAs(
-                Page.of(pageNum, pageSize),
-                queryWrapper.eq(GOODS.CREATED_UNIT_ID.getName(), unit.getId()),
-                BaseGoodsVO.class);
+        QueryWrapper queryWrapper = getMerchantQueryWrapper(queryDTO);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsVO.class);
     }
 
     public BaseGoodsVO getMerchantsGoodsById(Long id) {
@@ -94,8 +91,8 @@ public class GoodsService extends BaseGoodsServiceImpl {
         Units unit = getUnit(merchant);
         Goods newGoods = new Goods();
         BeanUtils.copyProperties(goods, newGoods);
-        newGoods.setCreatedUnitId(unit.getId());
-        newGoods.setCreatedMerchantId(merchant.getId());
+        newGoods.setUnitId(unit.getId());
+        newGoods.setMerchantId(merchant.getId());
         super.save(newGoods);
     }
 

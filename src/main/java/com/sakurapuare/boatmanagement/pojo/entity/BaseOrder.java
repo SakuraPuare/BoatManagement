@@ -19,15 +19,15 @@ public class BaseOrder {
     private BigDecimal price;
 
     private BigDecimal discount;
-    
-     @Column(isLogicDelete = true)
-     private Boolean isDeleted;
 
-     @Column(onInsertValue = "now()")
-     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-     private LocalDateTime createdAt;
+    @Column(isLogicDelete = true)
+    private Boolean isDeleted;
 
-     @Column(onUpdateValue = "now()")
-     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-     private LocalDateTime updatedAt;
+    @Column(onInsertValue = "now()")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
+
+    @Column(onUpdateValue = "now()")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime updatedAt;
 }

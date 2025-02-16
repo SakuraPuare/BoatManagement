@@ -1,9 +1,9 @@
 package com.sakurapuare.boatmanagement.service.base.impl;
 
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.sakurapuare.boatmanagement.pojo.entity.BoatOrders;
-import com.sakurapuare.boatmanagement.mapper.BoatOrdersMapper;
-import com.sakurapuare.boatmanagement.service.base.BaseBoatOrdersService;
+import com.sakurapuare.boatmanagement.pojo.entity.BoatRequests;
+import com.sakurapuare.boatmanagement.mapper.BoatRequestsMapper;
+import com.sakurapuare.boatmanagement.service.base.BaseBoatRequestsService;
 import org.springframework.stereotype.Service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -16,14 +16,14 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 船舶订单表 服务层实现。
+ * 船只请求表 服务层实现。
  *
  * @author sakurapuare
  * @since 2025-02-16
  */
 @Service
-@CacheConfig(cacheNames = "boatOrders")
-public class BaseBoatOrdersServiceImpl extends ServiceImpl<BoatOrdersMapper, BoatOrders>  implements BaseBoatOrdersService{
+@CacheConfig(cacheNames = "boatRequests")
+public class BaseBoatRequestsServiceImpl extends ServiceImpl<BoatRequestsMapper, BoatRequests>  implements BaseBoatRequestsService{
 
 
     @Override
@@ -46,31 +46,31 @@ public class BaseBoatOrdersServiceImpl extends ServiceImpl<BoatOrdersMapper, Boa
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean update(BoatOrders entity, QueryWrapper query) {
+    public boolean update(BoatRequests entity, QueryWrapper query) {
         return super.update(entity, query);
     }
 
     @Override
     @CacheEvict(key = "#entity.id")
-    public boolean updateById(BoatOrders entity, boolean ignoreNulls) {
+    public boolean updateById(BoatRequests entity, boolean ignoreNulls) {
         return super.updateById(entity, ignoreNulls);
     }
 
     @Override
     @CacheEvict(allEntries = true)
-    public boolean updateBatch(Collection<BoatOrders> entities, int batchSize) {
+    public boolean updateBatch(Collection<BoatRequests> entities, int batchSize) {
         return super.updateBatch(entities, batchSize);
     }
 
     @Override
     @Cacheable(key = "#id")
-    public BoatOrders getById(Serializable id) {
+    public BoatRequests getById(Serializable id) {
         return super.getById(id);
     }
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public BoatOrders getOne(QueryWrapper query) {
+    public BoatRequests getOne(QueryWrapper query) {
         return super.getOne(query);
     }
 
@@ -106,7 +106,7 @@ public class BaseBoatOrdersServiceImpl extends ServiceImpl<BoatOrdersMapper, Boa
 
     @Override
     @Cacheable(key = "#root.methodName + ':' + #query.toSQL()")
-    public List<BoatOrders> list(QueryWrapper query) {
+    public List<BoatRequests> list(QueryWrapper query) {
         return super.list(query);
     }
 
@@ -121,7 +121,7 @@ public class BaseBoatOrdersServiceImpl extends ServiceImpl<BoatOrdersMapper, Boa
      */
     @Override
     @Deprecated
-    public List<BoatOrders> listByIds(Collection<? extends Serializable> ids) {
+    public List<BoatRequests> listByIds(Collection<? extends Serializable> ids) {
         return super.listByIds(ids);
     }
 

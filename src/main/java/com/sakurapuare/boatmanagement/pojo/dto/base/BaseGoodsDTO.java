@@ -19,6 +19,9 @@ public class BaseGoodsDTO {
     @ApiModelProperty("商品价格")
     private BigDecimal price;
 
+    @ApiModelProperty("商品单位")
+    private String unit;
+
 
 
 

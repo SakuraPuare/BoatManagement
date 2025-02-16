@@ -39,10 +39,10 @@ public class BaseBoatTypesVO extends BaseEntityVO {
     private BigDecimal maxEndurance;
 
     @ApiModelProperty("创建者_serverside")
-    private Long createdVendorId;
+    private Long vendorId;
 
     @ApiModelProperty("创建单位_serverside")
-    private Long createdUnitId;
+    private Long unitId;
 
     @ApiModelProperty("是否启用")
     private Boolean isEnabled;

@@ -20,19 +20,21 @@ public class DocksService extends BaseDocksServiceImpl {
      * 管理员函数
      */
 
-    public List<BaseDocksVO> getListQuery(BaseDocksDTO queryDTO) {
-        Docks query = new Docks();
-        BeanUtils.copyProperties(queryDTO, query);
+    private QueryWrapper getAdminQueryWrapper(BaseDocksDTO queryDTO) {
+        Docks docks = new Docks();
+        BeanUtils.copyProperties(queryDTO, docks);
+        QueryWrapper queryWrapper = QueryWrapper.create(docks);
+        return queryWrapper;
+    }
 
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+    public List<BaseDocksVO> getListQuery(BaseDocksDTO queryDTO) {
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
+
         return super.listAs(queryWrapper, BaseDocksVO.class);
     }
 
     public Page<BaseDocksVO> getPageQuery(Integer pageNum, Integer pageSize, BaseDocksDTO queryDTO) {
-        Docks query = new Docks();
-        BeanUtils.copyProperties(queryDTO, query);
-
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseDocksVO.class);
     }
 

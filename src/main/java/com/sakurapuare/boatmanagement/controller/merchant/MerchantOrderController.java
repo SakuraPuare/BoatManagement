@@ -29,10 +29,10 @@ public class MerchantOrderController {
 
     @PostMapping("/page")
     @Operation(summary = "获取商家订单列表分页")
-    
-    public Response<Page<BaseGoodsOrdersVO>> getMerchantOrdersPage(@RequestParam Integer pageNum,
-            @RequestParam Integer pageSize,
-            @RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
+
+    public Response<Page<BaseGoodsOrdersVO>> getMerchantOrdersPage(@RequestParam(defaultValue = "1") Integer pageNum,
+                                                                   @RequestParam(defaultValue = "10") Integer pageSize,
+                                                                   @RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
         Page<BaseGoodsOrdersVO> merchantOrders = goodsOrdersService.getMerchantsGoodsOrdersPageQuery(pageNum, pageSize,
                 merchantOrderDTO);
         return Response.success(merchantOrders);

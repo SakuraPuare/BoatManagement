@@ -30,7 +30,7 @@ public class AdminDockController {
 
     @PostMapping("/page")
     @Operation(summary = "获取码头列表分页")
-    public Response<Page<BaseDocksVO>> getDocksPage(@RequestParam Integer pageNum, @RequestParam Integer pageSize,
+    public Response<Page<BaseDocksVO>> getDocksPage(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
                                                     @RequestBody BaseDocksDTO queryDTO) {
         return Response.success("获取码头列表分页成功", docksService.getPageQuery(pageNum, pageSize, queryDTO));
     }

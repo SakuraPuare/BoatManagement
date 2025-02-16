@@ -486,7 +486,7 @@ public class CertifyService {
     }
 
     public void auditUnit(String types, Long id) {
-        if (!AuditOperation.isAuditOperation(types)) {
+        if (AuditOperation.isAuditOperation(types)) {
             throw new IllegalArgumentException("不支持的审核操作");
         }
 
@@ -547,7 +547,7 @@ public class CertifyService {
     }
 
     public void auditUser(String types, Long id) {
-        if (!AuditOperation.isAuditOperation(types)) {
+        if (AuditOperation.isAuditOperation(types)) {
             throw new IllegalArgumentException("不支持的审核操作");
         }
 

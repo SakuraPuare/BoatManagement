@@ -23,6 +23,9 @@ public class BaseGoodsVO extends BaseEntityVO {
     @ApiModelProperty("商品价格")
     private BigDecimal price;
 
+    @ApiModelProperty("商品单位")
+    private String unit;
+
     @ApiModelProperty("库存_serverside")
     private Long stock;
 
@@ -30,9 +33,9 @@ public class BaseGoodsVO extends BaseEntityVO {
     private Long sales;
 
     @ApiModelProperty("创建商家_serverside")
-    private Long createdMerchantId;
+    private Long merchantId;
 
     @ApiModelProperty("创建单位_serverside")
-    private Long createdUnitId;
+    private Long unitId;
 }
 

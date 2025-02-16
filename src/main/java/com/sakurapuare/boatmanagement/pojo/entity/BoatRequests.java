@@ -5,7 +5,7 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import java.io.Serial;
 
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 商品表 实体类。
+ * 船只请求表 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-16
@@ -28,9 +28,9 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("商品表")
-@Table("goods")
-public class Goods extends BaseEntity implements Serializable {
+@ApiModel("船只请求表")
+@Table("boat_requests")
+public class BoatRequests extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -40,51 +40,51 @@ public class Goods extends BaseEntity implements Serializable {
     private Long id;
 
     /**
-     * 商品名称
+     * 下单用户_serverside
      */
-    @ApiModelProperty("商品名称")
-    private String name;
+    @ApiModelProperty("下单用户_serverside")
+    private Long userId;
 
     /**
-     * 商品描述
+     * 订单ID_serverside
      */
-    @ApiModelProperty("商品描述")
-    private String description;
+    @ApiModelProperty("订单ID_serverside")
+    private Long orderId;
 
     /**
-     * 商品价格
+     * 起始码头
      */
-    @ApiModelProperty("商品价格")
-    private BigDecimal price;
+    @ApiModelProperty("起始码头")
+    private Long startDockId;
 
     /**
-     * 商品单位
+     * 目的码头
      */
-    @ApiModelProperty("商品单位")
-    private String unit;
+    @ApiModelProperty("目的码头")
+    private Long endDockId;
 
     /**
-     * 库存_serverside
+     * 租用开始时间
      */
-    @ApiModelProperty("库存_serverside")
-    private Long stock;
+    @ApiModelProperty("租用开始时间")
+    private LocalDateTime startTime;
 
     /**
-     * 销量_serverside
+     * 租用结束时间
      */
-    @ApiModelProperty("销量_serverside")
-    private Long sales;
+    @ApiModelProperty("租用结束时间")
+    private LocalDateTime endTime;
 
     /**
-     * 创建商家_serverside
+     * 订单类型
      */
-    @ApiModelProperty("创建商家_serverside")
-    private Long merchantId;
+    @ApiModelProperty("订单类型")
+    private String type;
 
     /**
-     * 创建单位_serverside
+     * 订单状态
      */
-    @ApiModelProperty("创建单位_serverside")
-    private Long unitId;
+    @ApiModelProperty("订单状态")
+    private String status;
 
 }

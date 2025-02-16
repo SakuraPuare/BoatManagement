@@ -18,78 +18,6 @@ CREATE TABLE accounts (
   INDEX `idx_phone` (`phone`),
   INDEX `idx_email` (`email`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '基础账号表';
-INSERT INTO `accounts` (
-    `username`,
-    `password`,
-    `phone`,
-    `email`,
-    `role`,
-    `is_active`,
-    `is_blocked`,
-    `is_deleted`,
-    `created_at`,
-    `updated_at`
-  )
-VALUES (
-    'admin',
-    'admin',
-    '12345678901',
-    'admin@example.com',
-    0xFFFFFF,
-    1,
-    0,
-    0,
-    NOW(),
-    NOW()
-  ),
-  (
-    'merchant',
-    'merchant',
-    '12345678901',
-    'merchant@example.com',
-    1 << 1,
-    1,
-    0,
-    0,
-    NOW(),
-    NOW()
-  ),
-  (
-    'vendor',
-    'vendor',
-    '12345678901',
-    'vendor@example.com',
-    1 << 2,
-    1,
-    0,
-    0,
-    NOW(),
-    NOW()
-  ),
-  (
-    'merchant2',
-    'merchant2',
-    '12345678902',
-    'merchant2@example.com',
-    1 << 1,
-    1,
-    0,
-    0,
-    NOW(),
-    NOW()
-  ),
-  (
-    'vendor2',
-    'vendor2',
-    '12345678902',
-    'vendor2@example.com',
-    1 << 2,
-    1,
-    0,
-    0,
-    NOW(),
-    NOW()
-  );
 CREATE TABLE `user_certify` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
@@ -188,48 +116,6 @@ CREATE TABLE units (
   FOREIGN KEY (`admin_user_id`) REFERENCES accounts (`id`),
   INDEX `idx_social_credit_code` (`social_credit_code`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '单位表';
-INSERT INTO `units` (
-    `name`,
-    `unit_name`,
-    `social_credit_code`,
-    `legal_person`,
-    `address`,
-    `contact_phone`,
-    `status`,
-    `admin_user_id`,
-    `types`,
-    `is_deleted`,
-    `created_at`,
-    `updated_at`
-  )
-VALUES (
-    '单位1',
-    '单位1',
-    '12345678901',
-    '单位1',
-    '单位1',
-    '12345678901',
-    'APPROVED',
-    1,
-    'MERCHANT',
-    0,
-    NOW(),
-    NOW()
-  ),
-  (
-    '单位2',
-    '单位2',
-    '12345678902',
-    '单位2',
-    '单位2',
-    '12345678902',
-    'APPROVED',
-    2,
-    'VENDOR',
-    0,
-    NOW(),
-    NOW()
-  );
 -- 商家表
 CREATE TABLE merchants (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -243,30 +129,6 @@ CREATE TABLE merchants (
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
   FOREIGN KEY (`unit_id`) REFERENCES units (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '商家表';
-INSERT INTO `merchants` (
-    `user_id`,
-    `unit_id`,
-    `status`,
-    `is_deleted`,
-    `created_at`,
-    `updated_at`
-  )
-VALUES (
-    2,
-    1,
-    'APPROVED',
-    0,
-    NOW(),
-    NOW()
-  ),
-  (
-    3,
-    1,
-    'APPROVED',
-    0,
-    NOW(),
-    NOW()
-  );
 CREATE TABLE vendors (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '关联用户',
@@ -279,22 +141,6 @@ CREATE TABLE vendors (
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
   FOREIGN KEY (`unit_id`) REFERENCES units (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '船主表';
-INSERT INTO `vendors` (
-    `user_id`,
-    `unit_id`,
-    `status`,
-    `is_deleted`,
-    `created_at`,
-    `updated_at`
-  )
-VALUES (
-    4,
-    1,
-    'APPROVED',
-    0,
-    NOW(),
-    NOW()
-  );
 CREATE TABLE docks (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT '码头名称',
@@ -320,25 +166,24 @@ CREATE TABLE boat_types (
   `max_load` DECIMAL(10, 2) COMMENT '最大载重（吨）',
   `max_speed` DECIMAL(10, 2) COMMENT '最大航速（公里/小时）',
   `max_endurance` DECIMAL(10, 2) COMMENT '最大续航（公里）',
-  `created_vendor_id` BIGINT UNSIGNED COMMENT '创建者_serverside',
-  `created_unit_id` BIGINT UNSIGNED COMMENT '创建单位_serverside',
+  `vendor_id` BIGINT UNSIGNED COMMENT '创建者_serverside',
+  `unit_id` BIGINT UNSIGNED COMMENT '创建单位_serverside',
   `is_enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`created_vendor_id`) REFERENCES vendors (`id`),
-  FOREIGN KEY (`created_unit_id`) REFERENCES units (`id`)
+  FOREIGN KEY (`vendor_id`) REFERENCES vendors (`id`),
+  FOREIGN KEY (`unit_id`) REFERENCES units (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '船只类型表';
 -- 船只表
 CREATE TABLE boats (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT '船只名称',
   `type_id` INT UNSIGNED NOT NULL COMMENT '船只类型',
-  `boat_type_id` INT UNSIGNED NOT NULL COMMENT '船只类型',
   `dock_id` BIGINT UNSIGNED NOT NULL COMMENT '所属码头',
   `vendor_id` BIGINT UNSIGNED NOT NULL COMMENT '船主ID_serverside',
-  `unit_id` BIGINT UNSIGNED NOT NULL COMMENT '所属单位_serverside',
+  `unit_id` BIGINT UNSIGNED COMMENT '所属单位_serverside',
   `is_enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -363,27 +208,44 @@ CREATE TABLE orders (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '订单表_ndto_nvo';
-CREATE TABLE boat_orders (
+CREATE TABLE boat_requests (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID_serverside',
-  `boat_id` BIGINT UNSIGNED COMMENT '指定船只',
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户_serverside',
+  `order_id` BIGINT UNSIGNED COMMENT '订单ID_serverside',
   `start_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '起始码头',
   `end_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '目的码头',
   `start_time` DATETIME NOT NULL COMMENT '租用开始时间',
   `end_time` DATETIME NOT NULL COMMENT '租用结束时间',
   `type` ENUM ('REAL_TIME', 'RESERVATION') NOT NULL COMMENT '订单类型',
+  `status` ENUM ('PENDING', 'ACCEPTED', 'CANCELLED') NOT NULL DEFAULT 'PENDING' COMMENT '订单状态',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
   FOREIGN KEY (`order_id`) REFERENCES orders (`id`),
-  FOREIGN KEY (`boat_id`) REFERENCES boats (`id`),
   FOREIGN KEY (`start_dock_id`) REFERENCES docks (`id`),
   FOREIGN KEY (`end_dock_id`) REFERENCES docks (`id`),
   INDEX `idx_time_range` (`start_time`, `end_time`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '订单表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '船只请求表';
+CREATE TABLE boat_orders (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户_serverside',
+  `order_id` BIGINT UNSIGNED COMMENT '订单ID_serverside',
+  `boat_id` BIGINT UNSIGNED COMMENT '指定船只',
+  `request_id` BIGINT UNSIGNED NOT NULL COMMENT '请求ID',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
+  FOREIGN KEY (`order_id`) REFERENCES orders (`id`),
+  FOREIGN KEY (`boat_id`) REFERENCES boats (`id`),
+  FOREIGN KEY (`request_id`) REFERENCES boat_requests (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '船舶订单表';
 CREATE TABLE `goods_orders` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户_serverside',
   `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID_serverside',
   `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '商家ID',
   `order_info` TEXT COMMENT '订单信息：id:数量,id:数量,id:数量',
@@ -391,8 +253,9 @@ CREATE TABLE `goods_orders` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-    FOREIGN KEY (`order_id`) REFERENCES orders (`id`),
-  FOREIGN KEY (`merchant_id`) REFERENCES merchants (`id`)
+  FOREIGN KEY (`order_id`) REFERENCES orders (`id`),
+  FOREIGN KEY (`merchant_id`) REFERENCES merchants (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '商品订单表';
 -- 日志表
 CREATE TABLE `logs` (
@@ -444,13 +307,15 @@ CREATE TABLE `goods` (
   `name` VARCHAR(255) NOT NULL COMMENT '商品名称',
   `description` TEXT COMMENT '商品描述',
   `price` DECIMAL(12, 2) NOT NULL COMMENT '商品价格',
+  `unit` VARCHAR(50) NOT NULL COMMENT '商品单位',
   `stock` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '库存_serverside',
   `sales` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '销量_serverside',
-  `created_merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '创建商家_serverside',
-  `created_unit_id` BIGINT UNSIGNED NOT NULL COMMENT '创建单位_serverside',
+  `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '创建商家_serverside',
+  `unit_id` BIGINT UNSIGNED NOT NULL COMMENT '创建单位_serverside',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`created_merchant_id`) REFERENCES merchants (`id`)
+  FOREIGN KEY (`merchant_id`) REFERENCES merchants (`id`),
+  FOREIGN KEY (`unit_id`) REFERENCES units (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '商品表';

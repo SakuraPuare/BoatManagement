@@ -31,19 +31,21 @@ public class BoatsService extends BaseBoatsServiceImpl {
      * 管理员的函数
      */
 
-    public List<BaseBoatsVO> getListQuery(BaseBoatsDTO queryDTO) {
-        Boats query = new Boats();
-        BeanUtils.copyProperties(queryDTO, query);
+    private QueryWrapper getAdminQueryWrapper(BaseBoatsDTO queryDTO) {
+        Boats boats = new Boats();
+        BeanUtils.copyProperties(queryDTO, boats);
+        QueryWrapper queryWrapper = QueryWrapper.create(boats);
+        return queryWrapper;
+    }
 
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+    public List<BaseBoatsVO> getListQuery(BaseBoatsDTO queryDTO) {
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseBoatsVO.class);
     }
 
     public Page<BaseBoatsVO> getPageQuery(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
-        Boats query = new Boats();
-        BeanUtils.copyProperties(queryDTO, query);
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
 
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatsVO.class);
     }
 

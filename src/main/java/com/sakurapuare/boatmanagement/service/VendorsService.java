@@ -20,17 +20,20 @@ public class VendorsService extends BaseVendorsServiceImpl {
      * 管理员函数
      */
 
+    private QueryWrapper getAdminQueryWrapper(BaseVendorsDTO queryDTO) {
+        Vendors vendors = new Vendors();
+        BeanUtils.copyProperties(queryDTO, vendors);
+        QueryWrapper queryWrapper = QueryWrapper.create(vendors);
+        return queryWrapper;
+    }
+
     public List<BaseVendorsVO> getListQuery(BaseVendorsDTO queryDTO) {
-        Vendors query = new Vendors();
-        BeanUtils.copyProperties(queryDTO, query);
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseVendorsVO.class);
     }
 
     public Page<BaseVendorsVO> getPageQuery(Integer pageNum, Integer pageSize, BaseVendorsDTO queryDTO) {
-        Vendors query = new Vendors();
-        BeanUtils.copyProperties(queryDTO, query);
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseVendorsVO.class);
     }
 

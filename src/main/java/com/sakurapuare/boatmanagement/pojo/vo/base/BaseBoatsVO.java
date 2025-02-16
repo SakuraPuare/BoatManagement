@@ -20,9 +20,6 @@ public class BaseBoatsVO extends BaseEntityVO {
     @ApiModelProperty("船只类型")
     private Long typeId;
 
-    @ApiModelProperty("船只类型")
-    private Long boatTypeId;
-
     @ApiModelProperty("所属码头")
     private Long dockId;
 

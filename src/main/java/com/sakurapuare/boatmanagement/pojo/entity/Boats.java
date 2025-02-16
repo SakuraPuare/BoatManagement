@@ -51,12 +51,6 @@ public class Boats extends BaseEntity implements Serializable {
     private Long typeId;
 
     /**
-     * 船只类型
-     */
-    @ApiModelProperty("船只类型")
-    private Long boatTypeId;
-
-    /**
      * 所属码头
      */
     @ApiModelProperty("所属码头")

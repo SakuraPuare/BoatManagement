@@ -24,7 +24,9 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
      */
 
     private QueryWrapper getMerchantQueryWrapper(BaseGoodsOrdersDTO goodsOrderDTO) {
-        QueryWrapper queryWrapper = QueryWrapper.create(goodsOrderDTO);
+        GoodsOrders goodsOrder = new GoodsOrders();
+        BeanUtils.copyProperties(goodsOrderDTO, goodsOrder);
+        QueryWrapper queryWrapper = QueryWrapper.create(goodsOrder);
         queryWrapper.eq(GOODS_ORDERS.MERCHANT_ID.getName(), UserContext.getAccount().getId());
         return queryWrapper;
     }
@@ -45,7 +47,7 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
             throw new IllegalArgumentException("订单不存在");
         }
 
-        if (goodsOrder.getMerchantId() != UserContext.getAccount().getId()) {
+        if (!goodsOrder.getMerchantId().equals(UserContext.getAccount().getId())) {
             throw new IllegalArgumentException("订单不存在");
         }
     }
@@ -53,27 +55,27 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
     public void completeMerchantOrder(Long id) {
         verifyMerchantId(id);
         GoodsOrders goodsOrder = super.getById(id);
-        if (goodsOrder.getStatus() == "COMPLETED") {
+        if (goodsOrder.getStatus().equals("COMPLETED")) {
             throw new IllegalArgumentException("订单已完成");
         }
 
         goodsOrder.setStatus("COMPLETED");
         super.updateById(goodsOrder);
-        
+
     }
 
     public void cancelMerchantOrder(Long id) {
         verifyMerchantId(id);
 
         GoodsOrders goodsOrder = super.getById(id);
-        if (goodsOrder.getStatus() == "CANCELLED") {
+        if (goodsOrder.getStatus().equals("CANCELLED")) {
             throw new IllegalArgumentException("订单已取消");
         }
 
         goodsOrder.setStatus("CANCELLED");
         super.updateById(goodsOrder);
     }
-    
+
     /*
      * 用户函数
      */
@@ -107,7 +109,7 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
             throw new IllegalArgumentException("订单不存在");
         }
 
-        if (goodsOrder.getUserId() != UserContext.getAccount().getId()) {
+        if (!goodsOrder.getUserId().equals(UserContext.getAccount().getId())) {
             throw new IllegalArgumentException("订单不存在");
         }
     }
@@ -116,7 +118,7 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
         verifyUserId(id);
 
         GoodsOrders goodsOrder = super.getById(id);
-        if (goodsOrder.getStatus() == "CANCELLED") {
+        if (goodsOrder.getStatus().equals("CANCELLED")) {
             throw new IllegalArgumentException("订单已取消");
         }
 
@@ -128,7 +130,7 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
         verifyUserId(id);
 
         GoodsOrders goodsOrder = super.getById(id);
-        if (goodsOrder.getStatus() == "PAID") {
+        if (goodsOrder.getStatus().equals("PAID")) {
             throw new IllegalArgumentException("订单已支付");
         }
 

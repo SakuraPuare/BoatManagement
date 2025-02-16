@@ -5,7 +5,6 @@ import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import java.io.Serial;
 
@@ -18,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 订单表 实体类。
+ * 船舶订单表 实体类。
  *
  * @author sakurapuare
  * @since 2025-02-16
@@ -28,7 +27,7 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("订单表")
+@ApiModel("船舶订单表")
 @Table("boat_orders")
 public class BoatOrders extends BaseOrder implements Serializable {
 
@@ -46,33 +45,9 @@ public class BoatOrders extends BaseOrder implements Serializable {
     private Long boatId;
 
     /**
-     * 起始码头
+     * 请求ID
      */
-    @ApiModelProperty("起始码头")
-    private Long startDockId;
-
-    /**
-     * 目的码头
-     */
-    @ApiModelProperty("目的码头")
-    private Long endDockId;
-
-    /**
-     * 租用开始时间
-     */
-    @ApiModelProperty("租用开始时间")
-    private LocalDateTime startTime;
-
-    /**
-     * 租用结束时间
-     */
-    @ApiModelProperty("租用结束时间")
-    private LocalDateTime endTime;
-
-    /**
-     * 订单类型
-     */
-    @ApiModelProperty("订单类型")
-    private String type;
+    @ApiModelProperty("请求ID")
+    private Long requestId;
 
 }

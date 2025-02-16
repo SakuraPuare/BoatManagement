@@ -20,19 +20,21 @@ public class MerchantsService extends BaseMerchantsServiceImpl {
      * 管理员函数
      */
 
-    public List<BaseMerchantsVO> getListQuery(BaseMerchantsDTO queryDTO) {
-        Merchants query = new Merchants();
-        BeanUtils.copyProperties(queryDTO, query);
+    private QueryWrapper getAdminQueryWrapper(BaseMerchantsDTO queryDTO) {
+        Merchants merchants = new Merchants();
+        BeanUtils.copyProperties(queryDTO, merchants);
+        QueryWrapper queryWrapper = QueryWrapper.create(merchants);
+        return queryWrapper;
+    }
 
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+
+    public List<BaseMerchantsVO> getListQuery(BaseMerchantsDTO queryDTO) {
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseMerchantsVO.class);
     }
 
     public Page<BaseMerchantsVO> getPageQuery(Integer pageNum, Integer pageSize, BaseMerchantsDTO queryDTO) {
-        Merchants query = new Merchants();
-        BeanUtils.copyProperties(queryDTO, query);
-
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
+        QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseMerchantsVO.class);
     }
 
