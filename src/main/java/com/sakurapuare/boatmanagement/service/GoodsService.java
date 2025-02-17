@@ -5,18 +5,13 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.Goods;
-import com.sakurapuare.boatmanagement.pojo.entity.GoodsOrders;
-import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
-import com.sakurapuare.boatmanagement.pojo.entity.Orders;
-import com.sakurapuare.boatmanagement.pojo.entity.Units;
+import com.sakurapuare.boatmanagement.pojo.entity.*;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsVO;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseGoodsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

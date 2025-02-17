@@ -1,8 +1,10 @@
 package com.sakurapuare.boatmanagement.pojo.entity;
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import com.sakurapuare.boatmanagement.handler.PointTypeHandler;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
 
@@ -47,8 +49,9 @@ public class Docks extends BaseEntity implements Serializable {
     /**
      * 地理位置
      */
+    @Column(typeHandler = PointTypeHandler.class)
     @ApiModelProperty("地理位置")
-    private byte[] location;
+    private List<Double> location;
 
     /**
      * 详细地址

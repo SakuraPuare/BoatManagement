@@ -105,6 +105,7 @@ function post_process() {
         sed -i '/private Long id;/d' "$file"
         sed -i '/import java.io.Serial;/d' "$file"
         sed -i '/import java.io.Serializable;/d' "$file"
+        sed -i '/@Column\(.+\)/d' "$file"
         # delete serverside
         sed -i '/@ApiModelProperty(".*_serverside")/,+1d' "$file"
         sed -i '/@ApiModelProperty(".*_bothside")/,+1d' "$file"
@@ -118,6 +119,7 @@ function post_process() {
         sed -i '/private Boolean isDeleted;/d' "$file"
         sed -i '/import java.io.Serial;/d' "$file"
         sed -i '/import java.io.Serializable;/d' "$file"
+        sed -i '/@Column\(.+\)/d' "$file"
         # delete client side
         sed -i '/@ApiModelProperty(".*_clientside")/,+1d' "$file"
         sed -i '/@ApiModelProperty(".*_bothside")/,+1d' "$file"

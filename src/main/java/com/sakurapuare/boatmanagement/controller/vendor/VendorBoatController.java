@@ -3,11 +3,9 @@ package com.sakurapuare.boatmanagement.controller.vendor;
 import com.mybatisflex.core.paginate.Page;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatsDTO;
-import com.sakurapuare.boatmanagement.pojo.vo.BoatVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatsVO;
 import com.sakurapuare.boatmanagement.service.BoatsService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +29,7 @@ public class VendorBoatController {
     @PostMapping("/page")
     @Operation(summary = "获取供应商船舶列表分页")
     public Response<Page<BaseBoatsVO>> getVendorBoatsPage(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                     @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseBoatsDTO boatsQueryDTO) {
+                                                          @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseBoatsDTO boatsQueryDTO) {
         return Response.success("获取供应商船舶列表分页成功", boatsService.getVendorBoatsPage(pageNum, pageSize, boatsQueryDTO));
     }
 

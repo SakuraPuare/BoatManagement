@@ -35,8 +35,8 @@ public class UserMerchantController {
     @PostMapping("/page")
     @Operation(summary = "获取所有商家列表分页")
     public Response<Page<BaseMerchantsVO>> getUserMerchantPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                            @RequestParam(defaultValue = "10") Integer pageSize,
-                                                            @RequestBody BaseMerchantsDTO queryDTO) {
+                                                                    @RequestParam(defaultValue = "10") Integer pageSize,
+                                                                    @RequestBody BaseMerchantsDTO queryDTO) {
         return Response.success(merchantService.getUserMerchantPageQuery(pageNum, pageSize, queryDTO));
     }
 
@@ -65,8 +65,8 @@ public class UserMerchantController {
     @PostMapping("/{merchantId}/goods/order")
     @Operation(summary = "创建商家商品订单")
     public Response<String> createUserMerchantGoodsOrder(@PathVariable Long merchantId,
-                                                        @RequestBody BaseGoodsOrdersDTO orderDTO) {
+                                                         @RequestBody BaseGoodsOrdersDTO orderDTO) {
         return Response.success(goodsService.createUserMerchantGoodsOrder(merchantId, orderDTO));
     }
-    
+
 }

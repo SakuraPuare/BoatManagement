@@ -6,7 +6,6 @@ import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatTypesDTO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatTypesVO;
 import com.sakurapuare.boatmanagement.service.BoatTypesService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

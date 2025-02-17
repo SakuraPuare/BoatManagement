@@ -4,8 +4,8 @@ import com.mybatisflex.codegen.Generator;
 import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
-import com.mybatisflex.core.handler.CommaSplitTypeHandler;
 import com.sakurapuare.boatmanagement.handler.GoodsInfoTypeHandler;
+import com.sakurapuare.boatmanagement.handler.PointTypeHandler;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import com.zaxxer.hikari.HikariDataSource;
@@ -91,14 +91,20 @@ public class SQLGen {
         globalConfig.getMapperXmlConfig()
                 .setOverwriteEnable(true);
 
-        ColumnConfig columnConfig = new ColumnConfig();
+        ColumnConfig goods_orders_config = new ColumnConfig();
 
         // id:num, id:num, id:num, ...
-        columnConfig.setPropertyType("java.util.Map<Integer, Double>");
-        columnConfig.setTypeHandler(GoodsInfoTypeHandler.class);
-        columnConfig.setColumnName("order_info");
+        goods_orders_config.setPropertyType("java.util.Map<Integer, Double>");
+        goods_orders_config.setTypeHandler(GoodsInfoTypeHandler.class);
+        goods_orders_config.setColumnName("order_info");
+        globalConfig.setColumnConfig("goods_orders", goods_orders_config);
 
-        globalConfig.setColumnConfig("goods_orders", columnConfig);
+        // Point
+        ColumnConfig point_config = new ColumnConfig();
+        point_config.setPropertyType("List<Double>");
+        point_config.setTypeHandler(PointTypeHandler.class);
+        point_config.setColumnName("location");
+        globalConfig.setColumnConfig("docks", point_config);
 
         return globalConfig;
     }

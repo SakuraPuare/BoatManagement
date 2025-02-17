@@ -11,7 +11,7 @@ public class BaseDocksDTO {
     private String name;
 
     @ApiModelProperty("地理位置")
-    private byte[] location;
+    private List<Double> location;
 
     @ApiModelProperty("详细地址")
     private String address;

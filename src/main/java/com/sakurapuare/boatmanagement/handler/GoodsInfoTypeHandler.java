@@ -13,7 +13,7 @@ import java.util.Map;
 public class GoodsInfoTypeHandler extends BaseTypeHandler<Map<Integer, Double>> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, Map<Integer, Double> parameter, JdbcType jdbcType) 
+    public void setNonNullParameter(PreparedStatement ps, int i, Map<Integer, Double> parameter, JdbcType jdbcType)
             throws SQLException {
         // 将Map转换为字符串格式 "id:num,id:num"
         StringBuilder sb = new StringBuilder();
