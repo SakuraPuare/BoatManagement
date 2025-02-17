@@ -23,8 +23,7 @@ public class MerchantsService extends BaseMerchantsServiceImpl {
     private QueryWrapper getAdminQueryWrapper(BaseMerchantsDTO queryDTO) {
         Merchants merchants = new Merchants();
         BeanUtils.copyProperties(queryDTO, merchants);
-        QueryWrapper queryWrapper = QueryWrapper.create(merchants);
-        return queryWrapper;
+        return QueryWrapper.create(merchants);
     }
 
 

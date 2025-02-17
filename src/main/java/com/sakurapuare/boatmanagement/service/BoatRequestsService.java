@@ -28,9 +28,8 @@ public class BoatRequestsService extends BaseBoatRequestsServiceImpl {
     private QueryWrapper getVendorBoatRequestsQueryWrapper(BaseBoatRequestsDTO boatRequestDTO) {
         BoatRequests query = new BoatRequests();
         BeanUtils.copyProperties(boatRequestDTO, query);
-        QueryWrapper queryWrapper = QueryWrapper.create(query);
         // queryWrapper.eq(BOAT_REQUESTS.STATUS.getName(), BoatOrderStatus.PENDING);
-        return queryWrapper;
+        return QueryWrapper.create(query);
     }
 
     public List<BaseBoatRequestsVO> getVendorBoatRequestsListQuery(BaseBoatRequestsDTO boatRequestDTO) {

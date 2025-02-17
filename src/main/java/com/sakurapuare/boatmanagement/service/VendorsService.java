@@ -23,8 +23,7 @@ public class VendorsService extends BaseVendorsServiceImpl {
     private QueryWrapper getAdminQueryWrapper(BaseVendorsDTO queryDTO) {
         Vendors vendors = new Vendors();
         BeanUtils.copyProperties(queryDTO, vendors);
-        QueryWrapper queryWrapper = QueryWrapper.create(vendors);
-        return queryWrapper;
+        return QueryWrapper.create(vendors);
     }
 
     public List<BaseVendorsVO> getListQuery(BaseVendorsDTO queryDTO) {

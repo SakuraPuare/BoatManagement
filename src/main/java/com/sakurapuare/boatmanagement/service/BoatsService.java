@@ -34,8 +34,7 @@ public class BoatsService extends BaseBoatsServiceImpl {
     private QueryWrapper getAdminQueryWrapper(BaseBoatsDTO queryDTO) {
         Boats boats = new Boats();
         BeanUtils.copyProperties(queryDTO, boats);
-        QueryWrapper queryWrapper = QueryWrapper.create(boats);
-        return queryWrapper;
+        return QueryWrapper.create(boats);
     }
 
     public List<BaseBoatsVO> getListQuery(BaseBoatsDTO queryDTO) {

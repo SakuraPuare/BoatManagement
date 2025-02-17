@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.DOCKS;
+
 import java.util.List;
 
 @Service
@@ -23,8 +25,7 @@ public class DocksService extends BaseDocksServiceImpl {
     private QueryWrapper getAdminQueryWrapper(BaseDocksDTO queryDTO) {
         Docks docks = new Docks();
         BeanUtils.copyProperties(queryDTO, docks);
-        QueryWrapper queryWrapper = QueryWrapper.create(docks);
-        return queryWrapper;
+        return QueryWrapper.create(docks);
     }
 
     public List<BaseDocksVO> getListQuery(BaseDocksDTO queryDTO) {
@@ -54,4 +55,39 @@ public class DocksService extends BaseDocksServiceImpl {
         docks.setId(id);
         super.updateById(docks);
     }
+
+    private QueryWrapper getEnabledQueryWrapper(BaseDocksDTO queryDTO) {
+        Docks docks = new Docks();
+        BeanUtils.copyProperties(queryDTO, docks);
+        return QueryWrapper.create(docks).eq(DOCKS.IS_ENABLED.getName(), true);
+    }
+
+    /*
+     * 供应商函数
+     */
+
+    public List<BaseDocksVO> getVendorDockListQuery(BaseDocksDTO queryDTO) {
+        QueryWrapper queryWrapper = getEnabledQueryWrapper(queryDTO);
+        return super.listAs(queryWrapper, BaseDocksVO.class);
+    }
+
+    public Page<BaseDocksVO> getVendorDockPageQuery(Integer pageNum, Integer pageSize, BaseDocksDTO queryDTO) {
+        QueryWrapper queryWrapper = getEnabledQueryWrapper(queryDTO);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseDocksVO.class);
+    }
+
+    /*
+     * 用户函数
+     */
+
+    public List<BaseDocksVO> getUserDockListQuery(BaseDocksDTO queryDTO) {
+        QueryWrapper queryWrapper = getEnabledQueryWrapper(queryDTO);
+        return super.listAs(queryWrapper, BaseDocksVO.class);
+    }
+
+    public Page<BaseDocksVO> getUserDockPageQuery(Integer pageNum, Integer pageSize, BaseDocksDTO queryDTO) {
+        QueryWrapper queryWrapper = getEnabledQueryWrapper(queryDTO);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseDocksVO.class);
+    }
+
 }
