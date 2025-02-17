@@ -8,6 +8,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Boats;
 import com.sakurapuare.boatmanagement.pojo.entity.Units;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
 import com.sakurapuare.boatmanagement.pojo.vo.BoatVO;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatsVO;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseBoatsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -33,11 +34,6 @@ public class BoatsService extends BaseBoatsServiceImpl {
         Boats boats = new Boats();
         BeanUtils.copyProperties(queryDTO, boats);
         QueryWrapper queryWrapper = QueryWrapper.create(boats);
-        // join name
-        queryWrapper
-                .select(BOATS.ALL_COLUMNS, BOAT_TYPES.ALL_COLUMNS)
-                .join(BOAT_TYPES)
-                .on(BOATS.TYPE_ID.eq(BOAT_TYPES.ID));
         return queryWrapper;
     }
 
@@ -112,23 +108,18 @@ public class BoatsService extends BaseBoatsServiceImpl {
         } else {
             queryWrapper.where(BOATS.UNIT_ID.eq(unit.getId()));
         }
-        
-        // join name
-        queryWrapper
-                .select(BOATS.ALL_COLUMNS, BOAT_TYPES.ALL_COLUMNS)
-                .join(BOAT_TYPES)
-                .on(BOATS.TYPE_ID.eq(BOAT_TYPES.ID));
+
         return queryWrapper;
     }
 
-    public List<BoatVO> getVendorBoatsList(BaseBoatsDTO queryDTO) {
+    public List<BaseBoatsVO> getVendorBoatsList(BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
-        return super.listAs(queryWrapper, BoatVO.class);
+        return super.listAs(queryWrapper, BaseBoatsVO.class);
     }
 
-    public Page<BoatVO> getVendorBoatsPage(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
+    public Page<BaseBoatsVO> getVendorBoatsPage(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
-        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BoatVO.class);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatsVO.class);
     }
 
     public void addVendorBoat(BaseBoatsDTO boatsDTO) {
