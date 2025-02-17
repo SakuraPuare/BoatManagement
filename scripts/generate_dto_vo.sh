@@ -29,6 +29,7 @@ function generate_file() {
     local api_model_property_name="$2"
     local api_model_name="$3"
     local java_import_list="$4"
+    local extends_class="$5"
 
     for type in "dto" "vo"; do
         # 如果存在_n$type，则跳过生成
@@ -49,28 +50,10 @@ function generate_file() {
             rm "$file_path/$file_real_name"
         fi
 
-        template_before="package com.sakurapuare.$project_name.pojo.$type.base;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;"
-
         if [ "$type" == "dto" ]; then
             template_before="package com.sakurapuare.$project_name.pojo.$type.base;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;"
-            template_after="@Data
-@ApiModel(\"${api_model_name}\")
-public class ${file_name} {
-${api_model_property_name}
-}
-"
-        else
-            template_before="package com.sakurapuare.$project_name.pojo.$type.base;
-
-import com.sakurapuare.$project_name.pojo.vo.BaseEntityVO;
+import com.sakurapuare.$project_name.pojo.dto.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -78,7 +61,22 @@ import lombok.EqualsAndHashCode;"
             template_after="@Data
 @ApiModel(\"${api_model_name}\")
 @EqualsAndHashCode(callSuper = true)
-public class ${file_name} extends BaseEntityVO {
+public class ${file_name} extends ${extends_class}DTO {
+${api_model_property_name}
+}
+"
+        else
+            template_before="package com.sakurapuare.$project_name.pojo.$type.base;
+
+import com.sakurapuare.$project_name.pojo.vo.*;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;"
+            template_after="@Data
+@ApiModel(\"${api_model_name}\")
+@EqualsAndHashCode(callSuper = true)
+public class ${file_name} extends ${extends_class}VO {
 ${api_model_property_name}
 }
 "
@@ -138,9 +136,11 @@ function generate() {
     api_model_property_name=$(get_api_model_property_name "$entity_name")
     # 获取所有import java*
     java_import_list=$(sed -n 's/^import java\(.*\);/\1;/p' "$entity_path/$entity_name.java" | sed 's/^/import java/')
+    # 获取继承类
+    extends_class=$(sed -n 's/.*class\s\+[A-Za-z0-9_]\+\s\+extends\s\+\([A-Za-z0-9_.]\+\).*/\1/p' "$entity_path/$entity_name.java")
 
     # 生成dto文件
-    generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$java_import_list"
+    generate_file "$entity_name" "$api_model_property_name" "$api_model_name" "$java_import_list" "$extends_class"
 }
 
 entity_path="$spring_path/pojo/entity"

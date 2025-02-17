@@ -1,12 +1,15 @@
 package com.sakurapuare.boatmanagement.pojo.dto.base;
 
+import com.sakurapuare.boatmanagement.pojo.dto.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import java.math.BigDecimal;
 @Data
 @ApiModel("商品表")
-public class BaseGoodsDTO {
+@EqualsAndHashCode(callSuper = true)
+public class BaseGoodsDTO extends BaseEntityDTO {
 
     @ApiModelProperty("商品名称")
     private String name;

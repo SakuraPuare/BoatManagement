@@ -1,6 +1,6 @@
 package com.sakurapuare.boatmanagement.pojo.vo.base;
 
-import com.sakurapuare.boatmanagement.pojo.vo.BaseEntityVO;
+import com.sakurapuare.boatmanagement.pojo.vo.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.Map;
 @Data
 @ApiModel("商品订单表")
 @EqualsAndHashCode(callSuper = true)
-public class BaseGoodsOrdersVO extends BaseEntityVO {
+public class BaseGoodsOrdersVO extends BaseOrderVO {
     private Long id;
 
     @ApiModelProperty("商家ID_serverside")

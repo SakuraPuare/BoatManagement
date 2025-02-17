@@ -1,11 +1,14 @@
 package com.sakurapuare.boatmanagement.pojo.dto.base;
 
+import com.sakurapuare.boatmanagement.pojo.dto.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 @Data
 @ApiModel("基础账号表")
-public class BaseAccountsDTO {
+@EqualsAndHashCode(callSuper = true)
+public class BaseAccountsDTO extends BaseEntityDTO {
 
     @ApiModelProperty("用户名")
     private String username;
