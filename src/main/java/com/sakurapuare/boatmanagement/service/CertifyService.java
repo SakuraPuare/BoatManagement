@@ -386,7 +386,7 @@ public class CertifyService {
         }
     }
 
-    public List<BaseUnitsVO> getUnitListQuery(CertifyQueryDTO queryDTO) {
+    public List<BaseUnitsVO> getAdminUnitListQuery(CertifyQueryDTO queryDTO) {
         Units queryUnits = new Units();
         BeanUtils.copyProperties(queryDTO, queryUnits);
         List<Units> units = unitsService.list(QueryWrapper.create(queryUnits));
@@ -397,7 +397,7 @@ public class CertifyService {
         }).collect(Collectors.toList());
     }
 
-    public Page<BaseUnitsVO> getUnitPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
+    public Page<BaseUnitsVO> getAdminUnitPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
         Units queryUnits = new Units();
         BeanUtils.copyProperties(queryDTO, queryUnits);
         Page<Units> units = unitsService.page(Page.of(pageNum, pageSize), QueryWrapper.create(queryUnits));
@@ -485,7 +485,7 @@ public class CertifyService {
         accountsService.updateById(account);
     }
 
-    public void auditUnit(String types, Long id) {
+    public void auditAdminUnit(String types, Long id) {
         if (AuditOperation.isAuditOperation(types)) {
             throw new IllegalArgumentException("不支持的审核操作");
         }
@@ -508,7 +508,7 @@ public class CertifyService {
         }
     }
 
-    public List<BaseUserCertifyVO> getUserListQuery(CertifyQueryDTO queryDTO) {
+    public List<BaseUserCertifyVO> getAdminUserListQuery(CertifyQueryDTO queryDTO) {
         UserCertify queryUserCertify = new UserCertify();
         BeanUtils.copyProperties(queryDTO, queryUserCertify);
         List<UserCertify> userCertifies = userCertifyService.list(QueryWrapper.create(queryUserCertify));
@@ -519,7 +519,7 @@ public class CertifyService {
         }).collect(Collectors.toList());
     }
 
-    public Page<BaseUserCertifyVO> getUserPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
+    public Page<BaseUserCertifyVO> getAdminUserPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
         UserCertify queryUserCertify = new UserCertify();
         BeanUtils.copyProperties(queryDTO, queryUserCertify);
         Page<UserCertify> userCertifies = userCertifyService.page(Page.of(pageNum, pageSize),
@@ -546,7 +546,7 @@ public class CertifyService {
         userCertifyService.updateById(userCertify);
     }
 
-    public void auditUser(String types, Long id) {
+    public void auditAdminUser(String types, Long id) {
         if (AuditOperation.isAuditOperation(types)) {
             throw new IllegalArgumentException("不支持的审核操作");
         }

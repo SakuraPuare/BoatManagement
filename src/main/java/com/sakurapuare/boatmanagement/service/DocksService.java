@@ -39,17 +39,17 @@ public class DocksService extends BaseDocksServiceImpl {
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseDocksVO.class);
     }
 
-    public void addDocks(BaseDocksDTO docksDTO) {
+    public void addAdminDocks(BaseDocksDTO docksDTO) {
         Docks docks = new Docks();
         BeanUtils.copyProperties(docksDTO, docks);
         super.save(docks);
     }
 
-    public void deleteDocks(Long id) {
+    public void deleteAdminDocks(Long id) {
         super.removeById(id);
     }
 
-    public void updateDocks(Long id, BaseDocksDTO docksDTO) {
+    public void updateAdminDocks(Long id, BaseDocksDTO docksDTO) {
         Docks docks = new Docks();
         BeanUtils.copyProperties(docksDTO, docks);
         docks.setId(id);

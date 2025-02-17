@@ -24,20 +24,20 @@ public class AdminUserController {
 
     @PostMapping("/list")
     @Operation(summary = "获取用户列表")
-    public Response<List<BaseAccountsVO>> list(@RequestBody BaseAccountsDTO queryDTO) {
-        return Response.success("获取用户列表成功", accountsService.getListQuery(queryDTO));
+    public Response<List<BaseAccountsVO>> getAdminUserListQuery(@RequestBody BaseAccountsDTO queryDTO) {
+        return Response.success("获取用户列表成功", accountsService.getAdminUserListQuery(queryDTO));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取用户列表分页")
-    public Response<Page<BaseAccountsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
+    public Response<Page<BaseAccountsVO>> getAdminUserPageQuery(@RequestParam(defaultValue = "1") Integer page,
                                                    @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseAccountsDTO queryDTO) {
-        return Response.success("获取用户列表分页成功", accountsService.getPageQuery(page, size, queryDTO));
+        return Response.success("获取用户列表分页成功", accountsService.getAdminUserPageQuery(page, size, queryDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取用户详情")
-    public Response<BaseAccountsVO> get(@PathVariable Long id) {
+    public Response<BaseAccountsVO> getAdminUser(@PathVariable Long id) {
         Accounts accounts = accountsService.getById(id);
         BaseAccountsVO accountsVO = new BaseAccountsVO();
         BeanUtils.copyProperties(accounts, accountsVO);
@@ -46,22 +46,22 @@ public class AdminUserController {
 
     @PutMapping("/{id}")
     @Operation(summary = "更新用户")
-    public Response<String> update(@PathVariable Long id, @RequestBody BaseAccountsDTO baseAccountsDTO) {
-        accountsService.updateAccount(id, baseAccountsDTO);
+    public Response<String> updateAdminAccount(@PathVariable Long id, @RequestBody BaseAccountsDTO baseAccountsDTO) {
+        accountsService.updateAdminAccount(id, baseAccountsDTO);
         return Response.success("更新用户成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除用户")
-    public Response<String> delete(@PathVariable Long id) {
-        accountsService.deleteAccount(id);
+    public Response<String> deleteAdminAccount(@PathVariable Long id) {
+        accountsService.deleteAdminAccount(id);
         return Response.success("删除用户成功");
     }
 
     @PostMapping("/")
     @Operation(summary = "创建用户")
-    public Response<String> create(@RequestBody BaseAccountsDTO baseAccountsDTO) {
-        accountsService.addAccount(baseAccountsDTO);
+    public Response<String> createAdminAccount(@RequestBody BaseAccountsDTO baseAccountsDTO) {
+        accountsService.createAdminAccount(baseAccountsDTO);
         return Response.success("创建用户成功");
     }
 }

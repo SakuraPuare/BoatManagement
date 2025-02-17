@@ -22,22 +22,22 @@ public class MerchantGoodsController {
 
     @PostMapping("/list")
     @Operation(summary = "获取商家商品列表")
-    public Response<List<BaseGoodsVO>> getGoods(@RequestBody BaseGoodsDTO queryDTO) {
-        List<BaseGoodsVO> goods = goodsService.getMerchantsGoodsList(queryDTO);
+    public Response<List<BaseGoodsVO>> getMerchantGoodsListQuery(@RequestBody BaseGoodsDTO queryDTO) {
+        List<BaseGoodsVO> goods = goodsService.getMerchantsGoodsListQuery(queryDTO);
         return Response.success(goods);
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取商家商品列表分页")
-    public Response<Page<BaseGoodsVO>> getGoodsPage(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
+    public Response<Page<BaseGoodsVO>> getMerchantGoodsPageQuery(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
                                                     @RequestBody BaseGoodsDTO queryDTO) {
-        Page<BaseGoodsVO> page = goodsService.getMerchantsGoodsPage(pageNum, pageSize, queryDTO);
+        Page<BaseGoodsVO> page = goodsService.getMerchantsGoodsPageQuery(pageNum, pageSize, queryDTO);
         return Response.success(page);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取商品详情")
-    public Response<BaseGoodsVO> getGoodsById(@PathVariable Long id) {
+    public Response<BaseGoodsVO> getGoods(@PathVariable Long id) {
         BaseGoodsVO goods = goodsService.getMerchantsGoodsById(id);
         return Response.success(goods);
     }

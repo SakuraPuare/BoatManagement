@@ -24,20 +24,20 @@ public class AdminDockController {
 
     @PostMapping("/list")
     @Operation(summary = "获取码头列表")
-    public Response<List<BaseDocksVO>> getDocks(@RequestBody BaseDocksDTO queryDTO) {
+    public Response<List<BaseDocksVO>> getAdminDocksListQuery(@RequestBody BaseDocksDTO queryDTO) {
         return Response.success("获取码头列表成功", docksService.getListQuery(queryDTO));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取码头列表分页")
-    public Response<Page<BaseDocksVO>> getDocksPage(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
+    public Response<Page<BaseDocksVO>> getAdminDocksPageQuery(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
                                                     @RequestBody BaseDocksDTO queryDTO) {
         return Response.success("获取码头列表分页成功", docksService.getPageQuery(pageNum, pageSize, queryDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取码头详情")
-    public Response<BaseDocksVO> getDocksById(@PathVariable Long id) {
+    public Response<BaseDocksVO> getAdminDocks(@PathVariable Long id) {
         Docks docks = docksService.getById(id);
         BaseDocksVO docksVO = new BaseDocksVO();
         BeanUtils.copyProperties(docks, docksVO);
@@ -46,22 +46,22 @@ public class AdminDockController {
 
     @PostMapping("/")
     @Operation(summary = "添加码头")
-    public Response<String> addDocks(@RequestBody BaseDocksDTO docksDTO) {
-        docksService.addDocks(docksDTO);
+    public Response<String> addAdminDocks(@RequestBody BaseDocksDTO docksDTO) {
+        docksService.addAdminDocks(docksDTO);
         return Response.success("添加码头成功");
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "更新码头")
-    public Response<String> updateDocks(@PathVariable Long id, @RequestBody BaseDocksDTO docksDTO) {
-        docksService.updateDocks(id, docksDTO);
+    public Response<String> updateAdminDocks(@PathVariable Long id, @RequestBody BaseDocksDTO docksDTO) {
+        docksService.updateAdminDocks(id, docksDTO);
         return Response.success("更新码头成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除码头")
-    public Response<String> deleteDocks(@PathVariable Long id) {
-        docksService.deleteDocks(id);
+    public Response<String> deleteAdminDocks(@PathVariable Long id) {
+        docksService.deleteAdminDocks(id);
         return Response.success("删除码头成功");
     }
 }

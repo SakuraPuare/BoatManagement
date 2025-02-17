@@ -22,7 +22,7 @@ public class MerchantOrderController {
 
     @PostMapping("/list")
     @Operation(summary = "获取商家订单列表")
-    public Response<List<BaseGoodsOrdersVO>> getMerchantOrders(@RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
+    public Response<List<BaseGoodsOrdersVO>> getMerchantOrdersListQuery(@RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
         List<BaseGoodsOrdersVO> merchantOrders = goodsOrdersService.getMerchantsGoodsOrdersListQuery(merchantOrderDTO);
         return Response.success(merchantOrders);
     }
@@ -30,7 +30,7 @@ public class MerchantOrderController {
     @PostMapping("/page")
     @Operation(summary = "获取商家订单列表分页")
 
-    public Response<Page<BaseGoodsOrdersVO>> getMerchantOrdersPage(@RequestParam(defaultValue = "1") Integer pageNum,
+    public Response<Page<BaseGoodsOrdersVO>> getMerchantOrdersPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
                                                                    @RequestParam(defaultValue = "10") Integer pageSize,
                                                                    @RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
         Page<BaseGoodsOrdersVO> merchantOrders = goodsOrdersService.getMerchantsGoodsOrdersPageQuery(pageNum, pageSize,

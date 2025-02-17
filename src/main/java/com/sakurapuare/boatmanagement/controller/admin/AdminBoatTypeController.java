@@ -24,20 +24,20 @@ public class AdminBoatTypeController {
 
     @PostMapping("/list")
     @Operation(summary = "获取船舶类型列表")
-    public Response<List<BaseBoatTypesVO>> list(@RequestBody BaseBoatTypesDTO queryDTO) {
-        return Response.success("获取船舶类型列表成功", boatTypesService.getListQuery(queryDTO));
+    public Response<List<BaseBoatTypesVO>> getAdminBoatTypeListQuery(@RequestBody BaseBoatTypesDTO queryDTO) {
+        return Response.success("获取船舶类型列表成功", boatTypesService.getAdminBoatTypeListQuery(queryDTO));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取船舶类型列表分页")
-    public Response<Page<BaseBoatTypesVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
+    public Response<Page<BaseBoatTypesVO>> getAdminBoatTypePageQuery(@RequestParam(defaultValue = "1") Integer page,
                                                     @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseBoatTypesDTO queryDTO) {
-        return Response.success("获取船舶类型列表分页成功", boatTypesService.getPageQuery(page, size, queryDTO));
+        return Response.success("获取船舶类型列表分页成功", boatTypesService.getAdminBoatTypePageQuery(page, size, queryDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取船舶类型详情")
-    public Response<BaseBoatTypesVO> get(@PathVariable Long id) {
+    public Response<BaseBoatTypesVO> getAdminBoatType(@PathVariable Long id) {
         BoatTypes boatTypes = boatTypesService.getById(id);
         BaseBoatTypesVO boatTypesVO = new BaseBoatTypesVO();
         BeanUtils.copyProperties(boatTypes, boatTypesVO);
@@ -46,22 +46,22 @@ public class AdminBoatTypeController {
 
     @PutMapping("/{id}")
     @Operation(summary = "更新船舶类型")
-    public Response<String> update(@PathVariable Long id, @RequestBody BaseBoatTypesDTO baseBoatTypeDTO) {
-        boatTypesService.updateBoatType(id, baseBoatTypeDTO);
+    public Response<String> updateAdminBoatType(@PathVariable Long id, @RequestBody BaseBoatTypesDTO baseBoatTypeDTO) {
+        boatTypesService.updateAdminBoatType(id, baseBoatTypeDTO);
         return Response.success("更新船舶类型成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除船舶类型")
-    public Response<String> delete(@PathVariable Long id) {
-        boatTypesService.deleteBoatType(id);
+    public Response<String> deleteAdminBoatType(@PathVariable Long id) {
+        boatTypesService.deleteAdminBoatType(id);
         return Response.success("删除船舶类型成功");
     }
 
     @PostMapping("/")
     @Operation(summary = "创建船舶类型")
-    public Response<String> create(@RequestBody BaseBoatTypesDTO baseBoatTypeDTO) {
-        boatTypesService.addBoatType(baseBoatTypeDTO);
+    public Response<String> createAdminBoatType(@RequestBody BaseBoatTypesDTO baseBoatTypeDTO) {
+        boatTypesService.createAdminBoatType(baseBoatTypeDTO);
         return Response.success("创建船舶类型成功");
     }
 }

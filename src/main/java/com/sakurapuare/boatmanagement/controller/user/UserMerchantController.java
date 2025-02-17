@@ -42,7 +42,7 @@ public class UserMerchantController {
 
     @GetMapping("/{id}")
     @Operation(summary = "获取商家详情")
-    public Response<BaseMerchantsVO> getUserMerchantById(@PathVariable Long id) {
+    public Response<BaseMerchantsVO> getUserMerchant(@PathVariable Long id) {
         return Response.success(merchantService.getUserMerchantById(id));
     }
 

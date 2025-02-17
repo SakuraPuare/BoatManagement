@@ -24,20 +24,20 @@ public class AdminMerchantController {
 
     @PostMapping("/list")
     @Operation(summary = "获取商户列表")
-    public Response<List<BaseMerchantsVO>> list(@RequestBody BaseMerchantsDTO queryDTO) {
-        return Response.success("获取商户列表成功", merchantService.getListQuery(queryDTO));
+    public Response<List<BaseMerchantsVO>> getAdminMerchantListQuery(@RequestBody BaseMerchantsDTO queryDTO) {
+        return Response.success("获取商户列表成功", merchantService.getAdminMerchantListQuery(queryDTO));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取商户列表分页")
-    public Response<Page<BaseMerchantsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
+    public Response<Page<BaseMerchantsVO>> getAdminMerchantPageQuery(@RequestParam(defaultValue = "1") Integer page,
                                                     @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseMerchantsDTO queryDTO) {
-        return Response.success("获取商户列表分页成功", merchantService.getPageQuery(page, size, queryDTO));
+        return Response.success("获取商户列表分页成功", merchantService.getAdminMerchantPageQuery(page, size, queryDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取商户详情")
-    public Response<BaseMerchantsVO> get(@PathVariable Long id) {
+    public Response<BaseMerchantsVO> getAdminMerchant(@PathVariable Long id) {
         Merchants merchants = merchantService.getById(id);
         BaseMerchantsVO merchantsVO = new BaseMerchantsVO();
         BeanUtils.copyProperties(merchants, merchantsVO);
@@ -46,22 +46,22 @@ public class AdminMerchantController {
 
     @PutMapping("/{id}")
     @Operation(summary = "更新商户")
-    public Response<String> update(@PathVariable Long id, @RequestBody BaseMerchantsDTO baseMerchantsDTO) {
-        merchantService.updateMerchant(id, baseMerchantsDTO);
+    public Response<String> updateAdminMerchant(@PathVariable Long id, @RequestBody BaseMerchantsDTO baseMerchantsDTO) {
+        merchantService.updateAdminMerchant(id, baseMerchantsDTO);
         return Response.success("更新商户成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除商户")
-    public Response<String> delete(@PathVariable Long id) {
-        merchantService.deleteMerchant(id);
+    public Response<String> deleteAdminMerchant(@PathVariable Long id) {
+        merchantService.deleteAdminMerchant(id);
         return Response.success("删除商户成功");
     }
 
     @PostMapping("/")
     @Operation(summary = "创建商户")
-    public Response<String> create(@RequestBody BaseMerchantsDTO baseMerchantsDTO) {
-        merchantService.addMerchant(baseMerchantsDTO);
+    public Response<String> createAdminMerchant(@RequestBody BaseMerchantsDTO baseMerchantsDTO) {
+        merchantService.createAdminMerchant(baseMerchantsDTO);
         return Response.success("创建商户成功");
     }
 }

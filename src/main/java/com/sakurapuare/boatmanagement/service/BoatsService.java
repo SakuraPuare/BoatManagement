@@ -38,12 +38,12 @@ public class BoatsService extends BaseBoatsServiceImpl {
         return queryWrapper;
     }
 
-    public List<BoatVO> getListQuery(BaseBoatsDTO queryDTO) {
+    public List<BoatVO> getAdminBoatListQuery(BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BoatVO.class);
     }
 
-    public Page<BoatVO> getPageQuery(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
+    public Page<BoatVO> getAdminBoatPageQuery(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
 
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BoatVO.class);
@@ -113,12 +113,12 @@ public class BoatsService extends BaseBoatsServiceImpl {
         return queryWrapper;
     }
 
-    public List<BaseBoatsVO> getVendorBoatsList(BaseBoatsDTO queryDTO) {
+    public List<BaseBoatsVO> getVendorBoatsListQuery(BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseBoatsVO.class);
     }
 
-    public Page<BaseBoatsVO> getVendorBoatsPage(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
+    public Page<BaseBoatsVO> getVendorBoatsPageQuery(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatsVO.class);
     }

@@ -25,20 +25,20 @@ public class AdminBoatController {
 
     @PostMapping("/list")
     @Operation(summary = "获取船舶列表")
-    public Response<List<BoatVO>> list(@RequestBody BaseBoatsDTO queryDTO) {
-        return Response.success("获取船舶列表成功", boatService.getListQuery(queryDTO));
+    public Response<List<BoatVO>> getAdminBoatListQuery(@RequestBody BaseBoatsDTO queryDTO) {
+        return Response.success("获取船舶列表成功", boatService.getAdminBoatListQuery(queryDTO));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取船舶列表分页")
-    public Response<Page<BoatVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
+    public Response<Page<BoatVO>> getAdminBoatPageQuery(@RequestParam(defaultValue = "1") Integer page,
                                            @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseBoatsDTO queryDTO) {
-        return Response.success("获取船舶列表分页成功", boatService.getPageQuery(page, size, queryDTO));
+        return Response.success("获取船舶列表分页成功", boatService.getAdminBoatPageQuery(page, size, queryDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取船舶详情")
-    public Response<BaseBoatsVO> get(@PathVariable Long id) {
+    public Response<BaseBoatsVO> getAdminBoat(@PathVariable Long id) {
         Boats boats = boatService.getById(id);
         BaseBoatsVO boatsVO = new BaseBoatsVO();
         BeanUtils.copyProperties(boats, boatsVO);
@@ -47,21 +47,21 @@ public class AdminBoatController {
 
     @PutMapping("/{id}")
     @Operation(summary = "更新船舶")
-    public Response<String> update(@PathVariable Long id, @RequestBody BaseBoatsDTO baseBoatsDTO) {
+    public Response<String> updateAdminBoat(@PathVariable Long id, @RequestBody BaseBoatsDTO baseBoatsDTO) {
         boatService.updateBoat(id, baseBoatsDTO);
         return Response.success("更新船舶成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除船舶")
-    public Response<String> delete(@PathVariable Long id) {
+    public Response<String> deleteAdminBoat(@PathVariable Long id) {
         boatService.deleteBoat(id);
         return Response.success("删除船舶成功");
     }
 
     @PostMapping("/")
     @Operation(summary = "创建船舶")
-    public Response<String> create(@RequestBody BaseBoatsDTO baseBoatsDTO) {
+    public Response<String> createAdminBoat(@RequestBody BaseBoatsDTO baseBoatsDTO) {
         boatService.addBoat(baseBoatsDTO);
         return Response.success("创建船舶成功");
     }

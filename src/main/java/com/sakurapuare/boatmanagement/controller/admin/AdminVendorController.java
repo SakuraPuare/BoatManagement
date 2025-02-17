@@ -24,15 +24,15 @@ public class AdminVendorController {
 
     @PostMapping("/list")
     @Operation(summary = "获取供应商列表")
-    public Response<List<BaseVendorsVO>> list(@RequestBody BaseVendorsDTO queryDTO) {
-        return Response.success("获取供应商列表成功", vendorService.getListQuery(queryDTO));
+    public Response<List<BaseVendorsVO>> getAdminVendorListQuery(@RequestBody BaseVendorsDTO queryDTO) {
+        return Response.success("获取供应商列表成功", vendorService.getAdminVendorListQuery(queryDTO));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取供应商列表分页")
-    public Response<Page<BaseVendorsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
+    public Response<Page<BaseVendorsVO>> getAdminVendorPageQuery(@RequestParam(defaultValue = "1") Integer page,
                                                   @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseVendorsDTO queryDTO) {
-        return Response.success("获取供应商列表分页成功", vendorService.getPageQuery(page, size, queryDTO));
+        return Response.success("获取供应商列表分页成功", vendorService.getAdminVendorPageQuery(page, size, queryDTO));
     }
 
     @GetMapping("/{id}")
@@ -47,21 +47,21 @@ public class AdminVendorController {
     @PutMapping("/{id}")
     @Operation(summary = "更新供应商")
     public Response<String> update(@PathVariable Long id, @RequestBody BaseVendorsDTO baseVendorsDTO) {
-        vendorService.updateVendor(id, baseVendorsDTO);
+        vendorService.updateAdminVendor(id, baseVendorsDTO);
         return Response.success("更新供应商成功");
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除供应商")
     public Response<String> delete(@PathVariable Long id) {
-        vendorService.deleteVendor(id);
+        vendorService.deleteAdminVendor(id);
         return Response.success("删除供应商成功");
     }
 
     @PostMapping("/")
     @Operation(summary = "创建供应商")
     public Response<String> create(@RequestBody BaseVendorsDTO baseVendorsDTO) {
-        vendorService.addVendor(baseVendorsDTO);
+        vendorService.addAdminVendor(baseVendorsDTO);
         return Response.success("创建供应商成功");
     }
 }

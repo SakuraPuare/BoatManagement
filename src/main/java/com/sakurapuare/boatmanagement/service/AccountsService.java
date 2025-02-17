@@ -26,21 +26,21 @@ public class AccountsService extends BaseAccountsServiceImpl {
      * 管理员函数
      */
 
-    public List<BaseAccountsVO> getListQuery(BaseAccountsDTO queryDTO) {
+    public List<BaseAccountsVO> getAdminUserListQuery(BaseAccountsDTO queryDTO) {
         Accounts query = new Accounts();
         BeanUtils.copyProperties(queryDTO, query);
         QueryWrapper queryWrapper = QueryWrapper.create(query);
         return super.listAs(queryWrapper, BaseAccountsVO.class);
     }
 
-    public Page<BaseAccountsVO> getPageQuery(Integer pageNum, Integer pageSize, BaseAccountsDTO queryDTO) {
+    public Page<BaseAccountsVO> getAdminUserPageQuery(Integer pageNum, Integer pageSize, BaseAccountsDTO queryDTO) {
         Accounts query = new Accounts();
         BeanUtils.copyProperties(queryDTO, query);
         QueryWrapper queryWrapper = QueryWrapper.create(query);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseAccountsVO.class);
     }
 
-    public void addAccount(BaseAccountsDTO baseAccountsDTO) {
+    public void createAdminAccount(BaseAccountsDTO baseAccountsDTO) {
         Accounts accounts = new Accounts();
         BeanUtils.copyProperties(baseAccountsDTO, accounts);
         super.save(accounts);
@@ -57,12 +57,12 @@ public class AccountsService extends BaseAccountsServiceImpl {
         }
     }
 
-    public void deleteAccount(Long id) {
+    public void deleteAdminAccount(Long id) {
         verifyId(id);
         super.removeById(id);
     }
 
-    public void updateAccount(Long id, BaseAccountsDTO baseAccountsDTO) {
+    public void updateAdminAccount(Long id, BaseAccountsDTO baseAccountsDTO) {
         verifyId(id);
         Accounts accounts = new Accounts();
         BeanUtils.copyProperties(baseAccountsDTO, accounts);

@@ -27,17 +27,17 @@ public class MerchantsService extends BaseMerchantsServiceImpl {
     }
 
 
-    public List<BaseMerchantsVO> getListQuery(BaseMerchantsDTO queryDTO) {
+    public List<BaseMerchantsVO> getAdminMerchantListQuery(BaseMerchantsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseMerchantsVO.class);
     }
 
-    public Page<BaseMerchantsVO> getPageQuery(Integer pageNum, Integer pageSize, BaseMerchantsDTO queryDTO) {
+    public Page<BaseMerchantsVO> getAdminMerchantPageQuery(Integer pageNum, Integer pageSize, BaseMerchantsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseMerchantsVO.class);
     }
 
-    public void addMerchant(BaseMerchantsDTO baseMerchantsDTO) {
+    public void createAdminMerchant(BaseMerchantsDTO baseMerchantsDTO) {
         Merchants merchants = new Merchants();
         BeanUtils.copyProperties(baseMerchantsDTO, merchants);
         super.save(merchants);
@@ -54,7 +54,7 @@ public class MerchantsService extends BaseMerchantsServiceImpl {
         }
     }
 
-    public void updateMerchant(Long id, BaseMerchantsDTO baseMerchantsDTO) {
+    public void updateAdminMerchant(Long id, BaseMerchantsDTO baseMerchantsDTO) {
         verifyId(id);
         Merchants merchants = new Merchants();
         BeanUtils.copyProperties(baseMerchantsDTO, merchants);
@@ -62,7 +62,7 @@ public class MerchantsService extends BaseMerchantsServiceImpl {
         super.updateById(merchants);
     }
 
-    public void deleteMerchant(Long id) {
+    public void deleteAdminMerchant(Long id) {
         verifyId(id);
         super.removeById(id);
     }

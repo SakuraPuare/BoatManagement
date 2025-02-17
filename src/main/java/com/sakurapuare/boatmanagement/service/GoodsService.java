@@ -66,12 +66,12 @@ public class GoodsService extends BaseGoodsServiceImpl {
         return super.getOne(queryWrapper);
     }
 
-    public List<BaseGoodsVO> getMerchantsGoodsList(BaseGoodsDTO queryDTO) {
+    public List<BaseGoodsVO> getMerchantsGoodsListQuery(BaseGoodsDTO queryDTO) {
         QueryWrapper queryWrapper = getMerchantQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseGoodsVO.class);
     }
 
-    public Page<BaseGoodsVO> getMerchantsGoodsPage(Integer pageNum, Integer pageSize, BaseGoodsDTO queryDTO) {
+    public Page<BaseGoodsVO> getMerchantsGoodsPageQuery(Integer pageNum, Integer pageSize, BaseGoodsDTO queryDTO) {
         QueryWrapper queryWrapper = getMerchantQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsVO.class);
     }

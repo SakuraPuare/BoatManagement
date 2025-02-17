@@ -26,17 +26,17 @@ public class VendorsService extends BaseVendorsServiceImpl {
         return QueryWrapper.create(vendors);
     }
 
-    public List<BaseVendorsVO> getListQuery(BaseVendorsDTO queryDTO) {
+    public List<BaseVendorsVO> getAdminVendorListQuery(BaseVendorsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseVendorsVO.class);
     }
 
-    public Page<BaseVendorsVO> getPageQuery(Integer pageNum, Integer pageSize, BaseVendorsDTO queryDTO) {
+    public Page<BaseVendorsVO> getAdminVendorPageQuery(Integer pageNum, Integer pageSize, BaseVendorsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseVendorsVO.class);
     }
 
-    public void addVendor(BaseVendorsDTO baseVendorsDTO) {
+    public void addAdminVendor(BaseVendorsDTO baseVendorsDTO) {
         Vendors vendors = new Vendors();
         BeanUtils.copyProperties(baseVendorsDTO, vendors);
         super.save(vendors);
@@ -53,7 +53,7 @@ public class VendorsService extends BaseVendorsServiceImpl {
         }
     }
 
-    public void updateVendor(Long id, BaseVendorsDTO baseVendorsDTO) {
+    public void updateAdminVendor(Long id, BaseVendorsDTO baseVendorsDTO) {
         verifyId(id);
         Vendors vendors = new Vendors();
         BeanUtils.copyProperties(baseVendorsDTO, vendors);
@@ -61,7 +61,7 @@ public class VendorsService extends BaseVendorsServiceImpl {
         super.updateById(vendors);
     }
 
-    public void deleteVendor(Long id) {
+    public void deleteAdminVendor(Long id) {
         verifyId(id);
         super.removeById(id);
     }

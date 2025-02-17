@@ -36,17 +36,17 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         return QueryWrapper.create(boatTypes);
     }
 
-    public List<BaseBoatTypesVO> getListQuery(BaseBoatTypesDTO queryDTO) {
+    public List<BaseBoatTypesVO> getAdminBoatTypeListQuery(BaseBoatTypesDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.listAs(queryWrapper, BaseBoatTypesVO.class);
     }
 
-    public Page<BaseBoatTypesVO> getPageQuery(Integer pageNum, Integer pageSize, BaseBoatTypesDTO queryDTO) {
+    public Page<BaseBoatTypesVO> getAdminBoatTypePageQuery(Integer pageNum, Integer pageSize, BaseBoatTypesDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatTypesVO.class);
     }
 
-    public void addBoatType(BaseBoatTypesDTO baseBoatTypeDTO) {
+    public void createAdminBoatType(BaseBoatTypesDTO baseBoatTypeDTO) {
         BoatTypes boatTypes = new BoatTypes();
         BeanUtils.copyProperties(baseBoatTypeDTO, boatTypes);
         super.save(boatTypes);
@@ -64,7 +64,7 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
     }
 
 
-    public void updateBoatType(Long id, BaseBoatTypesDTO baseBoatTypeDTO) {
+    public void updateAdminBoatType(Long id, BaseBoatTypesDTO baseBoatTypeDTO) {
         verifyId(id);
         BoatTypes boatTypes = new BoatTypes();
         BeanUtils.copyProperties(baseBoatTypeDTO, boatTypes);
@@ -72,7 +72,7 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         super.updateById(boatTypes);
     }
 
-    public void deleteBoatType(Long id) {
+    public void deleteAdminBoatType(Long id) {
         verifyId(id);
         super.removeById(id);
     }
@@ -94,7 +94,7 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         return unitsService.getById(vendor.getUnitId());
     }
 
-    public BaseBoatTypesVO getVendorBoatType(Long id) {
+    public BaseBoatTypesVO getVendorBoatTypeById(Long id) {
         verifyId(id);
         BoatTypes boatTypes = super.getById(id);
         BaseBoatTypesVO baseBoatTypesVO = new BaseBoatTypesVO();
@@ -116,13 +116,13 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         return queryWrapper;
     }
 
-    public List<BaseBoatTypesVO> getVendorBoatTypesList(BaseBoatTypesDTO queryDTO) {
+    public List<BaseBoatTypesVO> getVendorBoatTypesListQuery(BaseBoatTypesDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
 
         return super.listAs(queryWrapper, BaseBoatTypesVO.class);
     }
 
-    public Page<BaseBoatTypesVO> getVendorBoatTypesPage(Integer pageNum, Integer pageSize, BaseBoatTypesDTO queryDTO) {
+    public Page<BaseBoatTypesVO> getVendorBoatTypesPageQuery(Integer pageNum, Integer pageSize, BaseBoatTypesDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
 
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatTypesVO.class);
