@@ -144,7 +144,9 @@ CREATE TABLE vendors (
 CREATE TABLE docks (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL COMMENT '码头名称',
-  `location` POINT NOT NULL COMMENT '地理位置',
+  -- `location` POINT NOT NULL COMMENT '地理位置',
+  `longitude` DOUBLE NOT NULL COMMENT '经度',
+  `latitude` DOUBLE NOT NULL COMMENT '纬度',
   `address` VARCHAR(255) COMMENT '详细地址',
   `contact_phone` VARCHAR(20) COMMENT '联系电话',
   `is_enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
@@ -152,7 +154,6 @@ CREATE TABLE docks (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  SPATIAL INDEX `idx_location` (`location`),
   INDEX `idx_name` (`name`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '码头表';
 -- 船只类型表

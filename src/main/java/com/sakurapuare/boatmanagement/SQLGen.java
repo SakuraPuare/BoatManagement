@@ -5,7 +5,6 @@ import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
 import com.sakurapuare.boatmanagement.handler.GoodsInfoTypeHandler;
-import com.sakurapuare.boatmanagement.handler.PointTypeHandler;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import com.zaxxer.hikari.HikariDataSource;
@@ -98,13 +97,6 @@ public class SQLGen {
         goods_orders_config.setTypeHandler(GoodsInfoTypeHandler.class);
         goods_orders_config.setColumnName("order_info");
         globalConfig.setColumnConfig("goods_orders", goods_orders_config);
-
-        // Point
-        ColumnConfig point_config = new ColumnConfig();
-        point_config.setPropertyType("List<Double>");
-        point_config.setTypeHandler(PointTypeHandler.class);
-        point_config.setColumnName("location");
-        globalConfig.setColumnConfig("docks", point_config);
 
         return globalConfig;
     }

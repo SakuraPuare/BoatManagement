@@ -30,9 +30,9 @@ public class AdminMerchantController {
 
     @PostMapping("/page")
     @Operation(summary = "获取商户列表分页")
-    public Response<Page<BaseMerchantsVO>> getAdminMerchantPageQuery(@RequestParam(defaultValue = "1") Integer page,
-                                                    @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseMerchantsDTO queryDTO) {
-        return Response.success("获取商户列表分页成功", merchantService.getAdminMerchantPageQuery(page, size, queryDTO));
+    public Response<Page<BaseMerchantsVO>> getAdminMerchantPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
+                                                    @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseMerchantsDTO queryDTO) {
+        return Response.success("获取商户列表分页成功", merchantService.getAdminMerchantPageQuery(pageNum, pageSize, queryDTO));
     }
 
     @GetMapping("/{id}")

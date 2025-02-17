@@ -31,9 +31,9 @@ public class AdminBoatController {
 
     @PostMapping("/page")
     @Operation(summary = "获取船舶列表分页")
-    public Response<Page<BoatVO>> getAdminBoatPageQuery(@RequestParam(defaultValue = "1") Integer page,
-                                           @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseBoatsDTO queryDTO) {
-        return Response.success("获取船舶列表分页成功", boatService.getAdminBoatPageQuery(page, size, queryDTO));
+    public Response<Page<BoatVO>> getAdminBoatPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
+                                           @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseBoatsDTO queryDTO) {
+        return Response.success("获取船舶列表分页成功", boatService.getAdminBoatPageQuery(pageNum, pageSize, queryDTO));
     }
 
     @GetMapping("/{id}")

@@ -17,8 +17,11 @@ public class BaseDocksVO extends BaseEntityVO {
     @ApiModelProperty("码头名称")
     private String name;
 
-    @ApiModelProperty("地理位置")
-    private List<Double> location;
+    @ApiModelProperty("经度")
+    private Double longitude;
+
+    @ApiModelProperty("纬度")
+    private Double latitude;
 
     @ApiModelProperty("详细地址")
     private String address;

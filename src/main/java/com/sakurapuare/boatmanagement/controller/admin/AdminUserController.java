@@ -30,9 +30,9 @@ public class AdminUserController {
 
     @PostMapping("/page")
     @Operation(summary = "获取用户列表分页")
-    public Response<Page<BaseAccountsVO>> getAdminUserPageQuery(@RequestParam(defaultValue = "1") Integer page,
-                                                   @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseAccountsDTO queryDTO) {
-        return Response.success("获取用户列表分页成功", accountsService.getAdminUserPageQuery(page, size, queryDTO));
+    public Response<Page<BaseAccountsVO>> getAdminUserPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
+                                                   @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseAccountsDTO queryDTO) {
+        return Response.success("获取用户列表分页成功", accountsService.getAdminUserPageQuery(pageNum, pageSize, queryDTO));
     }
 
     @GetMapping("/{id}")
