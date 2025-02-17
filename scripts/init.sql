@@ -73,7 +73,8 @@ VALUES (
 -- 创建码头示例
 INSERT INTO `docks` (
         `name`,
-        `location`,
+        `longitude`,
+        `latitude`,
         `address`,
         `contact_phone`
     )
