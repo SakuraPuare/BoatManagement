@@ -1,27 +1,30 @@
 diff --git a/src/main/java/com/sakurapuare/boatmanagement/pojo/dto/base/BaseBoatRequestsDTO.java b/src/main/java/com/sakurapuare/boatmanagement/pojo/dto/base/BaseBoatRequestsDTO.java
-index 7368aff..01c3387 100644
+index 1d89cf5..834b6f2 100644
 --- a/src/main/java/com/sakurapuare/boatmanagement/pojo/dto/base/BaseBoatRequestsDTO.java
 +++ b/src/main/java/com/sakurapuare/boatmanagement/pojo/dto/base/BaseBoatRequestsDTO.java
-@@ -1,15 +1,17 @@
+@@ -1,18 +1,19 @@
  package com.sakurapuare.boatmanagement.pojo.dto.base;
  
+ import com.sakurapuare.boatmanagement.pojo.dto.*;
 +import com.fasterxml.jackson.annotation.JsonFormat;
  import io.swagger.annotations.ApiModel;
  import io.swagger.annotations.ApiModelProperty;
  import lombok.Data;
+ import lombok.EqualsAndHashCode;
 +
  import java.time.LocalDateTime;
 +
  @Data
  @ApiModel("船只请求表")
- public class BaseBoatRequestsDTO {
+ @EqualsAndHashCode(callSuper = true)
+ public class BaseBoatRequestsDTO extends BaseEntityDTO {
  
- 
+-
 -
      @ApiModelProperty("起始码头")
      private Long startDockId;
  
-@@ -17,9 +19,11 @@ public class BaseBoatRequestsDTO {
+@@ -20,9 +21,11 @@ public class BaseBoatRequestsDTO extends BaseEntityDTO {
      private Long endDockId;
  
      @ApiModelProperty("租用开始时间")
@@ -33,3 +36,8 @@ index 7368aff..01c3387 100644
      private LocalDateTime endTime;
  
      @ApiModelProperty("订单类型")
+@@ -31,4 +34,3 @@ public class BaseBoatRequestsDTO extends BaseEntityDTO {
+     @ApiModelProperty("订单状态")
+     private String status;
+ }
+-

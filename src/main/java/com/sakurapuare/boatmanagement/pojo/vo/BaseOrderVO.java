@@ -1,4 +1,4 @@
-package com.sakurapuare.boatmanagement.pojo.entity;
+package com.sakurapuare.boatmanagement.pojo.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybatisflex.annotation.Column;
