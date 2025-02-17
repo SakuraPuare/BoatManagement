@@ -9,6 +9,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
 
 import java.io.Serial;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
