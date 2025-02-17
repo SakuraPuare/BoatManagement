@@ -1,20 +1,27 @@
 diff --git a/src/main/java/com/sakurapuare/boatmanagement/pojo/dto/base/BaseBoatRequestsDTO.java b/src/main/java/com/sakurapuare/boatmanagement/pojo/dto/base/BaseBoatRequestsDTO.java
-index 510f9f5..16aa90e 100644
+index 7368aff..01c3387 100644
 --- a/src/main/java/com/sakurapuare/boatmanagement/pojo/dto/base/BaseBoatRequestsDTO.java
 +++ b/src/main/java/com/sakurapuare/boatmanagement/pojo/dto/base/BaseBoatRequestsDTO.java
-@@ -1,10 +1,10 @@
+@@ -1,15 +1,17 @@
  package com.sakurapuare.boatmanagement.pojo.dto.base;
  
 +import com.fasterxml.jackson.annotation.JsonFormat;
  import io.swagger.annotations.ApiModel;
  import io.swagger.annotations.ApiModelProperty;
  import lombok.Data;
- 
--
++
  import java.time.LocalDateTime;
++
  @Data
  @ApiModel("船只请求表")
-@@ -19,9 +19,11 @@ public class BaseBoatRequestsDTO {
+ public class BaseBoatRequestsDTO {
+ 
+ 
+-
+     @ApiModelProperty("起始码头")
+     private Long startDockId;
+ 
+@@ -17,9 +19,11 @@ public class BaseBoatRequestsDTO {
      private Long endDockId;
  
      @ApiModelProperty("租用开始时间")
