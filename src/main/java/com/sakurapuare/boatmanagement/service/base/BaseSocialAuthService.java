@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.SocialAuth;
  * 第三方登录表_ndto_nvo 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-17
+ * @since 2025-02-18
  */
 public interface BaseSocialAuthService extends IService<SocialAuth> {
 
