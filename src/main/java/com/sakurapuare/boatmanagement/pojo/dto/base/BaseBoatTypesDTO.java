@@ -34,6 +34,9 @@ public class BaseBoatTypesDTO {
     @ApiModelProperty("最大续航（公里）")
     private BigDecimal maxEndurance;
 
+    @ApiModelProperty("租金（元/小时）")
+    private BigDecimal price;
+
 
 
     @ApiModelProperty("是否启用")

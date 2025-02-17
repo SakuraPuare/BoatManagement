@@ -24,7 +24,7 @@ public class VendorBoatRequestController {
     @Operation(summary = "获取商家船只请求列表")
     public Response<List<BaseBoatRequestsVO>> getVendorBoatRequestsListQuery(
             @RequestBody BaseBoatRequestsDTO baseBoatRequestsDTO) {
-        return Response.success(boatRequestsService.getVendorBoatRequestsListQuery(baseBoatRequestsDTO));
+        return Response.success("获取商家船只请求列表成功", boatRequestsService.getVendorBoatRequestsListQuery(baseBoatRequestsDTO));
     }
 
     @PostMapping("/page")
@@ -32,13 +32,6 @@ public class VendorBoatRequestController {
     public Response<Page<BaseBoatRequestsVO>> getVendorBoatRequestsPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
                                                                              @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseBoatRequestsDTO baseBoatRequestsDTO) {
         return Response
-                .success(boatRequestsService.getVendorBoatRequestsPageQuery(pageNum, pageSize, baseBoatRequestsDTO));
-    }
-
-    @PostMapping("/accept/{id}")
-    @Operation(summary = "接受商家船只请求")
-    public Response<String> acceptVendorBoatRequest(@PathVariable Long id) {
-        boatRequestsService.acceptVendorBoatRequest(id);
-        return Response.success("接受商家船只请求成功");
+                .success("获取商家船只请求列表分页成功", boatRequestsService.getVendorBoatRequestsPageQuery(pageNum, pageSize, baseBoatRequestsDTO));
     }
 }

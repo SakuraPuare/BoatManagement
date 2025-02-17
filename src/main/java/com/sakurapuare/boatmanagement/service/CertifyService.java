@@ -38,7 +38,7 @@ public class CertifyService {
 
     public void certifyUser(UserCertifyRequestDTO request) {
         UserCertify userCertify = userCertifyService.getOne(
-                new QueryWrapper().eq(USER_CERTIFY.USER_ID.getName(), UserContext.getAccount().getId()));
+                new QueryWrapper().where(USER_CERTIFY.USER_ID.eq(UserContext.getAccount().getId())));
 
         if (userCertify != null) {
             validateStatus(userCertify.getStatus(), "用户");
@@ -77,7 +77,7 @@ public class CertifyService {
     private Units certifyUnit(UnitCertifyRequestDTO request, String types) {
         Units unit = unitsService.getOne(
                 new QueryWrapper()
-                        .eq(UNITS.SOCIAL_CREDIT_CODE.getName(), request.getSocialCreditCode()));
+                        .where(UNITS.SOCIAL_CREDIT_CODE.eq(request.getSocialCreditCode())));
 
         if (unit != null) {
             BeanUtils.copyProperties(request, unit);
@@ -100,7 +100,7 @@ public class CertifyService {
 
     private void processMerchant(Long userId, Units unit, String shopName) {
         Merchants merchant = merchantsService.getOne(
-                new QueryWrapper().eq(MERCHANTS.USER_ID.getName(), userId));
+                new QueryWrapper().where(MERCHANTS.USER_ID.eq(userId)));
 
         if (merchant != null) {
             validateStatus(merchant.getStatus(), "商户");
@@ -112,7 +112,7 @@ public class CertifyService {
 
     private void processVendor(Long userId, Units unit) {
         Vendors vendor = vendorsService.getOne(
-                new QueryWrapper().eq(VENDORS.USER_ID.getName(), userId));
+                new QueryWrapper().where(VENDORS.USER_ID.eq(userId)));
 
         if (vendor != null) {
             validateStatus(vendor.getStatus(), "供应商");
@@ -164,7 +164,7 @@ public class CertifyService {
     public BaseCertifyVO<BaseUserCertifyVO> getUserCertify() {
         BaseCertifyVO<BaseUserCertifyVO> userCertifyVO = new BaseCertifyVO<>();
         UserCertify userCertify = userCertifyService.getOne(
-                new QueryWrapper().eq(USER_CERTIFY.USER_ID.getName(), UserContext.getAccount().getId()));
+                new QueryWrapper().where(USER_CERTIFY.USER_ID.eq(UserContext.getAccount().getId())));
         BaseUserCertifyVO baseUserCertifyVO = new BaseUserCertifyVO();
         if (userCertify == null) {
             userCertifyVO.setStatus(CertifyStatus.NOT_EXIST);
@@ -188,7 +188,7 @@ public class CertifyService {
     public BaseCertifyVO<BaseUnitsVO> getMerchantCertify() {
         BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
         Merchants merchant = merchantsService.getOne(
-                new QueryWrapper().eq(MERCHANTS.USER_ID.getName(), UserContext.getAccount().getId()));
+                new QueryWrapper().where(MERCHANTS.USER_ID.eq(UserContext.getAccount().getId())));
 
         if (merchant == null) {
             vo.setStatus(CertifyStatus.NOT_EXIST);
@@ -206,7 +206,7 @@ public class CertifyService {
     public BaseCertifyVO<BaseUnitsVO> getVendorCertify() {
         BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
         Vendors vendor = vendorsService.getOne(
-                new QueryWrapper().eq(VENDORS.USER_ID.getName(), UserContext.getAccount().getId()));
+                new QueryWrapper().where(VENDORS.USER_ID.eq(UserContext.getAccount().getId())));
 
         if (vendor == null) {
             vo.setStatus(CertifyStatus.NOT_EXIST);
@@ -426,7 +426,7 @@ public class CertifyService {
             case UnitsTypes.MERCHANT: {
                 // 2. 更新商户状态
                 Merchants merchant = merchantsService.getOne(
-                        new QueryWrapper().eq(MERCHANTS.UNIT_ID.getName(), unit.getId()));
+                        new QueryWrapper().where(MERCHANTS.UNIT_ID.eq(unit.getId())));
                 merchant.setStatus(CertifyStatus.APPROVED);
                 merchantsService.updateById(merchant);
 
@@ -438,7 +438,7 @@ public class CertifyService {
             case UnitsTypes.VENDOR: {
                 // 2. 更新供应商状态
                 Vendors vendor = vendorsService.getOne(
-                        new QueryWrapper().eq(VENDORS.UNIT_ID.getName(), unit.getId()));
+                        new QueryWrapper().where(VENDORS.UNIT_ID.eq(unit.getId())));
                 vendor.setStatus(CertifyStatus.APPROVED);
                 vendorsService.updateById(vendor);
 
@@ -463,7 +463,7 @@ public class CertifyService {
             case UnitsTypes.MERCHANT: {
                 // 2. 更新商户状态
                 Merchants merchant = merchantsService.getOne(
-                        new QueryWrapper().eq(MERCHANTS.UNIT_ID.getName(), unit.getId()));
+                        new QueryWrapper().where(MERCHANTS.UNIT_ID.eq(unit.getId())));
                 merchant.setStatus(CertifyStatus.REJECTED);
                 merchantsService.updateById(merchant);
 
@@ -473,7 +473,7 @@ public class CertifyService {
             }
             case UnitsTypes.VENDOR: {
                 Vendors vendor = vendorsService.getOne(
-                        new QueryWrapper().eq(VENDORS.UNIT_ID.getName(), unit.getId()));
+                        new QueryWrapper().where(VENDORS.UNIT_ID.eq(unit.getId())));
                 vendor.setStatus(CertifyStatus.REJECTED);
                 vendorsService.updateById(vendor);
 

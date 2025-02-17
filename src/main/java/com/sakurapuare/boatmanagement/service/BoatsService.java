@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Boats;
 import com.sakurapuare.boatmanagement.pojo.entity.Units;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
-import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatsVO;
+import com.sakurapuare.boatmanagement.pojo.vo.BoatVO;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseBoatsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.BOATS;
-import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.VENDORS;
-
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.*;
 
 @Service
 @RequiredArgsConstructor
@@ -34,18 +32,24 @@ public class BoatsService extends BaseBoatsServiceImpl {
     private QueryWrapper getAdminQueryWrapper(BaseBoatsDTO queryDTO) {
         Boats boats = new Boats();
         BeanUtils.copyProperties(queryDTO, boats);
-        return QueryWrapper.create(boats);
+        QueryWrapper queryWrapper = QueryWrapper.create(boats);
+        // join name
+        queryWrapper
+                .select(BOATS.ALL_COLUMNS, BOAT_TYPES.ALL_COLUMNS)
+                .join(BOAT_TYPES)
+                .on(BOATS.TYPE_ID.eq(BOAT_TYPES.ID));
+        return queryWrapper;
     }
 
-    public List<BaseBoatsVO> getListQuery(BaseBoatsDTO queryDTO) {
+    public List<BoatVO> getListQuery(BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
-        return super.listAs(queryWrapper, BaseBoatsVO.class);
+        return super.listAs(queryWrapper, BoatVO.class);
     }
 
-    public Page<BaseBoatsVO> getPageQuery(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
+    public Page<BoatVO> getPageQuery(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
 
-        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatsVO.class);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BoatVO.class);
     }
 
     public void addBoat(BaseBoatsDTO boatsDTO) {
@@ -84,7 +88,7 @@ public class BoatsService extends BaseBoatsServiceImpl {
 
     private Vendors getVendor() {
         Vendors vendor = vendorsService
-                .getOne(new QueryWrapper().eq(VENDORS.USER_ID.getName(), UserContext.getAccount().getId()));
+                .getOne(new QueryWrapper().where(VENDORS.USER_ID.eq(UserContext.getAccount().getId())));
         if (vendor == null) {
             throw new RuntimeException("供应商不存在");
         }
@@ -104,21 +108,27 @@ public class BoatsService extends BaseBoatsServiceImpl {
         Units unit = getUnit(vendor);
 
         if (unit == null) {
-            queryWrapper.eq(BOATS.VENDOR_ID.getName(), vendor.getId());
+            queryWrapper.where(BOATS.VENDOR_ID.eq(vendor.getId()));
         } else {
-            queryWrapper.eq(BOATS.UNIT_ID.getName(), unit.getId());
+            queryWrapper.where(BOATS.UNIT_ID.eq(unit.getId()));
         }
+        
+        // join name
+        queryWrapper
+                .select(BOATS.ALL_COLUMNS, BOAT_TYPES.ALL_COLUMNS)
+                .join(BOAT_TYPES)
+                .on(BOATS.TYPE_ID.eq(BOAT_TYPES.ID));
         return queryWrapper;
     }
 
-    public List<BaseBoatsVO> getVendorBoatsList(BaseBoatsDTO queryDTO) {
+    public List<BoatVO> getVendorBoatsList(BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
-        return super.listAs(queryWrapper, BaseBoatsVO.class);
+        return super.listAs(queryWrapper, BoatVO.class);
     }
 
-    public Page<BaseBoatsVO> getVendorBoatsPage(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
+    public Page<BoatVO> getVendorBoatsPage(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getVendorQueryWrapper(queryDTO);
-        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatsVO.class);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BoatVO.class);
     }
 
     public void addVendorBoat(BaseBoatsDTO boatsDTO) {

@@ -32,7 +32,7 @@ public class GoodsService extends BaseGoodsServiceImpl {
 
     private Merchants getMerchant() {
         return merchantsService.getOne(
-                QueryWrapper.create().eq(MERCHANTS.USER_ID.getName(), UserContext.getAccount().getId()));
+                QueryWrapper.create().where(MERCHANTS.USER_ID.eq(UserContext.getAccount().getId())));
     }
 
     private Units getUnit() {
@@ -56,13 +56,13 @@ public class GoodsService extends BaseGoodsServiceImpl {
         BeanUtils.copyProperties(queryDTO, goods);
         QueryWrapper queryWrapper = QueryWrapper.create(goods);
         Units unit = getUnit();
-        queryWrapper.eq(GOODS.UNIT_ID.getName(), unit.getId());
+        queryWrapper.where(GOODS.UNIT_ID.eq(unit.getId()));
         return queryWrapper;
     }
 
     public Goods getMerchantsGoods(Long id) {
         QueryWrapper queryWrapper = getMerchantQueryWrapper(new BaseGoodsDTO());
-        queryWrapper.eq(GOODS.ID.getName(), id);
+        queryWrapper.where(GOODS.ID.eq(id));
         return super.getOne(queryWrapper);
     }
 

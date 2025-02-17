@@ -83,7 +83,7 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
 
     private Vendors getVendor() {
         Vendors vendor = vendorsService
-                .getOne(new QueryWrapper().eq(VENDORS.USER_ID.getName(), UserContext.getAccount().getId()));
+                .getOne(new QueryWrapper().where(VENDORS.USER_ID.eq(UserContext.getAccount().getId())));
         if (vendor == null) {
             throw new IllegalArgumentException("供应商不存在");
         }
@@ -94,6 +94,14 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         return unitsService.getById(vendor.getUnitId());
     }
 
+    public BaseBoatTypesVO getVendorBoatType(Long id) {
+        verifyId(id);
+        BoatTypes boatTypes = super.getById(id);
+        BaseBoatTypesVO baseBoatTypesVO = new BaseBoatTypesVO();
+        BeanUtils.copyProperties(boatTypes, baseBoatTypesVO);
+        return baseBoatTypesVO;
+    }
+
     private QueryWrapper getVendorQueryWrapper(BaseBoatTypesDTO queryDTO) {
         BoatTypes query = new BoatTypes();
         BeanUtils.copyProperties(queryDTO, query);
@@ -101,9 +109,9 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
         Vendors vendor = getVendor();
         Units unit = getUnit(vendor);
         if (unit == null) {
-            queryWrapper.eq(BOAT_TYPES.VENDOR_ID.getName(), vendor.getId());
+            queryWrapper.where(BOAT_TYPES.VENDOR_ID.eq(vendor.getId()));
         } else {
-            queryWrapper.eq(BOAT_TYPES.UNIT_ID.getName(), unit.getId());
+            queryWrapper.where(BOAT_TYPES.UNIT_ID.eq(unit.getId()));
         }
         return queryWrapper;
     }

@@ -19,7 +19,7 @@ import static com.sakurapuare.boatmanagement.constant.ResponseCode.CODE_FORBIDDE
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Auth", description = "统一认证模块")
+@Tag(name = "AuthController", description = "统一认证模块")
 @RequiredArgsConstructor
 public class AuthController {
 

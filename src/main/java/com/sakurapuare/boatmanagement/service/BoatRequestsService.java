@@ -3,7 +3,7 @@ package com.sakurapuare.boatmanagement.service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
-import com.sakurapuare.boatmanagement.constant.BoatOrderStatus;
+import com.sakurapuare.boatmanagement.constant.OrderStatus;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatRequestsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.BoatRequests;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatRequestsVO;
@@ -28,7 +28,6 @@ public class BoatRequestsService extends BaseBoatRequestsServiceImpl {
     private QueryWrapper getVendorBoatRequestsQueryWrapper(BaseBoatRequestsDTO boatRequestDTO) {
         BoatRequests query = new BoatRequests();
         BeanUtils.copyProperties(boatRequestDTO, query);
-        // queryWrapper.eq(BOAT_REQUESTS.STATUS.getName(), BoatOrderStatus.PENDING);
         return QueryWrapper.create(query);
     }
 
@@ -42,12 +41,6 @@ public class BoatRequestsService extends BaseBoatRequestsServiceImpl {
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatRequestsVO.class);
     }
 
-    public void acceptVendorBoatRequest(Long id) {
-        BoatRequests boatRequest = super.getById(id);
-        boatRequest.setStatus(BoatOrderStatus.ACCEPTED);
-        super.updateById(boatRequest);
-    }
-
     /*
      * 用户函数
      */
@@ -56,7 +49,7 @@ public class BoatRequestsService extends BaseBoatRequestsServiceImpl {
         BoatRequests boatRequest = new BoatRequests();
         BeanUtils.copyProperties(boatRequestDTO, boatRequest);
         QueryWrapper queryWrapper = QueryWrapper.create(boatRequest);
-        queryWrapper.eq(BOAT_REQUESTS.USER_ID.getName(), UserContext.getAccount().getId());
+        queryWrapper.where(BOAT_REQUESTS.USER_ID.eq(UserContext.getAccount().getId()));
         return queryWrapper;
     }
 
@@ -74,7 +67,7 @@ public class BoatRequestsService extends BaseBoatRequestsServiceImpl {
         BoatRequests boatRequest = new BoatRequests();
         BeanUtils.copyProperties(boatRequestDTO, boatRequest);
         boatRequest.setUserId(UserContext.getAccount().getId());
-        boatRequest.setStatus(BoatOrderStatus.PENDING);
+        boatRequest.setStatus(OrderStatus.PENDING);
         super.save(boatRequest);
     }
 
@@ -96,7 +89,7 @@ public class BoatRequestsService extends BaseBoatRequestsServiceImpl {
     public void cancelUserBoatRequest(Long id) {
         verifyBoatRequestId(id);
         BoatRequests boatRequest = super.getById(id);
-        boatRequest.setStatus(BoatOrderStatus.CANCELLED);
+        boatRequest.setStatus(OrderStatus.CANCELLED);
         super.updateById(boatRequest);
     }
 

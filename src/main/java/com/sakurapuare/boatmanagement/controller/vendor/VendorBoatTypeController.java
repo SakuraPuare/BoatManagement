@@ -21,17 +21,23 @@ public class VendorBoatTypeController {
 
     private final BoatTypesService boatTypesService;
 
+    @GetMapping("/{id}")
+    @Operation(summary = "获取供应商船舶类型")
+    public Response<BaseBoatTypesVO> getVendorBoatType(@PathVariable Long id) {
+        return Response.success("获取供应商船舶类型成功", boatTypesService.getVendorBoatType(id));
+    }
+
     @PostMapping("/list")
     @Operation(summary = "获取供应商船舶类型列表")
     public Response<List<BaseBoatTypesVO>> getVendorBoatTypes(@RequestBody BaseBoatTypesDTO queryDTO) {
-        return Response.success(boatTypesService.getVendorBoatTypesList(queryDTO));
+        return Response.success("获取供应商船舶类型列表成功", boatTypesService.getVendorBoatTypesList(queryDTO));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取供应商船舶列表分页")
     public Response<Page<BaseBoatTypesVO>> getVendorBoatTypesPage(@RequestParam(defaultValue = "1") Integer pageNum,
                                                                   @RequestBody Integer pageSize, @RequestParam BaseBoatTypesDTO queryDTO) {
-        return Response.success(boatTypesService.getVendorBoatTypesPage(pageNum, pageSize, queryDTO));
+        return Response.success("获取供应商船舶类型列表分页成功", boatTypesService.getVendorBoatTypesPage(pageNum, pageSize, queryDTO));
     }
 
     @PostMapping("/")

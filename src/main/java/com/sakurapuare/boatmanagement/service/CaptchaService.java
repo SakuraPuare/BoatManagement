@@ -24,7 +24,9 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
     private final CaptchaLimitService captchaLimitService;
 
     public boolean isReachCaptchaLimit(String target) {
-        CaptchaLimit captchaLimit = captchaLimitService.getOne(QueryWrapper.create().eq(CAPTCHA_LIMIT.TARGET.getName(), target));
+        CaptchaLimit captchaLimit = captchaLimitService.getOne(
+                QueryWrapper.create()
+                        .where(CAPTCHA_LIMIT.TARGET.eq(target)));
 
         if (captchaLimit == null) {
             captchaLimit = new CaptchaLimit();
@@ -76,7 +78,9 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
     }
 
     public boolean verifyCode(String target, String code) {
-        Captcha captcha = super.getOne(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target).eq(CAPTCHA.CODE.getName(), code));
+        Captcha captcha = super.getOne(QueryWrapper.create()
+                .where(CAPTCHA.TARGET.eq(target))
+                .where(CAPTCHA.CODE.eq(code)));
 
         if (captcha == null) {
             return false;
@@ -95,10 +99,10 @@ public class CaptchaService extends BaseCaptchaServiceImpl {
 
         // clear captcha limit
         // captchaLimitMapper.deleteByQuery(
-        //         QueryWrapper.create().eq(captchaLimit.TARGET.getName(), target));
+        //         QueryWrapper.create().where(captchaLimit.TARGET.eq( target)));
 
         // clear captcha
-        super.remove(QueryWrapper.create().eq(CAPTCHA.TARGET.getName(), target));
+        super.remove(QueryWrapper.create().where(CAPTCHA.TARGET.eq(target)));
 
         return true;
     }

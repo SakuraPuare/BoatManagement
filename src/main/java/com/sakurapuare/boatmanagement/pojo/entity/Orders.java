@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * 订单表_ndto_nvo 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-16
+ * @since 2025-02-17
  */
 @Data
 @Builder

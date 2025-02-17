@@ -27,7 +27,7 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
         GoodsOrders goodsOrder = new GoodsOrders();
         BeanUtils.copyProperties(goodsOrderDTO, goodsOrder);
         QueryWrapper queryWrapper = QueryWrapper.create(goodsOrder);
-        queryWrapper.eq(GOODS_ORDERS.MERCHANT_ID.getName(), UserContext.getAccount().getId());
+        queryWrapper.where(GOODS_ORDERS.MERCHANT_ID.eq(UserContext.getAccount().getId()));
         return queryWrapper;
     }
 
@@ -84,7 +84,7 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
         GoodsOrders query = new GoodsOrders();
         BeanUtils.copyProperties(goodsOrderDTO, query);
         QueryWrapper queryWrapper = QueryWrapper.create(query);
-        queryWrapper.eq(GOODS_ORDERS.USER_ID.getName(), UserContext.getAccount().getId());
+        queryWrapper.where(GOODS_ORDERS.USER_ID.eq(UserContext.getAccount().getId()));
         return queryWrapper;
     }
 

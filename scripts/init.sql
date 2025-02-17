@@ -164,7 +164,8 @@ INSERT INTO `boat_types` (
         `gross_number`,
         `max_load`,
         `max_speed`,
-        `max_endurance`
+        `max_endurance`,
+        `price`
     )
 VALUES (
         '游艇',
@@ -174,7 +175,8 @@ VALUES (
         100,
         1000,
         100,
-        1000
+        1000,
+        10
     );
 -- 创建船只
 INSERT INTO `boats` (

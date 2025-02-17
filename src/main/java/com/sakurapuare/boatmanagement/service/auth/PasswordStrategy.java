@@ -29,7 +29,7 @@ public class PasswordStrategy implements AuthStrategy {
             account = accountsService.getOne(
                     QueryWrapper.create()
                             .eq(field, username)
-                            .eq(ACCOUNTS.PASSWORD.getName(), password));
+                            .where(ACCOUNTS.PASSWORD.eq(password)));
 
             if (account == null) {
                 throw new IllegalArgumentException("账号或密码错误");

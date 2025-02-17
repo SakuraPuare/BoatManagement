@@ -10,10 +10,8 @@ import lombok.Data;
 @ApiModel("船舶订单表")
 public class BaseBoatOrdersDTO {
 
+
     @ApiModelProperty("指定船只")
     private Long boatId;
-
-    @ApiModelProperty("请求ID")
-    private Long requestId;
 }
 

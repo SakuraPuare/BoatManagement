@@ -4,6 +4,7 @@ import com.mybatisflex.core.paginate.Page;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Boats;
+import com.sakurapuare.boatmanagement.pojo.vo.BoatVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatsVO;
 import com.sakurapuare.boatmanagement.service.BoatsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,14 +25,14 @@ public class AdminBoatController {
 
     @PostMapping("/list")
     @Operation(summary = "获取船舶列表")
-    public Response<List<BaseBoatsVO>> list(@RequestBody BaseBoatsDTO queryDTO) {
+    public Response<List<BoatVO>> list(@RequestBody BaseBoatsDTO queryDTO) {
         return Response.success("获取船舶列表成功", boatService.getListQuery(queryDTO));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取船舶列表分页")
-    public Response<Page<BaseBoatsVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
-                                                @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseBoatsDTO queryDTO) {
+    public Response<Page<BoatVO>> listPage(@RequestParam(defaultValue = "1") Integer page,
+                                           @RequestParam(defaultValue = "10") Integer size, @RequestBody BaseBoatsDTO queryDTO) {
         return Response.success("获取船舶列表分页成功", boatService.getPageQuery(page, size, queryDTO));
     }
 

@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.RolePermission;
  * 角色权限关联表_ndto_nvo 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-16
+ * @since 2025-02-17
  */
 public interface BaseRolePermissionService extends IService<RolePermission> {
 

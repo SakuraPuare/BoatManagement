@@ -20,15 +20,18 @@ public class UserDockController {
 
     private final DocksService docksService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取用户码头列表", description = "获取用户码头列表")
     public Response<List<BaseDocksVO>> getUserDockListQuery(@RequestBody BaseDocksDTO queryDTO) {
         return Response.success(docksService.getUserDockListQuery(queryDTO));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "获取用户码头分页列表", description = "获取用户码头分页列表")
-    public Response<Page<BaseDocksVO>> getUserDockPageQuery(@RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseDocksDTO queryDTO) {
+    public Response<Page<BaseDocksVO>> getUserDockPageQuery(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestBody BaseDocksDTO queryDTO) {
         return Response.success(docksService.getUserDockPageQuery(pageNum, pageSize, queryDTO));
     }
 }

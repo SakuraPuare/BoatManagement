@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Docks;
  * 码头表 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-16
+ * @since 2025-02-17
  */
 public interface BaseDocksService extends IService<Docks> {
 

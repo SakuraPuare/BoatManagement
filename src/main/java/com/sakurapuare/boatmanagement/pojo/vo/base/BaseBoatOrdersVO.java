@@ -14,10 +14,10 @@ import lombok.EqualsAndHashCode;
 public class BaseBoatOrdersVO extends BaseEntityVO {
     private Long id;
 
+    @ApiModelProperty("请求ID_serverside")
+    private Long requestId;
+
     @ApiModelProperty("指定船只")
     private Long boatId;
-
-    @ApiModelProperty("请求ID")
-    private Long requestId;
 }
 

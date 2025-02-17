@@ -20,17 +20,23 @@ public class VendorDockController {
 
     private final DocksService docksService;
 
-    @GetMapping("/list")
-    @Operation(summary = "获取供应商码头列表", description = "获取供应商码头列表")
-    public Response<List<BaseDocksVO>> getVendorDockListQuery(@RequestBody BaseDocksDTO queryDTO) {
-        return Response.success(docksService.getVendorDockListQuery(queryDTO));
+    @GetMapping("/{id}")
+    @Operation(summary = "获取供应商码头")
+    public Response<BaseDocksVO> getVendorDock(@PathVariable Long id) {
+        return Response.success("获取供应商码头成功", docksService.getVendorDock(id));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/list")
+    @Operation(summary = "获取供应商码头列表", description = "获取供应商码头列表")
+    public Response<List<BaseDocksVO>> getVendorDockListQuery(@RequestBody BaseDocksDTO queryDTO) {
+        return Response.success("获取供应商码头列表成功", docksService.getVendorDockListQuery(queryDTO));
+    }
+
+    @PostMapping("/page")
     @Operation(summary = "获取供应商码头分页列表", description = "获取供应商码头分页列表")
     public Response<Page<BaseDocksVO>> getVendorDockPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
                                                               @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseDocksDTO queryDTO) {
-        return Response.success(docksService.getVendorDockPageQuery(pageNum, pageSize, queryDTO));
+        return Response.success("获取供应商码头分页列表成功", docksService.getVendorDockPageQuery(pageNum, pageSize, queryDTO));
     }
 
 }

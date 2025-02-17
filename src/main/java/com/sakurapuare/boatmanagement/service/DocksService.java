@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.DOCKS;
-
 import java.util.List;
+
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.DOCKS;
 
 @Service
 @RequiredArgsConstructor
@@ -59,12 +59,19 @@ public class DocksService extends BaseDocksServiceImpl {
     private QueryWrapper getEnabledQueryWrapper(BaseDocksDTO queryDTO) {
         Docks docks = new Docks();
         BeanUtils.copyProperties(queryDTO, docks);
-        return QueryWrapper.create(docks).eq(DOCKS.IS_ENABLED.getName(), true);
+        return QueryWrapper.create(docks).where(DOCKS.IS_ENABLED.eq(true));
     }
 
     /*
      * 供应商函数
      */
+
+    public BaseDocksVO getVendorDock(Long id) {
+        Docks docks = super.getById(id);
+        BaseDocksVO baseDocksVO = new BaseDocksVO();
+        BeanUtils.copyProperties(docks, baseDocksVO);
+        return baseDocksVO;
+    }
 
     public List<BaseDocksVO> getVendorDockListQuery(BaseDocksDTO queryDTO) {
         QueryWrapper queryWrapper = getEnabledQueryWrapper(queryDTO);
