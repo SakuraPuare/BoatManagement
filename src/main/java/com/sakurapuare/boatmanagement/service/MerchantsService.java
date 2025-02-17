@@ -2,8 +2,12 @@ package com.sakurapuare.boatmanagement.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsDTO;
+import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseMerchantsDTO;
+import com.sakurapuare.boatmanagement.pojo.entity.Goods;
 import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseMerchantsVO;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseMerchantsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -65,5 +69,40 @@ public class MerchantsService extends BaseMerchantsServiceImpl {
     public void deleteMerchant(Long id) {
         verifyId(id);
         super.removeById(id);
+    }
+
+    /*
+     * 用户函数
+     */
+
+    private QueryWrapper getUserQueryWrapper(BaseMerchantsDTO queryDTO) {
+        Merchants merchants = new Merchants();
+        BeanUtils.copyProperties(queryDTO, merchants);
+        return QueryWrapper.create(merchants);
+    }
+     
+    public List<BaseMerchantsVO> getUserMerchantListQuery(BaseMerchantsDTO queryDTO) {
+        QueryWrapper queryWrapper = getUserQueryWrapper(queryDTO);
+        return super.listAs(queryWrapper, BaseMerchantsVO.class);
+    }
+
+    public Page<BaseMerchantsVO> getUserMerchantPageQuery(Integer pageNum, Integer pageSize, BaseMerchantsDTO queryDTO) {
+        QueryWrapper queryWrapper = getUserQueryWrapper(queryDTO);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseMerchantsVO.class);
+    }
+
+    private void verifyMerchantId(Long id) {
+        Merchants merchants = super.getById(id);
+        if (merchants == null) {
+            throw new IllegalArgumentException("商户不存在");
+        }
+    }
+
+    public BaseMerchantsVO getUserMerchantById(Long id) {
+        verifyMerchantId(id);
+        Merchants merchants = super.getById(id);
+        BaseMerchantsVO baseMerchantsVO = new BaseMerchantsVO();
+        BeanUtils.copyProperties(merchants, baseMerchantsVO);
+        return baseMerchantsVO;
     }
 }

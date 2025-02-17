@@ -1,8 +1,11 @@
 package com.sakurapuare.boatmanagement;
 
 import com.mybatisflex.codegen.Generator;
+import com.mybatisflex.codegen.config.ColumnConfig;
 import com.mybatisflex.codegen.config.GlobalConfig;
 import com.mybatisflex.codegen.dialect.JdbcTypeMapping;
+import com.mybatisflex.core.handler.CommaSplitTypeHandler;
+import com.sakurapuare.boatmanagement.handler.GoodsInfoTypeHandler;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import com.sakurapuare.boatmanagement.pojo.entity.BaseOrder;
 import com.zaxxer.hikari.HikariDataSource;
@@ -87,6 +90,15 @@ public class SQLGen {
 
         globalConfig.getMapperXmlConfig()
                 .setOverwriteEnable(true);
+
+        ColumnConfig columnConfig = new ColumnConfig();
+
+        // id:num, id:num, id:num, ...
+        columnConfig.setPropertyType("java.util.Map<Integer, Double>");
+        columnConfig.setTypeHandler(GoodsInfoTypeHandler.class);
+        columnConfig.setColumnName("order_info");
+
+        globalConfig.setColumnConfig("goods_orders", columnConfig);
 
         return globalConfig;
     }

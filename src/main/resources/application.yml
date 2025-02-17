@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-circular-references: true # 允许依赖循环
   datasource:
     url: jdbc:mariadb://localhost:3306/boatmanagement
     username: root

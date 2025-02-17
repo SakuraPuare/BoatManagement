@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.vo.BoatVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatsVO;
 import com.sakurapuare.boatmanagement.service.BoatsService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

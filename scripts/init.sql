@@ -102,7 +102,7 @@ VALUES (
         'merchant',
         '12345678903',
         'merchant@example.com',
-        1 << 1
+        0b11
     );
 INSERT INTO `merchants` (
         `user_id`,
@@ -143,7 +143,7 @@ VALUES (
         'vendor',
         '12345678904',
         'vendor@example.com',
-        1 << 2
+        0b101
     );
 INSERT INTO `vendors` (
         `user_id`,
@@ -165,7 +165,9 @@ INSERT INTO `boat_types` (
         `max_load`,
         `max_speed`,
         `max_endurance`,
-        `price`
+        `price`,
+        `vendor_id`,
+        `unit_id`
     )
 VALUES (
         '游艇',
@@ -176,7 +178,9 @@ VALUES (
         1000,
         100,
         1000,
-        10
+        100,
+        '1',
+        '1'
     );
 -- 创建船只
 INSERT INTO `boats` (

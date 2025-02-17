@@ -140,7 +140,7 @@ public class BoatsService extends BaseBoatsServiceImpl {
 
         // 必须属于当前供应商
         if (!super.getById(id).getVendorId().equals(getVendor().getId())) {
-            throw new IllegalArgumentException("船舶不存在");
+            throw new IllegalArgumentException("无权限操作");
         }
     }
 

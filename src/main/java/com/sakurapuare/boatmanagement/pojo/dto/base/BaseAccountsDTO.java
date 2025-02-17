@@ -3,9 +3,6 @@ package com.sakurapuare.boatmanagement.pojo.dto.base;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-
-
 @Data
 @ApiModel("基础账号表")
 public class BaseAccountsDTO {

@@ -146,7 +146,7 @@ public class BoatTypesService extends BaseBoatTypesServiceImpl {
 
         // 必须属于当前供应商
         if (!super.getById(id).getVendorId().equals(getVendor().getId())) {
-            throw new IllegalArgumentException("船舶类型不属于当前供应商");
+            throw new IllegalArgumentException("无权限操作");
         }
     }
 

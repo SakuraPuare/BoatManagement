@@ -5,19 +5,17 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-
-
+import java.util.Map;
 @Data
 @ApiModel("商品订单表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseGoodsOrdersVO extends BaseEntityVO {
     private Long id;
 
-    @ApiModelProperty("商家ID")
+    @ApiModelProperty("商家ID_serverside")
     private Long merchantId;
 
     @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
-    private String orderInfo;
+    private Map<Integer, Double> orderInfo;
 }
 

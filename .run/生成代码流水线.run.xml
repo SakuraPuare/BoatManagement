@@ -18,6 +18,7 @@
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="SQLGen" run_configuration_type="Application" />
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="生成代码" run_configuration_type="ShConfigurationType" />
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="修补代码" run_configuration_type="ShConfigurationType" />
+      <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="compile" />
     </method>
   </configuration>
 </component>

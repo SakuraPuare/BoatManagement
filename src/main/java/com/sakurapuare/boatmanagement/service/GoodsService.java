@@ -4,8 +4,11 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsDTO;
+import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Goods;
+import com.sakurapuare.boatmanagement.pojo.entity.GoodsOrders;
 import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
+import com.sakurapuare.boatmanagement.pojo.entity.Orders;
 import com.sakurapuare.boatmanagement.pojo.entity.Units;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsVO;
 import com.sakurapuare.boatmanagement.service.base.impl.BaseGoodsServiceImpl;
@@ -13,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.GOODS;
 import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.MERCHANTS;
@@ -27,7 +32,7 @@ public class GoodsService extends BaseGoodsServiceImpl {
     private final UnitsService unitsService;
 
     /*
-     * 管理员函数
+     * 商户函数
      */
 
     private Merchants getMerchant() {
@@ -119,4 +124,49 @@ public class GoodsService extends BaseGoodsServiceImpl {
         super.removeById(id);
     }
 
+    /*
+     * 用户函数
+     */
+
+    private QueryWrapper getUserGoodsQueryWrapper(BaseGoodsDTO queryDTO) {
+        Goods goods = new Goods();
+        BeanUtils.copyProperties(queryDTO, goods);
+        QueryWrapper queryWrapper = QueryWrapper.create(goods);
+        return queryWrapper;
+    }
+
+    public List<BaseGoodsVO> getUserMerchantGoodsList(Long merchantId, BaseGoodsDTO queryDTO) {
+        QueryWrapper queryWrapper = getUserGoodsQueryWrapper(queryDTO);
+        queryWrapper.where(GOODS.MERCHANT_ID.eq(merchantId));
+        return super.listAs(queryWrapper, BaseGoodsVO.class);
+    }
+
+    public Page<BaseGoodsVO> getUserMerchantGoodsPage(Long merchantId, Integer pageNum, Integer pageSize, BaseGoodsDTO queryDTO) {
+        QueryWrapper queryWrapper = getUserGoodsQueryWrapper(queryDTO);
+        queryWrapper.where(GOODS.MERCHANT_ID.eq(merchantId));
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsVO.class);
+    }
+
+    private Map<Integer, Integer> parseOrderInfo(String orderInfo) {
+        Map<Integer, Integer> orderInfoMap = new HashMap<>();
+        String[] orderInfoArray = orderInfo.split(",");
+        for (String orderInfoItem : orderInfoArray) {
+            String[] orderInfoItemArray = orderInfoItem.split(":");
+            orderInfoMap.put(Integer.parseInt(orderInfoItemArray[0]), Integer.parseInt(orderInfoItemArray[1]));
+        }
+        return orderInfoMap;
+    }
+
+    public String createUserMerchantGoodsOrder(Long merchantId, BaseGoodsOrdersDTO orderDTO) {
+        Map<Integer, Integer> orderInfoMap = parseOrderInfo(orderDTO.getOrderInfo());
+        
+        
+        Orders order = new Orders();
+        
+        
+//        order.setMerchantId(merchantId);
+        GoodsOrders goodsOrders = new GoodsOrders();
+        BeanUtils.copyProperties(orderDTO, goodsOrders);
+        return "";
+    }
 }

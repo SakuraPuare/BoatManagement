@@ -5,9 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-
-
 @Data
 @ApiModel("码头表")
 @EqualsAndHashCode(callSuper = true)

@@ -248,7 +248,7 @@ CREATE TABLE `goods_orders` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户_serverside',
   `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID_serverside',
-  `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '商家ID',
+  `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '商家ID_serverside',
   `order_info` TEXT COMMENT '订单信息：id:数量,id:数量,id:数量',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

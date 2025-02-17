@@ -3,9 +3,7 @@ package com.sakurapuare.boatmanagement.pojo.dto.base;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 import java.math.BigDecimal;
-
 @Data
 @ApiModel("船只类型表")
 public class BaseBoatTypesDTO {
