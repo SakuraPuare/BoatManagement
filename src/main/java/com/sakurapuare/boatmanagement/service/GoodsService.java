@@ -147,23 +147,11 @@ public class GoodsService extends BaseGoodsServiceImpl {
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsVO.class);
     }
 
-    private Map<Integer, Integer> parseOrderInfo(String orderInfo) {
-        Map<Integer, Integer> orderInfoMap = new HashMap<>();
-        String[] orderInfoArray = orderInfo.split(",");
-        for (String orderInfoItem : orderInfoArray) {
-            String[] orderInfoItemArray = orderInfoItem.split(":");
-            orderInfoMap.put(Integer.parseInt(orderInfoItemArray[0]), Integer.parseInt(orderInfoItemArray[1]));
-        }
-        return orderInfoMap;
-    }
 
     public String createUserMerchantGoodsOrder(Long merchantId, BaseGoodsOrdersDTO orderDTO) {
-        Map<Integer, Integer> orderInfoMap = parseOrderInfo(orderDTO.getOrderInfo());
-        
-        
+        Map<Integer, Double> orderInfoMap = orderDTO.getOrderInfo();
         Orders order = new Orders();
-        
-        
+
 //        order.setMerchantId(merchantId);
         GoodsOrders goodsOrders = new GoodsOrders();
         BeanUtils.copyProperties(orderDTO, goodsOrders);
