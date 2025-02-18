@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.Boats;
  * 船只表 服务层。
  *
  * @author sakurapuare
- * @since 2025-02-18
+ * @since 2025-02-19
  */
 public interface BaseBoatsService extends IService<Boats> {
 

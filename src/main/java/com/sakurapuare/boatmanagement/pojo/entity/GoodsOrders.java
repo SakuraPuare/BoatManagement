@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
  * 商品订单表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-18
+ * @since 2025-02-19
  */
 @Data
 @Builder
@@ -52,6 +52,6 @@ public class GoodsOrders extends BaseOrder implements Serializable {
      */
     @Column(typeHandler = GoodsInfoTypeHandler.class)
     @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
-    private Map<Integer, Double> orderInfo;
+    private Map<Long, Double> orderInfo;
 
 }

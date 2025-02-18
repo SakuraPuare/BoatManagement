@@ -16,6 +16,6 @@ public class BaseGoodsOrdersVO extends BaseOrderVO {
     private Long merchantId;
 
     @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
-    private Map<Integer, Double> orderInfo;
+    private Map<Long, Double> orderInfo;
 }
 

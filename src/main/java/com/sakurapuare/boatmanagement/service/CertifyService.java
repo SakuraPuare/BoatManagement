@@ -1,6 +1,5 @@
 package com.sakurapuare.boatmanagement.service;
 
-import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.service.IService;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
@@ -8,7 +7,6 @@ import com.sakurapuare.boatmanagement.constant.AuditOperation;
 import com.sakurapuare.boatmanagement.constant.CertifyStatus;
 import com.sakurapuare.boatmanagement.constant.UnitsTypes;
 import com.sakurapuare.boatmanagement.constant.UserRole;
-import com.sakurapuare.boatmanagement.pojo.dto.CertifyQueryDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.*;
@@ -18,10 +16,6 @@ import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUserCertifyVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.*;
 

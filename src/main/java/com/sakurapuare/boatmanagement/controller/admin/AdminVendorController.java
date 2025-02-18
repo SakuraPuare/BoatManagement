@@ -31,7 +31,7 @@ public class AdminVendorController {
     @PostMapping("/page")
     @Operation(summary = "获取供应商列表分页")
     public Response<Page<BaseVendorsVO>> getAdminVendorPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                  @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseVendorsDTO queryDTO) {
+                                                                 @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseVendorsDTO queryDTO) {
         return Response.success("获取供应商列表分页成功", vendorService.getAdminVendorPageQuery(pageNum, pageSize, queryDTO));
     }
 

@@ -10,15 +10,15 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GoodsInfoTypeHandler extends BaseTypeHandler<Map<Integer, Double>> {
+public class GoodsInfoTypeHandler extends BaseTypeHandler<Map<Long, Double>> {
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, Map<Integer, Double> parameter, JdbcType jdbcType)
+    public void setNonNullParameter(PreparedStatement ps, int i, Map<Long, Double> parameter, JdbcType jdbcType)
             throws SQLException {
         // 将Map转换为字符串格式 "id:num,id:num"
         StringBuilder sb = new StringBuilder();
         parameter.forEach((id, num) -> {
-            if (sb.length() > 0) {
+            if (!sb.isEmpty()) {
                 sb.append(",");
             }
             sb.append(id).append(":").append(num);
@@ -27,29 +27,29 @@ public class GoodsInfoTypeHandler extends BaseTypeHandler<Map<Integer, Double>> 
     }
 
     @Override
-    public Map<Integer, Double> getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public Map<Long, Double> getNullableResult(ResultSet rs, String columnName) throws SQLException {
         return parseGoodsInfo(rs.getString(columnName));
     }
 
     @Override
-    public Map<Integer, Double> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public Map<Long, Double> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         return parseGoodsInfo(rs.getString(columnIndex));
     }
 
     @Override
-    public Map<Integer, Double> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public Map<Long, Double> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         return parseGoodsInfo(cs.getString(columnIndex));
     }
 
-    private Map<Integer, Double> parseGoodsInfo(String value) {
-        Map<Integer, Double> result = new HashMap<>();
+    private Map<Long, Double> parseGoodsInfo(String value) {
+        Map<Long, Double> result = new HashMap<>();
         if (value != null && !value.isEmpty()) {
             String[] items = value.split(",");
             for (String item : items) {
                 String[] parts = item.split(":");
                 if (parts.length == 2) {
                     try {
-                        Integer id = Integer.parseInt(parts[0].trim());
+                        Long id = Long.parseLong(parts[0].trim());
                         Double num = Double.parseDouble(parts[1].trim());
                         result.put(id, num);
                     } catch (NumberFormatException e) {

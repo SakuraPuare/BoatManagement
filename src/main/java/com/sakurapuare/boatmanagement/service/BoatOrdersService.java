@@ -145,4 +145,66 @@ public class BoatOrdersService extends BaseBoatOrdersServiceImpl {
         orders.setStatus(OrderStatus.CANCELLED);
         ordersService.updateById(orders);
     }
+
+    /*
+     * 用户函数
+     */
+
+    private QueryWrapper getUserBoatOrdersQueryWrapper(BaseBoatOrdersDTO boatOrdersDTO) {
+        BoatOrders boatOrders = new BoatOrders();
+        BeanUtils.copyProperties(boatOrdersDTO, boatOrders);
+        QueryWrapper queryWrapper = QueryWrapper.create(boatOrders);
+        queryWrapper.where(BOAT_ORDERS.USER_ID.eq(UserContext.getAccount().getId()));
+        queryWrapper.orderBy(BOAT_ORDERS.CREATED_AT, false);
+        return queryWrapper;
+    }
+
+    public List<BaseBoatOrdersVO> getUserBoatOrdersListQuery(BaseBoatOrdersDTO boatOrdersDTO) {
+        QueryWrapper queryWrapper = getUserBoatOrdersQueryWrapper(boatOrdersDTO);
+        return super.listAs(queryWrapper, BaseBoatOrdersVO.class);
+    }
+
+
+    public Page<BaseBoatOrdersVO> getUserBoatOrdersPageQuery(Integer pageNum, Integer pageSize,
+                                                             BaseBoatOrdersDTO boatOrdersDTO) {
+        QueryWrapper queryWrapper = getUserBoatOrdersQueryWrapper(boatOrdersDTO);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatOrdersVO.class);
+    }
+
+    private void verifyUserId(Long id) {
+        BoatOrders boatOrders = super.getById(id);
+        if (boatOrders == null) {
+            throw new RuntimeException("订单不存在");
+        }
+
+        if (!boatOrders.getUserId().equals(UserContext.getAccount().getId())) {
+            throw new RuntimeException("订单不存在");
+        }
+    }
+
+    public void cancelUserBoatOrders(Long id) {
+        verifyUserId(id);
+
+        BoatOrders boatOrders = super.getById(id);
+
+        if (!boatOrders.getStatus().equals(OrderStatus.PENDING)) {
+            throw new RuntimeException("订单状态不正确");
+        }
+
+        boatOrders.setStatus(OrderStatus.CANCELLED);
+        super.updateById(boatOrders);
+    }
+
+    public void payUserBoatOrders(Long id) {
+        verifyUserId(id);
+
+        BoatOrders boatOrders = super.getById(id);
+
+        if (!boatOrders.getStatus().equals(OrderStatus.UNPAID)) {
+            throw new RuntimeException("订单状态不正确");
+        }
+
+        boatOrders.setStatus(OrderStatus.PAID);
+        super.updateById(boatOrders);
+    }
 }

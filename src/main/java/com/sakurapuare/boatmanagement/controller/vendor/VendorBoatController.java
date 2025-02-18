@@ -29,7 +29,7 @@ public class VendorBoatController {
     @PostMapping("/page")
     @Operation(summary = "获取供应商船舶列表分页")
     public Response<Page<BaseBoatsVO>> getVendorBoatsPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                          @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseBoatsDTO boatsQueryDTO) {
+                                                               @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseBoatsDTO boatsQueryDTO) {
         return Response.success("获取供应商船舶列表分页成功", boatsService.getVendorBoatsPageQuery(pageNum, pageSize, boatsQueryDTO));
     }
 

@@ -9,7 +9,6 @@ import com.sakurapuare.boatmanagement.pojo.vo.base.BaseAccountsVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUserCertifyVO;
 import com.sakurapuare.boatmanagement.service.AccountsService;
 import com.sakurapuare.boatmanagement.service.UserCertifyService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +36,7 @@ public class AdminUserController {
     @PostMapping("/page")
     @Operation(summary = "获取用户列表分页")
     public Response<Page<BaseAccountsVO>> getAdminUserPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                   @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseAccountsDTO queryDTO) {
+                                                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseAccountsDTO queryDTO) {
         return Response.success("获取用户列表分页成功", accountsService.getAdminUserPageQuery(pageNum, pageSize, queryDTO));
     }
 
@@ -84,7 +83,7 @@ public class AdminUserController {
     @PostMapping("/certify/user/page")
     @Operation(summary = "获取用户认证列表分页")
     public Response<Page<BaseUserCertifyVO>> getAdminUserCertifyPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                   @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseUserCertifyDTO queryDTO) {
+                                                                          @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseUserCertifyDTO queryDTO) {
         return Response.success("获取用户认证列表分页成功", userCertifyService.getAdminUserCertifyPageQuery(pageNum, pageSize, queryDTO));
     }
 

@@ -29,7 +29,7 @@ public class UserMerchantController {
     @PostMapping("/list")
     @Operation(summary = "获取所有商家列表")
     public Response<List<BaseMerchantsVO>> getUserMerchantListQuery(@RequestBody BaseMerchantsDTO queryDTO) {
-        return Response.success(merchantService.getUserMerchantListQuery(queryDTO));
+        return Response.success("获取商家列表成功", merchantService.getUserMerchantListQuery(queryDTO));
     }
 
     @PostMapping("/page")
@@ -37,20 +37,20 @@ public class UserMerchantController {
     public Response<Page<BaseMerchantsVO>> getUserMerchantPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
                                                                     @RequestParam(defaultValue = "10") Integer pageSize,
                                                                     @RequestBody BaseMerchantsDTO queryDTO) {
-        return Response.success(merchantService.getUserMerchantPageQuery(pageNum, pageSize, queryDTO));
+        return Response.success("获取商家列表分页成功", merchantService.getUserMerchantPageQuery(pageNum, pageSize, queryDTO));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取商家详情")
     public Response<BaseMerchantsVO> getUserMerchant(@PathVariable Long id) {
-        return Response.success(merchantService.getUserMerchantById(id));
+        return Response.success("获取商家详情成功", merchantService.getUserMerchantById(id));
     }
 
     @PostMapping("/{merchantId}/goods")
     @Operation(summary = "获取商家商品列表")
     public Response<List<BaseGoodsVO>> getUserMerchantGoodsList(@PathVariable Long merchantId,
                                                                 @RequestBody BaseGoodsDTO queryDTO) {
-        return Response.success(goodsService.getUserMerchantGoodsList(merchantId, queryDTO));
+        return Response.success("获取商家商品列表成功", goodsService.getUserMerchantGoodsList(merchantId, queryDTO));
     }
 
     @PostMapping("/{merchantId}/goods/page")
@@ -59,14 +59,15 @@ public class UserMerchantController {
                                                                 @RequestParam(defaultValue = "1") Integer pageNum,
                                                                 @RequestParam(defaultValue = "10") Integer pageSize,
                                                                 @RequestBody BaseGoodsDTO queryDTO) {
-        return Response.success(goodsService.getUserMerchantGoodsPage(merchantId, pageNum, pageSize, queryDTO));
+        return Response.success("获取商家商品列表分页成功",
+                goodsService.getUserMerchantGoodsPage(merchantId, pageNum, pageSize, queryDTO));
     }
 
     @PostMapping("/{merchantId}/goods/order")
     @Operation(summary = "创建商家商品订单")
     public Response<String> createUserMerchantGoodsOrder(@PathVariable Long merchantId,
                                                          @RequestBody BaseGoodsOrdersDTO orderDTO) {
-        return Response.success(goodsService.createUserMerchantGoodsOrder(merchantId, orderDTO));
+        goodsService.createUserMerchantGoodsOrder(merchantId, orderDTO);
+        return Response.success("创建商家商品订单成功");
     }
-
 }

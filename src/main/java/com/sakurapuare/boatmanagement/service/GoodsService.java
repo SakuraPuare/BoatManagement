@@ -3,6 +3,7 @@ package com.sakurapuare.boatmanagement.service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
+import com.sakurapuare.boatmanagement.constant.OrderStatus;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.*;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +28,10 @@ public class GoodsService extends BaseGoodsServiceImpl {
     private final MerchantsService merchantsService;
 
     private final UnitsService unitsService;
+
+    private final OrdersService ordersService;
+
+    private final GoodsOrdersService goodsOrdersService;
 
     /*
      * 商户函数
@@ -136,20 +143,38 @@ public class GoodsService extends BaseGoodsServiceImpl {
         return super.listAs(queryWrapper, BaseGoodsVO.class);
     }
 
-    public Page<BaseGoodsVO> getUserMerchantGoodsPage(Long merchantId, Integer pageNum, Integer pageSize, BaseGoodsDTO queryDTO) {
+    public Page<BaseGoodsVO> getUserMerchantGoodsPage(Long merchantId, Integer pageNum, Integer pageSize,
+                                                      BaseGoodsDTO queryDTO) {
         QueryWrapper queryWrapper = getUserGoodsQueryWrapper(queryDTO);
         queryWrapper.where(GOODS.MERCHANT_ID.eq(merchantId));
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsVO.class);
     }
 
+    public void createUserMerchantGoodsOrder(Long merchantId, BaseGoodsOrdersDTO orderDTO) {
+        Map<Long, Double> orderInfoMap = orderDTO.getOrderInfo();
+        List<Goods> goodsList = new ArrayList<>();
+        BigDecimal price = BigDecimal.ZERO;
+        for (Map.Entry<Long, Double> entry : orderInfoMap.entrySet()) {
+            Goods goods = getMerchantsGoods(entry.getKey());
+            goodsList.add(goods);
+            price = price.add(goods.getPrice().multiply(BigDecimal.valueOf(entry.getValue())));
+        }
 
-    public String createUserMerchantGoodsOrder(Long merchantId, BaseGoodsOrdersDTO orderDTO) {
-        Map<Integer, Double> orderInfoMap = orderDTO.getOrderInfo();
         Orders order = new Orders();
+        order.setUserId(UserContext.getAccount().getId());
+        order.setStatus(OrderStatus.UNPAID);
+        order.setPrice(price);
+        order.setDiscount(BigDecimal.ZERO);
+        ordersService.save(order);
 
-//        order.setMerchantId(merchantId);
         GoodsOrders goodsOrders = new GoodsOrders();
-        BeanUtils.copyProperties(orderDTO, goodsOrders);
-        return "";
+        goodsOrders.setOrderId(order.getId());
+        goodsOrders.setUserId(UserContext.getAccount().getId());
+        goodsOrders.setStatus(OrderStatus.UNPAID);
+        goodsOrders.setPrice(price);
+        goodsOrders.setDiscount(BigDecimal.ZERO);
+        goodsOrders.setMerchantId(merchantId);
+        goodsOrders.setOrderInfo(orderInfoMap);
+        goodsOrdersService.save(goodsOrders);
     }
 }

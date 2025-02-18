@@ -93,7 +93,7 @@ public class SQLGen {
         ColumnConfig goods_orders_config = new ColumnConfig();
 
         // id:num, id:num, id:num, ...
-        goods_orders_config.setPropertyType("java.util.Map<Integer, Double>");
+        goods_orders_config.setPropertyType("java.util.Map<Long, Double>");
         goods_orders_config.setTypeHandler(GoodsInfoTypeHandler.class);
         goods_orders_config.setColumnName("order_info");
         globalConfig.setColumnConfig("goods_orders", goods_orders_config);

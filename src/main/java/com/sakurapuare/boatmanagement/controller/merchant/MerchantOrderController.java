@@ -31,8 +31,8 @@ public class MerchantOrderController {
     @Operation(summary = "获取商家订单列表分页")
 
     public Response<Page<BaseGoodsOrdersVO>> getMerchantOrdersPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                                   @RequestParam(defaultValue = "10") Integer pageSize,
-                                                                   @RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
+                                                                        @RequestParam(defaultValue = "10") Integer pageSize,
+                                                                        @RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
         Page<BaseGoodsOrdersVO> merchantOrders = goodsOrdersService.getMerchantsGoodsOrdersPageQuery(pageNum, pageSize,
                 merchantOrderDTO);
         return Response.success(merchantOrders);

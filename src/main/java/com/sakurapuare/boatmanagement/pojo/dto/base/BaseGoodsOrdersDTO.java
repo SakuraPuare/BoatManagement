@@ -13,6 +13,6 @@ public class BaseGoodsOrdersDTO extends BaseOrderDTO {
 
 
     @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
-    private Map<Integer, Double> orderInfo;
+    private Map<Long, Double> orderInfo;
 }
 

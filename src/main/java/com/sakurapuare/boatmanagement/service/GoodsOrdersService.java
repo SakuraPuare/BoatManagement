@@ -3,6 +3,7 @@ package com.sakurapuare.boatmanagement.service;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
+import com.sakurapuare.boatmanagement.constant.OrderStatus;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.GoodsOrders;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsOrdersVO;
@@ -55,24 +56,31 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
     public void completeMerchantOrder(Long id) {
         verifyMerchantId(id);
         GoodsOrders goodsOrder = super.getById(id);
-        if (goodsOrder.getStatus().equals("COMPLETED")) {
-            throw new IllegalArgumentException("订单已完成");
+        // UNPAID / PAID -> COMPLETED
+        if (!goodsOrder.getStatus().equals(OrderStatus.UNPAID) && !goodsOrder.getStatus().equals(OrderStatus.PAID)) {
+            throw new IllegalArgumentException("订单状态不正确");
         }
 
         goodsOrder.setStatus("COMPLETED");
         super.updateById(goodsOrder);
-
     }
 
     public void cancelMerchantOrder(Long id) {
         verifyMerchantId(id);
 
         GoodsOrders goodsOrder = super.getById(id);
-        if (goodsOrder.getStatus().equals("CANCELLED")) {
-            throw new IllegalArgumentException("订单已取消");
+        // COMPLETED !-> CANCELLED, PAID -> REFUNDED -> CANCELLED
+        if (goodsOrder.getStatus().equals(OrderStatus.COMPLETED)) {
+            throw new IllegalArgumentException("订单状态不正确");
         }
 
-        goodsOrder.setStatus("CANCELLED");
+        if (goodsOrder.getStatus().equals(OrderStatus.PAID)) {
+            // TODO: 退款
+            goodsOrder.setStatus(OrderStatus.REFUNDING);
+        } else {
+            goodsOrder.setStatus(OrderStatus.CANCELLED);
+        }
+
         super.updateById(goodsOrder);
     }
 
@@ -88,21 +96,14 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
         return queryWrapper;
     }
 
-    public List<BaseGoodsOrdersDTO> getUserGoodsOrdersListQuery(BaseGoodsOrdersDTO goodsOrderDTO) {
+    public List<BaseGoodsOrdersVO> getUserGoodsOrdersListQuery(BaseGoodsOrdersDTO goodsOrderDTO) {
         QueryWrapper queryWrapper = getUserQueryWrapper(goodsOrderDTO);
-        return super.listAs(queryWrapper, BaseGoodsOrdersDTO.class);
+        return super.listAs(queryWrapper, BaseGoodsOrdersVO.class);
     }
 
-    public Page<BaseGoodsOrdersDTO> getUserGoodsOrdersPageQuery(Integer pageNum, Integer pageSize, BaseGoodsOrdersDTO goodsOrderDTO) {
+    public Page<BaseGoodsOrdersVO> getUserGoodsOrdersPageQuery(Integer pageNum, Integer pageSize, BaseGoodsOrdersDTO goodsOrderDTO) {
         QueryWrapper queryWrapper = getUserQueryWrapper(goodsOrderDTO);
-        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsOrdersDTO.class);
-    }
-
-    public void createUserGoodsOrder(BaseGoodsOrdersDTO goodsOrderDTO) {
-        GoodsOrders goodsOrder = new GoodsOrders();
-        BeanUtils.copyProperties(goodsOrderDTO, goodsOrder);
-        goodsOrder.setUserId(UserContext.getAccount().getId());
-        super.save(goodsOrder);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsOrdersVO.class);
     }
 
     private void verifyUserId(Long id) {
@@ -124,11 +125,18 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
         verifyUserId(id);
 
         GoodsOrders goodsOrder = super.getById(id);
-        if (goodsOrder.getStatus().equals("CANCELLED")) {
-            throw new IllegalArgumentException("订单已取消");
+        // COMPLETED !-> CANCELLED, PAID -> REFUNDED -> CANCELLED
+        if (goodsOrder.getStatus().equals(OrderStatus.COMPLETED)) {
+            throw new IllegalArgumentException("订单状态不正确");
         }
 
-        goodsOrder.setStatus("CANCELLED");
+        if (goodsOrder.getStatus().equals(OrderStatus.PAID)) {
+            // TODO: 退款
+            goodsOrder.setStatus(OrderStatus.REFUNDING);
+        } else {
+            goodsOrder.setStatus(OrderStatus.CANCELLED);
+        }
+
         super.updateById(goodsOrder);
     }
 
@@ -136,8 +144,8 @@ public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
         verifyUserId(id);
 
         GoodsOrders goodsOrder = super.getById(id);
-        if (goodsOrder.getStatus().equals("PAID")) {
-            throw new IllegalArgumentException("订单已支付");
+        if (!goodsOrder.getStatus().equals("UNPAID")) {
+            throw new IllegalArgumentException("订单状态不正确");
         }
 
         goodsOrder.setStatus("PAID");
