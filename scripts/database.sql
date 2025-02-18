@@ -29,7 +29,7 @@ CREATE TABLE `user_certify` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '用户实名认证表_ndto';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '用户实名认证表';
 -- 第三方登录表
 CREATE TABLE `social_auth` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -386,35 +386,6 @@ public class CertifyService {
         }
     }
 
-    public List<BaseUnitsVO> getAdminUnitListQuery(CertifyQueryDTO queryDTO) {
-        Units queryUnits = new Units();
-        BeanUtils.copyProperties(queryDTO, queryUnits);
-        List<Units> units = unitsService.list(QueryWrapper.create(queryUnits));
-        return units.stream().map(unit -> {
-            BaseUnitsVO vo = new BaseUnitsVO();
-            BeanUtils.copyProperties(unit, vo);
-            return vo;
-        }).collect(Collectors.toList());
-    }
-
-    public Page<BaseUnitsVO> getAdminUnitPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
-        Units queryUnits = new Units();
-        BeanUtils.copyProperties(queryDTO, queryUnits);
-        Page<Units> units = unitsService.page(Page.of(pageNum, pageSize), QueryWrapper.create(queryUnits));
-
-        List<BaseUnitsVO> unitsVOs = new ArrayList<>(units.getRecords().size());
-        for (Units unit : units.getRecords()) {
-            BaseUnitsVO vo = new BaseUnitsVO();
-            BeanUtils.copyProperties(unit, vo);
-            unitsVOs.add(vo);
-        }
-
-        Page<BaseUnitsVO> voPage = new Page<>();
-        BeanUtils.copyProperties(units, voPage);
-        voPage.setRecords(unitsVOs);
-        return voPage;
-    }
-
     private void approveUnit(Units unit) {
         // 1. 更新单位状态
         unit.setStatus(CertifyStatus.APPROVED);
@@ -485,6 +456,16 @@ public class CertifyService {
         accountsService.updateById(account);
     }
 
+    private void approveUser(UserCertify userCertify) {
+        userCertify.setStatus(CertifyStatus.APPROVED);
+        userCertifyService.updateById(userCertify);
+    }
+
+    private void rejectUser(UserCertify userCertify) {
+        userCertify.setStatus(CertifyStatus.REJECTED);
+        userCertifyService.updateById(userCertify);
+    }
+
     public void auditAdminUnit(String types, Long id) {
         if (AuditOperation.isAuditOperation(types)) {
             throw new IllegalArgumentException("不支持的审核操作");
@@ -506,44 +487,6 @@ public class CertifyService {
                 logsService.info(AuditOperation.AUDIT, "审核拒绝" + unit.getName());
                 break;
         }
-    }
-
-    public List<BaseUserCertifyVO> getAdminUserListQuery(CertifyQueryDTO queryDTO) {
-        UserCertify queryUserCertify = new UserCertify();
-        BeanUtils.copyProperties(queryDTO, queryUserCertify);
-        List<UserCertify> userCertifies = userCertifyService.list(QueryWrapper.create(queryUserCertify));
-        return userCertifies.stream().map(userCertify -> {
-            BaseUserCertifyVO vo = new BaseUserCertifyVO();
-            BeanUtils.copyProperties(userCertify, vo);
-            return vo;
-        }).collect(Collectors.toList());
-    }
-
-    public Page<BaseUserCertifyVO> getAdminUserPageQuery(Integer pageNum, Integer pageSize, CertifyQueryDTO queryDTO) {
-        UserCertify queryUserCertify = new UserCertify();
-        BeanUtils.copyProperties(queryDTO, queryUserCertify);
-        Page<UserCertify> userCertifies = userCertifyService.page(Page.of(pageNum, pageSize),
-                QueryWrapper.create(queryUserCertify));
-        List<BaseUserCertifyVO> userCertifiesVOs = new ArrayList<>(userCertifies.getRecords().size());
-        for (UserCertify userCertify : userCertifies.getRecords()) {
-            BaseUserCertifyVO vo = new BaseUserCertifyVO();
-            BeanUtils.copyProperties(userCertify, vo);
-            userCertifiesVOs.add(vo);
-        }
-        Page<BaseUserCertifyVO> voPage = new Page<>();
-        BeanUtils.copyProperties(userCertifies, voPage);
-        voPage.setRecords(userCertifiesVOs);
-        return voPage;
-    }
-
-    private void approveUser(UserCertify userCertify) {
-        userCertify.setStatus(CertifyStatus.APPROVED);
-        userCertifyService.updateById(userCertify);
-    }
-
-    private void rejectUser(UserCertify userCertify) {
-        userCertify.setStatus(CertifyStatus.REJECTED);
-        userCertifyService.updateById(userCertify);
     }
 
     public void auditAdminUser(String types, Long id) {
