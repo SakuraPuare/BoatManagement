@@ -310,7 +310,7 @@ CREATE TABLE `goods` (
   `description` TEXT COMMENT '商品描述',
   `price` DECIMAL(12, 2) NOT NULL COMMENT '商品价格',
   `unit` VARCHAR(50) NOT NULL COMMENT '商品单位',
-  `stock` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '库存_serverside',
+  `stock` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '库存',
   `sales` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '销量_serverside',
   `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '创建商家_serverside',
   `unit_id` BIGINT UNSIGNED NOT NULL COMMENT '创建单位_serverside',

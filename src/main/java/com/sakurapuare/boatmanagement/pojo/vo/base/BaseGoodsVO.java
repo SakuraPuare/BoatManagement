@@ -24,7 +24,7 @@ public class BaseGoodsVO extends BaseEntityVO {
     @ApiModelProperty("商品单位")
     private String unit;
 
-    @ApiModelProperty("库存_serverside")
+    @ApiModelProperty("库存")
     private Long stock;
 
     @ApiModelProperty("销量_serverside")

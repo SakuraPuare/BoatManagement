@@ -64,9 +64,9 @@ public class Goods extends BaseEntity implements Serializable {
     private String unit;
 
     /**
-     * 库存_serverside
+     * 库存
      */
-    @ApiModelProperty("库存_serverside")
+    @ApiModelProperty("库存")
     private Long stock;
 
     /**

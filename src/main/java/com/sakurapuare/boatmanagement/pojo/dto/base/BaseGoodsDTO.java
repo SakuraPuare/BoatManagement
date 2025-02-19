@@ -23,6 +23,8 @@ public class BaseGoodsDTO extends BaseEntityDTO {
     @ApiModelProperty("商品单位")
     private String unit;
 
+    @ApiModelProperty("库存")
+    private Long stock;
 
 
 
