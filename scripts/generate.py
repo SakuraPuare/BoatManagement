@@ -1,7 +1,6 @@
-from dataclasses import dataclass
 import pathlib
-import os
 import re
+from dataclasses import dataclass
 
 PROJECT_NAME = "boatmanagement"
 DOMAIN = "com.sakurapuare"
@@ -201,7 +200,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
