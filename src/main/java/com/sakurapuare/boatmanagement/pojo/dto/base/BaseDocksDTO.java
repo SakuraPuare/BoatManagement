@@ -1,15 +1,11 @@
 package com.sakurapuare.boatmanagement.pojo.dto.base;
 
-import com.sakurapuare.boatmanagement.pojo.dto.*;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.dto.BaseEntityDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
 @Data
-@ApiModel("码头表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseDocksDTO extends BaseEntityDTO {
 
@@ -30,5 +26,5 @@ public class BaseDocksDTO extends BaseEntityDTO {
 
     @ApiModelProperty("是否启用")
     private Boolean isEnabled;
-}
 
+}

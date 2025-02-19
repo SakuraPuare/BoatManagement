@@ -7,7 +7,6 @@ import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
 import java.io.Serializable;
 
 import java.io.Serial;
-import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,7 +20,7 @@ import lombok.EqualsAndHashCode;
  * 码头表 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-19
+ * @since 2025-02-20
  */
 @Data
 @Builder

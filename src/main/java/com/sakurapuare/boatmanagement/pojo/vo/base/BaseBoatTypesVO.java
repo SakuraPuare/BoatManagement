@@ -1,15 +1,15 @@
 package com.sakurapuare.boatmanagement.pojo.vo.base;
 
-import com.sakurapuare.boatmanagement.pojo.vo.*;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.vo.BaseEntityVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 @Data
-@ApiModel("船只类型表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseBoatTypesVO extends BaseEntityVO {
+
     private Long id;
 
     @ApiModelProperty("类型名称")
@@ -47,5 +47,5 @@ public class BaseBoatTypesVO extends BaseEntityVO {
 
     @ApiModelProperty("是否启用")
     private Boolean isEnabled;
-}
 
+}

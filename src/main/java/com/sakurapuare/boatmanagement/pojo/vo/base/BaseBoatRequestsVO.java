@@ -1,15 +1,15 @@
 package com.sakurapuare.boatmanagement.pojo.vo.base;
 
-import com.sakurapuare.boatmanagement.pojo.vo.*;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.vo.BaseEntityVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.time.LocalDateTime;
 @Data
-@ApiModel("船只请求表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseBoatRequestsVO extends BaseEntityVO {
+
     private Long id;
 
     @ApiModelProperty("下单用户_serverside")
@@ -35,5 +35,5 @@ public class BaseBoatRequestsVO extends BaseEntityVO {
 
     @ApiModelProperty("订单状态")
     private String status;
-}
 
+}

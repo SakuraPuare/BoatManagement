@@ -41,7 +41,7 @@ public class SQLGen {
 
         globalConfig.enableEntity();
 //        globalConfig.enableMapper();
-        globalConfig.enableService();
+//        globalConfig.enableService();
         globalConfig.enableServiceImpl();
 //        globalConfig.enableController();
 //        globalConfig.enableTableDef();
@@ -52,7 +52,7 @@ public class SQLGen {
         globalConfig.getPackageConfig()
                 .setControllerPackage("com.sakurapuare.boatmanagement.controller.superadmin")
                 .setServicePackage("com.sakurapuare.boatmanagement.service.base")
-                .setServiceImplPackage("com.sakurapuare.boatmanagement.service.base.impl")
+                .setServiceImplPackage("com.sakurapuare.boatmanagement.service.base")
                 .setEntityPackage("com.sakurapuare.boatmanagement.pojo.entity");
 
         globalConfig.getEntityConfig()
@@ -77,6 +77,7 @@ public class SQLGen {
 
         globalConfig.getServiceImplConfig()
                 .setClassPrefix("Base")
+                .setClassSuffix("Service")
                 .setCacheExample(true)
                 .setOverwriteEnable(true);
 

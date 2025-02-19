@@ -1,12 +1,11 @@
 package com.sakurapuare.boatmanagement.pojo.dto.base;
 
-import com.sakurapuare.boatmanagement.pojo.dto.*;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.dto.BaseEntityDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 @Data
-@ApiModel("单位表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseUnitsDTO extends BaseEntityDTO {
 
@@ -36,5 +35,5 @@ public class BaseUnitsDTO extends BaseEntityDTO {
 
     @ApiModelProperty("单位类型")
     private String types;
-}
 
+}

@@ -3,13 +3,13 @@ package com.sakurapuare.boatmanagement.service;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.constant.LogLevel;
 import com.sakurapuare.boatmanagement.pojo.entity.Logs;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseLogsServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseLogsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LogsService extends BaseLogsServiceImpl {
+public class LogsService extends BaseLogsService {
 
     private void log(String level, String types, String content) {
         Logs logs = new Logs();

@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
  * 验证码防刷记录_ndto_nvo 实体类。
  *
  * @author sakurapuare
- * @since 2025-02-19
+ * @since 2025-02-20
  */
 @Data
 @Builder

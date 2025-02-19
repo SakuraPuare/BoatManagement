@@ -1,12 +1,11 @@
 package com.sakurapuare.boatmanagement.pojo.dto.base;
 
-import com.sakurapuare.boatmanagement.pojo.dto.*;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.dto.BaseEntityDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 @Data
-@ApiModel("商家表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseMerchantsDTO extends BaseEntityDTO {
 
@@ -18,5 +17,5 @@ public class BaseMerchantsDTO extends BaseEntityDTO {
 
     @ApiModelProperty("审核状态")
     private String status;
-}
 
+}

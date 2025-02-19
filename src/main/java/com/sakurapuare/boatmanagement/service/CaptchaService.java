@@ -6,7 +6,7 @@ import com.sakurapuare.boatmanagement.common.context.RequestContext;
 import com.sakurapuare.boatmanagement.constant.CaptchaStatus;
 import com.sakurapuare.boatmanagement.pojo.entity.Captcha;
 import com.sakurapuare.boatmanagement.pojo.entity.CaptchaLimit;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseCaptchaServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseCaptchaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.CAPTCHA_LI
 
 @Service
 @RequiredArgsConstructor
-public class CaptchaService extends BaseCaptchaServiceImpl {
+public class CaptchaService extends BaseCaptchaService {
 
     private final CaptchaLimitService captchaLimitService;
 

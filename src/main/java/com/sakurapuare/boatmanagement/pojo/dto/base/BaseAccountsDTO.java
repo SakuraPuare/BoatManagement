@@ -1,12 +1,11 @@
 package com.sakurapuare.boatmanagement.pojo.dto.base;
 
-import com.sakurapuare.boatmanagement.pojo.dto.*;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.dto.BaseEntityDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 @Data
-@ApiModel("基础账号表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseAccountsDTO extends BaseEntityDTO {
 
@@ -28,5 +27,5 @@ public class BaseAccountsDTO extends BaseEntityDTO {
     private Boolean isActive;
 
     private Boolean isBlocked;
-}
 
+}

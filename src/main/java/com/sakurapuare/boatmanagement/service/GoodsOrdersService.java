@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.constant.OrderStatus;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.GoodsOrders;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsOrdersVO;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseGoodsOrdersServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseGoodsOrdersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.GOODS_ORDE
 
 @Service
 @RequiredArgsConstructor
-public class GoodsOrdersService extends BaseGoodsOrdersServiceImpl {
+public class GoodsOrdersService extends BaseGoodsOrdersService {
 
     /*
      * 商家函数

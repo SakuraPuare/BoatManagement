@@ -1,15 +1,15 @@
 package com.sakurapuare.boatmanagement.pojo.vo.base;
 
-import com.sakurapuare.boatmanagement.pojo.vo.*;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.vo.BaseEntityVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.math.BigDecimal;
 @Data
-@ApiModel("商品表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseGoodsVO extends BaseEntityVO {
+
     private Long id;
 
     @ApiModelProperty("商品名称")
@@ -35,5 +35,5 @@ public class BaseGoodsVO extends BaseEntityVO {
 
     @ApiModelProperty("创建单位_serverside")
     private Long unitId;
-}
 
+}

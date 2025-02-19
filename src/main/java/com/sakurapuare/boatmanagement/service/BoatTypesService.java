@@ -8,7 +8,7 @@ import com.sakurapuare.boatmanagement.pojo.entity.BoatTypes;
 import com.sakurapuare.boatmanagement.pojo.entity.Units;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatTypesVO;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseBoatTypesServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseBoatTypesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.VENDORS;
 
 @Service
 @RequiredArgsConstructor
-public class BoatTypesService extends BaseBoatTypesServiceImpl {
+public class BoatTypesService extends BaseBoatTypesService {
 
     private final VendorsService vendorsService;
 

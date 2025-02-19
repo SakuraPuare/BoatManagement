@@ -6,7 +6,7 @@ import com.mybatisflex.core.query.QueryWrapperAdapter;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseUserCertifyDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.UserCertify;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUserCertifyVO;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseUserCertifyServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseUserCertifyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserCertifyService extends BaseUserCertifyServiceImpl {
+public class UserCertifyService extends BaseUserCertifyService {
 
     /*
      * 管理员函数

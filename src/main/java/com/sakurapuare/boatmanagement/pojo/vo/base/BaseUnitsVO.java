@@ -1,14 +1,14 @@
 package com.sakurapuare.boatmanagement.pojo.vo.base;
 
-import com.sakurapuare.boatmanagement.pojo.vo.*;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.vo.BaseEntityVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 @Data
-@ApiModel("单位表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseUnitsVO extends BaseEntityVO {
+
     private Long id;
 
     @ApiModelProperty("对外名称")
@@ -37,5 +37,5 @@ public class BaseUnitsVO extends BaseEntityVO {
 
     @ApiModelProperty("单位类型")
     private String types;
-}
 
+}

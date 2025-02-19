@@ -6,7 +6,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseAccountsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseAccountsVO;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseAccountsServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseAccountsService;
 import com.sakurapuare.boatmanagement.utils.JWTUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AccountsService extends BaseAccountsServiceImpl {
+public class AccountsService extends BaseAccountsService {
 
     public Accounts getAccountByToken(String token) {
         JSONObject payload = JWTUtils.parseToken(token);

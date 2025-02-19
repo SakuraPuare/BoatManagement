@@ -1,16 +1,13 @@
 package com.sakurapuare.boatmanagement.pojo.dto.base;
 
-import com.sakurapuare.boatmanagement.pojo.dto.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.swagger.annotations.ApiModel;
+import com.sakurapuare.boatmanagement.pojo.dto.BaseEntityDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
-
 @Data
-@ApiModel("船只请求表")
 @EqualsAndHashCode(callSuper = true)
 public class BaseBoatRequestsDTO extends BaseEntityDTO {
 
@@ -33,4 +30,5 @@ public class BaseBoatRequestsDTO extends BaseEntityDTO {
 
     @ApiModelProperty("订单状态")
     private String status;
+
 }

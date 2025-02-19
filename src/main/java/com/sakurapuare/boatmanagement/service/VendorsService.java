@@ -5,7 +5,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseVendorsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseVendorsVO;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseVendorsServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseVendorsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class VendorsService extends BaseVendorsServiceImpl {
+public class VendorsService extends BaseVendorsService {
 
     /*
      * 管理员函数

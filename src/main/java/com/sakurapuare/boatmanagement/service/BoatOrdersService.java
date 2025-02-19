@@ -7,7 +7,7 @@ import com.sakurapuare.boatmanagement.constant.OrderStatus;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatOrdersDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.*;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatOrdersVO;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseBoatOrdersServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseBoatOrdersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.BOAT_ORDER
 
 @Service
 @RequiredArgsConstructor
-public class BoatOrdersService extends BaseBoatOrdersServiceImpl {
+public class BoatOrdersService extends BaseBoatOrdersService {
 
     private final BoatRequestsService boatRequestsService;
 

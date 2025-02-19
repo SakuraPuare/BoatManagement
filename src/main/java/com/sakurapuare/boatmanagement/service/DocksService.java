@@ -5,7 +5,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseDocksDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Docks;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseDocksVO;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseDocksServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseDocksService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.DOCKS;
 
 @Service
 @RequiredArgsConstructor
-public class DocksService extends BaseDocksServiceImpl {
+public class DocksService extends BaseDocksService {
 
     /*
      * 管理员函数

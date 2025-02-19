@@ -8,7 +8,7 @@ import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.*;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsVO;
-import com.sakurapuare.boatmanagement.service.base.impl.BaseGoodsServiceImpl;
+import com.sakurapuare.boatmanagement.service.base.BaseGoodsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.MERCHANTS;
 
 @Service
 @RequiredArgsConstructor
-public class GoodsService extends BaseGoodsServiceImpl {
+public class GoodsService extends BaseGoodsService {
 
     private final MerchantsService merchantsService;
 
