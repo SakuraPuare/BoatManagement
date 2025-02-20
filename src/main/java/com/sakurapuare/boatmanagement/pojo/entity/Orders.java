@@ -58,9 +58,9 @@ public class Orders extends BaseEntity implements Serializable {
     private BigDecimal price;
 
     /**
-     * 订单状态_serverside
+     * 订单状态
      */
-    @ApiModelProperty("订单状态_serverside")
+    @ApiModelProperty("订单状态")
     private String status;
 
 }
