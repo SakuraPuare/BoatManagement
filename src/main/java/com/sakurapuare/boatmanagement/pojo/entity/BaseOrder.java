@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 @Data
 public class BaseOrder {
 
-    private Long orderId;
-
     private Long userId;
 
     private String status;

@@ -6,7 +6,10 @@ import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.constant.OrderStatus;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseGoodsOrdersDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.*;
+import com.sakurapuare.boatmanagement.pojo.entity.Goods;
+import com.sakurapuare.boatmanagement.pojo.entity.GoodsOrders;
+import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
+import com.sakurapuare.boatmanagement.pojo.entity.Units;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsVO;
 import com.sakurapuare.boatmanagement.service.base.BaseGoodsService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +31,6 @@ public class GoodsService extends BaseGoodsService {
     private final MerchantsService merchantsService;
 
     private final UnitsService unitsService;
-
-    private final OrdersService ordersService;
 
     private final GoodsOrdersService goodsOrdersService;
 
@@ -133,8 +134,7 @@ public class GoodsService extends BaseGoodsService {
     private QueryWrapper getUserGoodsQueryWrapper(BaseGoodsDTO queryDTO) {
         Goods goods = new Goods();
         BeanUtils.copyProperties(queryDTO, goods);
-        QueryWrapper queryWrapper = QueryWrapper.create(goods);
-        return queryWrapper;
+        return QueryWrapper.create(goods);
     }
 
     public List<BaseGoodsVO> getUserMerchantGoodsList(Long merchantId, BaseGoodsDTO queryDTO) {
@@ -160,21 +160,13 @@ public class GoodsService extends BaseGoodsService {
             price = price.add(goods.getPrice().multiply(BigDecimal.valueOf(entry.getValue())));
         }
 
-        Orders order = new Orders();
-        order.setUserId(UserContext.getAccount().getId());
-        order.setStatus(OrderStatus.UNPAID);
-        order.setPrice(price);
-        order.setDiscount(BigDecimal.ZERO);
-        ordersService.save(order);
-
         GoodsOrders goodsOrders = new GoodsOrders();
-        goodsOrders.setOrderId(order.getId());
+        goodsOrders.setMerchantId(merchantId);
+        goodsOrders.setOrderInfo(orderInfoMap);
         goodsOrders.setUserId(UserContext.getAccount().getId());
         goodsOrders.setStatus(OrderStatus.UNPAID);
         goodsOrders.setPrice(price);
         goodsOrders.setDiscount(BigDecimal.ZERO);
-        goodsOrders.setMerchantId(merchantId);
-        goodsOrders.setOrderInfo(orderInfoMap);
         goodsOrdersService.save(goodsOrders);
     }
 }

@@ -10,7 +10,6 @@ import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.*;
-import com.sakurapuare.boatmanagement.pojo.vo.BaseCertifyVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUnitsVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUserCertifyVO;
 import lombok.RequiredArgsConstructor;
@@ -155,32 +154,27 @@ public class CertifyService {
         vendorsService.save(newVendor);
     }
 
-    public BaseCertifyVO<BaseUserCertifyVO> getUserCertify() {
-        BaseCertifyVO<BaseUserCertifyVO> userCertifyVO = new BaseCertifyVO<>();
+    public BaseUserCertifyVO getUserCertify() {
         UserCertify userCertify = userCertifyService.getOne(
                 new QueryWrapper().where(USER_CERTIFY.USER_ID.eq(UserContext.getAccount().getId())));
         BaseUserCertifyVO baseUserCertifyVO = new BaseUserCertifyVO();
         if (userCertify == null) {
-            userCertifyVO.setStatus(CertifyStatus.NOT_EXIST);
+            baseUserCertifyVO.setStatus(CertifyStatus.NOT_EXIST);
         } else {
             BeanUtils.copyProperties(userCertify, baseUserCertifyVO);
-            userCertifyVO.setCertify(baseUserCertifyVO);
         }
 
-        return userCertifyVO;
+        return baseUserCertifyVO;
     }
 
-    public BaseCertifyVO<BaseUnitsVO> buildUnitCertifyVO(Units unit) {
-        BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
+    public BaseUnitsVO buildUnitCertifyVO(Units unit) {
         BaseUnitsVO unitVO = new BaseUnitsVO();
         BeanUtils.copyProperties(unit, unitVO);
-        BeanUtils.copyProperties(unit, vo);
-        vo.setCertify(unitVO);
-        return vo;
+        return unitVO;
     }
 
-    public BaseCertifyVO<BaseUnitsVO> getMerchantCertify() {
-        BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
+    public BaseUnitsVO getMerchantCertify() {
+        BaseUnitsVO vo = new BaseUnitsVO();
         Merchants merchant = merchantsService.getOne(
                 new QueryWrapper().where(MERCHANTS.USER_ID.eq(UserContext.getAccount().getId())));
 
@@ -197,8 +191,8 @@ public class CertifyService {
         return vo;
     }
 
-    public BaseCertifyVO<BaseUnitsVO> getVendorCertify() {
-        BaseCertifyVO<BaseUnitsVO> vo = new BaseCertifyVO<>();
+    public BaseUnitsVO getVendorCertify() {
+        BaseUnitsVO vo = new BaseUnitsVO();
         Vendors vendor = vendorsService.getOne(
                 new QueryWrapper().where(VENDORS.USER_ID.eq(UserContext.getAccount().getId())));
 

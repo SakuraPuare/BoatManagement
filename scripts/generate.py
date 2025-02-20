@@ -1,5 +1,6 @@
 import pathlib
 import re
+import logging
 from dataclasses import dataclass
 
 PROJECT_NAME = "boatmanagement"
@@ -13,6 +14,13 @@ DTO_PATH = SPRING_PATH / "pojo/dto/base"
 VO_PATH = SPRING_PATH / "pojo/vo/base"
 SERVICE_PATH = SPRING_PATH / "service"
 
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 @dataclass
 class Entity:
     entity_name: str
@@ -23,19 +31,24 @@ class Entity:
 
 
 def parse_entity_file(file_path: pathlib.Path) -> Entity:
-    file_data = file_path.read_text()
+    logger.info(f"Parsing entity file: {file_path}")
+    try:
+        file_data = file_path.read_text()
+        
+        import_part, define_part = file_data.split("@Data")
+        
+        import_list = re.findall(r"import\s+(.+);", import_part)
+        table_name = re.findall(r"""@ApiModel\("(.+)"\)""", define_part)[0]
+        entity_name = re.findall(r"public class\s+(\w+)", define_part)[0]
+        extend_class = re.findall(r"extends\s+(\w+)", define_part)[0]
+        define_list = re.findall(r"""@ApiModelProperty\("(.+)?"\)\n\s*(.+);""", define_part)
 
-    import_part, define_part = file_data.split("@Data")
-
-    import_list = re.findall(r"import\s+(.+);", import_part)
-    table_name = re.findall(r"""@ApiModel\("(.+)"\)""", define_part)[0]
-    entity_name = re.findall(r"public class\s+(\w+)", define_part)[0]
-    extend_class = re.findall(r"extends\s+(\w+)", define_part)[0]
-    define_list = re.findall(r"""@ApiModelProperty\("(.+)?"\)\n\s*(.+);""", define_part)
-
-    entity = Entity(entity_name, import_list, table_name, extend_class, define_list)
-
-    return entity
+        entity = Entity(entity_name, import_list, table_name, extend_class, define_list)
+        logger.debug(f"Successfully parsed entity: {entity_name}")
+        return entity
+    except Exception as e:
+        logger.error(f"Error parsing entity file {file_path}: {str(e)}")
+        raise
 
 def filter_import_list(import_list: list[str], additional_import: list[str] = None) -> list[str]:
     
@@ -76,9 +89,11 @@ def generate_import_list(filtered_import_list: list[str]) -> str:
 
 def generate_dto_file(entity: Entity):
     if 'ndto' in entity.table_name:
+        logger.debug(f"Skipping DTO generation for {entity.entity_name} (ndto flag)")
         return
 
     file_path = DTO_PATH / f"Base{entity.entity_name}DTO.java"
+    logger.info(f"Generating DTO file: {file_path}")
 
     filtered_import_list = filter_import_list(entity.import_list, [
         f'import {DOMAIN}.{PROJECT_NAME}.pojo.dto.{entity.extend_class}DTO;',
@@ -120,13 +135,16 @@ public class Base{entity.entity_name}DTO extends {entity.extend_class}DTO {{
 """
     
     file_path.write_text(template)
+    logger.debug(f"Successfully generated DTO file for {entity.entity_name}")
     pass
 
 def generate_vo_file(entity: Entity):
     if 'nvo' in entity.table_name:
+        logger.debug(f"Skipping VO generation for {entity.entity_name} (nvo flag)")
         return
 
     file_path = VO_PATH / f"Base{entity.entity_name}VO.java"
+    logger.info(f"Generating VO file: {file_path}")
 
     filtered_import_list = filter_import_list(entity.import_list, [
         f'import {DOMAIN}.{PROJECT_NAME}.pojo.vo.{entity.extend_class}VO;',
@@ -158,13 +176,17 @@ public class Base{entity.entity_name}VO extends {entity.extend_class}VO {{
 """
     
     file_path.write_text(template)
+    logger.debug(f"Successfully generated VO file for {entity.entity_name}")
     pass
 
 def generate_service_file(entity: Entity):
     file_path = SERVICE_PATH / f"{entity.entity_name}Service.java"
     
     if file_path.exists():
+        logger.debug(f"Skipping Service generation for {entity.entity_name} (file exists)")
         return
+
+    logger.info(f"Generating Service file: {file_path}")
 
     import_list = filter_import_list([], [
         f'import {DOMAIN}.{PROJECT_NAME}.service.base.Base{entity.entity_name}Service;',
@@ -181,22 +203,35 @@ public class {entity.entity_name}Service extends Base{entity.entity_name}Service
 """
 
     file_path.write_text(template)
+    logger.debug(f"Successfully generated Service file for {entity.entity_name}")
     pass
 
 def main():
-    # 删除之前生成的DTO VO
+    logger.info("Starting code generation process")
+    
+    # Delete previous generated files
+    logger.info("Cleaning up previous generated files")
     for file in DTO_PATH.glob("*.java"):
+        logger.debug(f"Deleting {file}")
         file.unlink()
     for file in VO_PATH.glob("*.java"):
+        logger.debug(f"Deleting {file}")
         file.unlink()
 
-    # 生成文件
+    # Generate new files
+    logger.info("Starting file generation")
     for file in ENTITY_PATH.glob("*.java"):
         if not file.name.startswith("Base"):
-            entity = parse_entity_file(file)
-            generate_dto_file(entity)
-            generate_vo_file(entity)
-            generate_service_file(entity)
+            try:
+                entity = parse_entity_file(file)
+                generate_dto_file(entity)
+                generate_vo_file(entity)
+                generate_service_file(entity)
+            except Exception as e:
+                logger.error(f"Error processing {file}: {str(e)}")
+                continue
+    
+    logger.info("Code generation completed")
 
 if __name__ == "__main__":
     main()

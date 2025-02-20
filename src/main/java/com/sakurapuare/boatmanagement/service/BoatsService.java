@@ -7,7 +7,6 @@ import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatsDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Boats;
 import com.sakurapuare.boatmanagement.pojo.entity.Units;
 import com.sakurapuare.boatmanagement.pojo.entity.Vendors;
-import com.sakurapuare.boatmanagement.pojo.vo.BoatVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatsVO;
 import com.sakurapuare.boatmanagement.service.base.BaseBoatsService;
 import lombok.RequiredArgsConstructor;
@@ -34,19 +33,18 @@ public class BoatsService extends BaseBoatsService {
     private QueryWrapper getAdminQueryWrapper(BaseBoatsDTO queryDTO) {
         Boats boats = new Boats();
         BeanUtils.copyProperties(queryDTO, boats);
-        QueryWrapper queryWrapper = QueryWrapper.create(boats);
-        return queryWrapper;
+        return QueryWrapper.create(boats);
     }
 
-    public List<BoatVO> getAdminBoatListQuery(BaseBoatsDTO queryDTO) {
+    public List<BaseBoatsVO> getAdminBoatListQuery(BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
-        return super.listAs(queryWrapper, BoatVO.class);
+        return super.listAs(queryWrapper, BaseBoatsVO.class);
     }
 
-    public Page<BoatVO> getAdminBoatPageQuery(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
+    public Page<BaseBoatsVO> getAdminBoatPageQuery(Integer pageNum, Integer pageSize, BaseBoatsDTO queryDTO) {
         QueryWrapper queryWrapper = getAdminQueryWrapper(queryDTO);
 
-        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BoatVO.class);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatsVO.class);
     }
 
     public void addBoat(BaseBoatsDTO boatsDTO) {

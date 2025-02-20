@@ -5,7 +5,10 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.constant.OrderStatus;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseBoatOrdersDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.*;
+import com.sakurapuare.boatmanagement.pojo.entity.BoatOrders;
+import com.sakurapuare.boatmanagement.pojo.entity.BoatRequests;
+import com.sakurapuare.boatmanagement.pojo.entity.BoatTypes;
+import com.sakurapuare.boatmanagement.pojo.entity.Boats;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatOrdersVO;
 import com.sakurapuare.boatmanagement.service.base.BaseBoatOrdersService;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +32,49 @@ public class BoatOrdersService extends BaseBoatOrdersService {
 
     private final BoatTypesService boatTypeService;
 
-    private final OrdersService ordersService;
+    /*
+     * 管理员函数
+     */
+
+    private QueryWrapper getAdminGoodsOrdersQueryWrapper(BaseBoatOrdersDTO boatOrdersDTO) {
+        BoatOrders boatOrders = new BoatOrders();
+        BeanUtils.copyProperties(boatOrdersDTO, boatOrders);
+        return QueryWrapper.create(boatOrders);
+    }
+
+    private QueryWrapper getAdminBoatOrdersQueryWrapper(BaseBoatOrdersDTO boatOrdersDTO) {
+        BoatOrders boatOrders = new BoatOrders();
+        BeanUtils.copyProperties(boatOrdersDTO, boatOrders);
+        return QueryWrapper.create(boatOrders);
+    }
+
+    public List<BaseBoatOrdersVO> getAdminGoodsOrdersListQuery(BaseBoatOrdersDTO boatOrdersDTO) {
+        QueryWrapper orderQueryWrapper = getAdminGoodsOrdersQueryWrapper(boatOrdersDTO);
+        return super.listAs(orderQueryWrapper, BaseBoatOrdersVO.class);
+    }
+
+    public Page<BaseBoatOrdersVO> getAdminGoodsOrdersPageQuery(Integer pageNum, Integer pageSize,
+                                                               BaseBoatOrdersDTO boatOrdersDTO) {
+        QueryWrapper orderQueryWrapper = getAdminGoodsOrdersQueryWrapper(boatOrdersDTO);
+        return super.pageAs(Page.of(pageNum, pageSize), orderQueryWrapper, BaseBoatOrdersVO.class);
+    }
+
+    public List<BaseBoatOrdersVO> getAdminBoatOrdersListQuery(BaseBoatOrdersDTO boatOrdersDTO) {
+        QueryWrapper orderQueryWrapper = getAdminBoatOrdersQueryWrapper(boatOrdersDTO);
+        return super.listAs(orderQueryWrapper, BaseBoatOrdersVO.class);
+    }
+
+    public Page<BaseBoatOrdersVO> getAdminBoatOrdersPageQuery(Integer pageNum, Integer pageSize,
+                                                              BaseBoatOrdersDTO boatOrdersDTO) {
+        QueryWrapper orderQueryWrapper = getAdminBoatOrdersQueryWrapper(boatOrdersDTO);
+        return super.pageAs(Page.of(pageNum, pageSize), orderQueryWrapper, BaseBoatOrdersVO.class);
+    }
+
 
     /*
      * 商家函数
      */
+
     private QueryWrapper getVendorOrdersQueryWrapper(BaseBoatOrdersDTO boatOrdersDTO) {
         BoatOrders boatOrders = new BoatOrders();
         BeanUtils.copyProperties(boatOrdersDTO, boatOrders);
@@ -83,26 +124,17 @@ public class BoatOrdersService extends BaseBoatOrdersService {
         }
         BigDecimal price = boatType.getPrice().multiply(BigDecimal.valueOf(hours));
 
-        // 2. 创建订单
-        Orders orders = new Orders();
-        BeanUtils.copyProperties(boatOrdersDTO, orders);
-        orders.setUserId(boatRequests.getUserId());
-        orders.setStatus(OrderStatus.ACCEPTED);
-        orders.setPrice(price);
-        orders.setDiscount(BigDecimal.ZERO);
-        ordersService.save(orders);
-
-        // 3. 创建船舶订单
+        // 2. 创建船舶订单
         BoatOrders boatOrders = new BoatOrders();
-        boatOrders.setUserId(boatRequests.getUserId());
-        boatOrders.setOrderId(orders.getId());
         boatOrders.setRequestId(requestId); // requestId
         boatOrders.setBoatId(boatOrdersDTO.getBoatId());
+        boatOrders.setUserId(boatRequests.getUserId());
+        boatOrders.setPrice(price);
+        boatOrders.setDiscount(BigDecimal.ZERO);
         super.save(boatOrders);
 
-        // 4. 更新请求状态
+        // 3. 更新请求状态
         boatRequests.setStatus(OrderStatus.ACCEPTED);
-        boatRequests.setOrderId(orders.getId());
         boatRequestsService.updateById(boatRequests);
     }
 
@@ -121,17 +153,12 @@ public class BoatOrdersService extends BaseBoatOrdersService {
         verifyVendorOrderId(id);
 
         BoatOrders boatOrders = super.getById(id);
-        boatOrders.setStatus(OrderStatus.COMPLETED);
+        boatOrders.setStatus(OrderStatus.UNPAID);
         super.updateById(boatOrders);
 
-        BoatRequests boatRequests = new BoatRequests();
-        boatRequests.setId(boatOrders.getRequestId());
+        BoatRequests boatRequests = boatRequestsService.getById(boatOrders.getRequestId());
         boatRequests.setStatus(OrderStatus.COMPLETED);
         boatRequestsService.updateById(boatRequests);
-
-        Orders orders = ordersService.getById(boatOrders.getOrderId());
-        orders.setStatus(OrderStatus.UNPAID);
-        ordersService.updateById(orders);
     }
 
     public void cancelVendorOrder(Long id) {
@@ -141,9 +168,9 @@ public class BoatOrdersService extends BaseBoatOrdersService {
         boatOrders.setStatus(OrderStatus.CANCELLED);
         super.updateById(boatOrders);
 
-        Orders orders = ordersService.getById(boatOrders.getOrderId());
-        orders.setStatus(OrderStatus.CANCELLED);
-        ordersService.updateById(orders);
+        BoatRequests boatRequests = boatRequestsService.getById(boatOrders.getRequestId());
+        boatRequests.setStatus(OrderStatus.CANCELLED);
+        boatRequestsService.updateById(boatRequests);
     }
 
     /*
