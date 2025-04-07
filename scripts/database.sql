@@ -8,7 +8,7 @@ CREATE TABLE accounts (
   `password` VARCHAR(255) COMMENT '密码',
   `phone` VARCHAR(20) COMMENT '手机号',
   `email` VARCHAR(255) COMMENT '邮箱',
-  `role` INT NOT NULL DEFAULT 1 COMMENT '角色MASK',
+  `role` INT NOT NULL DEFAULT 1 COMMENT '角色 MASK',
   `is_active` TINYINT(1) NOT NULL DEFAULT 1,
   `is_blocked` TINYINT(1) NOT NULL DEFAULT 0,
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
@@ -35,8 +35,8 @@ CREATE TABLE `social_auth` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `account_id` BIGINT UNSIGNED NOT NULL,
   `platform` ENUM ('WECHAT', 'ALIPAY', 'APPLE') NOT NULL COMMENT '第三方平台',
-  `open_id` VARCHAR(255) NOT NULL COMMENT '第三方唯一ID',
-  `union_id` VARCHAR(255) COMMENT '跨平台统一ID',
+  `open_id` VARCHAR(255) NOT NULL COMMENT '第三方唯一 ID',
+  `union_id` VARCHAR(255) COMMENT '跨平台统一 ID',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -44,7 +44,7 @@ CREATE TABLE `social_auth` (
   UNIQUE KEY `uk_platform_openid` (`platform`, `open_id`),
   FOREIGN KEY (`account_id`) REFERENCES accounts (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '第三方登录表_ndto_nvo';
--- RBAC权限系统
+-- RBAC 权限系统
 CREATE TABLE `role` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL UNIQUE COMMENT '角色名称',
@@ -184,7 +184,7 @@ CREATE TABLE boats (
   `name` VARCHAR(255) NOT NULL COMMENT '船只名称',
   `type_id` INT UNSIGNED NOT NULL COMMENT '船只类型',
   `dock_id` BIGINT UNSIGNED NOT NULL COMMENT '所属码头',
-  `vendor_id` BIGINT UNSIGNED NOT NULL COMMENT '船主ID_serverside',
+  `vendor_id` BIGINT UNSIGNED NOT NULL COMMENT '船主 ID_serverside',
   `unit_id` BIGINT UNSIGNED COMMENT '所属单位_serverside',
   `is_enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
@@ -200,7 +200,7 @@ CREATE TABLE boats (
 CREATE TABLE boat_requests (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户_serverside',
-  `order_id` BIGINT UNSIGNED COMMENT '订单ID_serverside',
+  `order_id` BIGINT UNSIGNED COMMENT '订单 ID_serverside',
   `start_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '起始码头',
   `end_dock_id` BIGINT UNSIGNED NOT NULL COMMENT '目的码头',
   `start_time` DATETIME NOT NULL COMMENT '租用开始时间',
@@ -228,7 +228,7 @@ CREATE TABLE boat_requests (
 CREATE TABLE boat_orders (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户_serverside',
-  `request_id` BIGINT UNSIGNED NOT NULL COMMENT '请求ID_serverside',
+  `request_id` BIGINT UNSIGNED NOT NULL COMMENT '请求 ID_serverside',
   `boat_id` BIGINT UNSIGNED COMMENT '指定船只',
   `discount` DECIMAL(12, 2) NOT NULL COMMENT '折扣_serverside',
   `price` DECIMAL(12, 2) NOT NULL COMMENT '订单总金额_serverside',
@@ -253,8 +253,8 @@ CREATE TABLE boat_orders (
 CREATE TABLE `goods_orders` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` BIGINT UNSIGNED NOT NULL COMMENT '下单用户_serverside',
-  `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '商家ID_serverside',
-  `order_info` TEXT COMMENT '订单信息：id:数量,id:数量,id:数量',
+  `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '商家 ID_serverside',
+  `order_info` TEXT COMMENT '订单信息：id:数量，id:数量，id:数量',
   `discount` DECIMAL(12, 2) NOT NULL COMMENT '折扣_serverside',
   `price` DECIMAL(12, 2) NOT NULL COMMENT '订单总金额_serverside',
   `status` ENUM (
@@ -296,7 +296,7 @@ CREATE TABLE `captcha` (
   `code` VARCHAR(10) NOT NULL COMMENT '验证码',
   `status` ENUM ('UNUSED', 'USED', 'INVALID') NOT NULL DEFAULT 'UNUSED' COMMENT '使用状态',
   `expire_at` DATETIME NOT NULL COMMENT '过期时间',
-  `client_ip` VARCHAR(45) COMMENT '请求IP',
+  `client_ip` VARCHAR(45) COMMENT '请求 IP',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
