@@ -455,7 +455,7 @@ public class CertifyService {
     }
 
     public void auditAdminUnit(String types, Long id) {
-        if (AuditOperation.isAuditOperation(types)) {
+        if (!AuditOperation.isAuditOperation(types)) {
             throw new IllegalArgumentException("不支持的审核操作");
         }
 
@@ -466,11 +466,11 @@ public class CertifyService {
 
         // add to logs
         switch (types) {
-            case AuditOperation.APPROVE:
+            case AuditOperation.APPROVED:
                 approveUnit(unit);
                 logsService.info(AuditOperation.AUDIT, "审核通过" + unit.getName());
                 break;
-            case AuditOperation.REJECT:
+            case AuditOperation.REJECTED:
                 rejectUnit(unit);
                 logsService.info(AuditOperation.AUDIT, "审核拒绝" + unit.getName());
                 break;
@@ -488,10 +488,10 @@ public class CertifyService {
         }
 
         switch (types) {
-            case AuditOperation.APPROVE:
+            case AuditOperation.APPROVED:
                 approveUser(userCertify);
                 break;
-            case AuditOperation.REJECT:
+            case AuditOperation.REJECTED:
                 rejectUser(userCertify);
         }
     }
