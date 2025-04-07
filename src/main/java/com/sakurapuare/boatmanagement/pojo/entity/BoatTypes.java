@@ -3,7 +3,7 @@ package com.sakurapuare.boatmanagement.pojo.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
-import com.sakurapuare.boatmanagement.pojo.entity.BaseEntity;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -20,8 +20,6 @@ import lombok.EqualsAndHashCode;
 /**
  * 船只类型表 实体类。
  *
- * @author sakurapuare
- * @since 2025-02-20
  */
 @Data
 @Builder

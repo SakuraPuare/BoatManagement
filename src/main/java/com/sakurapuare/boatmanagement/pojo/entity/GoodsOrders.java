@@ -22,8 +22,6 @@ import lombok.EqualsAndHashCode;
 /**
  * 商品订单表 实体类。
  *
- * @author sakurapuare
- * @since 2025-02-20
  */
 @Data
 @Builder

@@ -17,8 +17,6 @@ import java.util.List;
 /**
  * 权限表_ndto_nvo 服务层实现。
  *
- * @author sakurapuare
- * @since 2025-02-20
  */
 @Service
 @CacheConfig(cacheNames = "permission")
