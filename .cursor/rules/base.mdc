@@ -1,0 +1,130 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# 项目全局
+
+本项目使用 mybatis-flex，Hutool，lombok，请仿照我现有代码的样式和格式，
+
+我自己编写的工具类在 utils/ 中，请使用这些工具类。
+
+# SQL 生成
+
+如有需要，创建并使用合适的数据库结构。
+
+如果你创建了全新的表，请告诉我，我需要更新数据库结构，然后停止工作
+
+为非 id 列添加必要的 comment，请你综合判断，在不需要 dto 的表加备注"\_ndto"，不需要 vo 的表加"\_nvo", 不需要 service 的表加"\_nservice"，可以多个同时出现。
+
+对于每一个字段，只在 DTO 出现的字段列添加"\_clientside",只在 VO 出现的字段列添加"\_serverside", 如果是路径参数添加"\_pathparameter"。如果现存的表没有 comment，请添加 comment；如果现存的表有 comment 与你的需求不符，请修改 comment。
+
+# 代码自动生成
+
+本项目的 baseService、entity、baseDto、baseVo 是自动生成的，你不需要编写。你只需要在已经存在的 Service 中补全方法
+
+# Service 编写
+
+所有的 TableDef 应该从 @target/generated-sources/annotations/com/sakurapuare/boatmanagement/pojo/entity/table/Tables.java ; 中获取，不要手动创建 TableDef。注意：这个文件是自动生成的，你不需要编写。位置在./target/generated-sources/annotations/com/sakurapuare/boatmanagement
+
+service 中 不要装配 baseService 除非基本的 Service 没有实现，调用父类 BaseService 的方法时，请显式 super.方法名 (参数)。
+
+对于 service 里的函数，管理员端的函数 使用 admin 前缀 酒店端的函数使用 hotel 前缀 工人端的函数使用 worker 前缀 用户端的函数使用 user 前缀，以此类推。
+
+我在utils中有几个函数类 [ParamsUtils.java](mdc:src/main/java/com/sakurapuare/boatmanagement/utils/ParamsUtils.java) [POJOUtils.java](mdc:src/main/java/com/sakurapuare/boatmanagement/utils/POJOUtils.java)
+
+不要修改我的utils类 直接就地创建需要的函数
+
+```
+/**
+     * 管理员获取用户列表
+     *
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 用户视图对象列表
+     */
+    public List<UserVO> adminGetUserList(
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseUserDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, User.class);
+        adminParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.listAs(queryWrapper, UserVO.class);
+    }
+
+    /**
+     * 管理员分页获取用户列表
+     *
+     * @param pageNum       页码
+     * @param pageSize      每页大小
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 分页用户视图对象
+     */
+    public Page<UserVO> adminGetUserPage(
+            Integer pageNum,
+            Integer pageSize,
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseUserDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, User.class);
+        adminParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.pageAs(
+                Page.of(pageNum, pageSize), queryWrapper, UserVO.class);
+    }
+
+    /**
+     * 管理员根据 ID 获取用户
+     *
+     * @param ids 用户 ID 字符串，多个 ID 用逗号分隔
+     * @return 用户视图对象列表
+     * @throws RuntimeException 当用户不存在时抛出
+     */
+    public List<UserVO> adminGetUserByIds(String ids) {
+        List<Long> idList = ParamsUtils.getListFromIds(ids);
+
+        if (idList.isEmpty()) {
+            throw new RuntimeException("用户不存在");
+        }
+
+        return POJOUtils.getListFromIds(idList, this::getUserInfo);
+    }
+```
+
+# DTO、VO
+
+在可以使用 BaseVO 和 BaseDTO 的情况下。如果不需要添加其他的字段，请使用 BaseVO 和 BaseDTO，不要手动创建 VO 和 DTO。如果需要添加其他的字段，请手动创建 VO 和 DTO，手动创建的 VO 和 DTO 必须继承对应的 BaseVO 和 BaseDTO。
+
+# Controller 编写
+
+管理员端的函数 使用 admin 前缀 酒店端的函数使用 hotel 前缀 工人端的函数使用 worker 前缀 用户端的函数使用 user 前缀，以此类推。
+
+对于公开权限的函数（也就是所有用户都可以访问的函数），可以不用前缀。
+
+```
+public Response<List<BaseAnnouncementVO>> getAnnouncementList(
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) String sort,
+        @RequestParam(required = false) String startDateTime,
+        @RequestParam(required = false) String endDateTime,
+        @RequestBody(required = false) BaseAnnouncementDTO filter) {
+```
+
+查询接口要有 list、page、ids 三种
+
+list 的参数是 search、sort、startDateTime、endDateTime、filter
+
+page 的参数是 pageNum、pageSize、search、sort、startDateTime、endDateTime、filter
+
+ids 的参数是 ids
+
