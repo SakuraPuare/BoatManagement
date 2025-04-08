@@ -1,6 +1,7 @@
 package com.sakurapuare.boatmanagement.service;
 
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryColumn;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.constant.OrderStatus;
@@ -11,6 +12,8 @@ import com.sakurapuare.boatmanagement.pojo.entity.BoatTypes;
 import com.sakurapuare.boatmanagement.pojo.entity.Boats;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseBoatOrdersVO;
 import com.sakurapuare.boatmanagement.service.base.BaseBoatOrdersService;
+import com.sakurapuare.boatmanagement.utils.POJOUtils;
+import com.sakurapuare.boatmanagement.utils.ParamsUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -27,49 +30,164 @@ import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.BOAT_ORDER
 public class BoatOrdersService extends BaseBoatOrdersService {
 
     private final BoatRequestsService boatRequestsService;
-
     private final BoatsService boatService;
-
     private final BoatTypesService boatTypeService;
 
-    /*
-     * 管理员函数
+    /**
+     * 管理员搜索字段
      */
+    private static final QueryColumn[] SEARCH_FIELDS = {
+            BOAT_ORDERS.ID,
+            BOAT_ORDERS.USER_ID,
+            BOAT_ORDERS.BOAT_ID,
+            BOAT_ORDERS.REQUEST_ID
+    };
 
-    private QueryWrapper getAdminGoodsOrdersQueryWrapper(BaseBoatOrdersDTO boatOrdersDTO) {
-        BoatOrders boatOrders = new BoatOrders();
-        BeanUtils.copyProperties(boatOrdersDTO, boatOrders);
-        return QueryWrapper.create(boatOrders);
+    /**
+     * 解析管理员订单查询参数
+     *
+     * @param queryWrapper  查询包装器
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     */
+    private void adminParseParams(QueryWrapper queryWrapper, String search, String sort, String startDateTime,
+                                 String endDateTime) {
+        POJOUtils.search(queryWrapper, SEARCH_FIELDS, search);
+        POJOUtils.dateRange(queryWrapper, startDateTime, endDateTime);
+        POJOUtils.sort(queryWrapper, ParamsUtils.getSortFromParams(sort));
     }
 
-    private QueryWrapper getAdminBoatOrdersQueryWrapper(BaseBoatOrdersDTO boatOrdersDTO) {
-        BoatOrders boatOrders = new BoatOrders();
-        BeanUtils.copyProperties(boatOrdersDTO, boatOrders);
-        return QueryWrapper.create(boatOrders);
+    /**
+     * 获取管理员商品订单列表
+     *
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 订单视图对象列表
+     */
+    public List<BaseBoatOrdersVO> adminGetGoodsOrdersList(
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseBoatOrdersDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, BoatOrders.class);
+        adminParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.listAs(queryWrapper, BaseBoatOrdersVO.class);
     }
 
-    public List<BaseBoatOrdersVO> getAdminGoodsOrdersListQuery(BaseBoatOrdersDTO boatOrdersDTO) {
-        QueryWrapper orderQueryWrapper = getAdminGoodsOrdersQueryWrapper(boatOrdersDTO);
-        return super.listAs(orderQueryWrapper, BaseBoatOrdersVO.class);
+    /**
+     * 分页获取管理员商品订单列表
+     *
+     * @param pageNum       页码
+     * @param pageSize      每页大小
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 分页订单视图对象
+     */
+    public Page<BaseBoatOrdersVO> adminGetGoodsOrdersPage(
+            Integer pageNum,
+            Integer pageSize,
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseBoatOrdersDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, BoatOrders.class);
+        adminParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatOrdersVO.class);
     }
 
-    public Page<BaseBoatOrdersVO> getAdminGoodsOrdersPageQuery(Integer pageNum, Integer pageSize,
-                                                               BaseBoatOrdersDTO boatOrdersDTO) {
-        QueryWrapper orderQueryWrapper = getAdminGoodsOrdersQueryWrapper(boatOrdersDTO);
-        return super.pageAs(Page.of(pageNum, pageSize), orderQueryWrapper, BaseBoatOrdersVO.class);
+    /**
+     * 根据 ID 获取管理员商品订单
+     *
+     * @param ids 订单 ID 字符串，多个 ID 用逗号分隔
+     * @return 订单视图对象列表
+     * @throws RuntimeException 当订单不存在时抛出
+     */
+    public List<BaseBoatOrdersVO> adminGetGoodsOrdersByIds(String ids) {
+        List<Long> idList = ParamsUtils.getListFromIds(ids);
+
+        if (idList.isEmpty()) {
+            throw new RuntimeException("订单不存在");
+        }
+
+        List<BoatOrders> orders = POJOUtils.getListFromIds(idList, super::getById);
+
+        return POJOUtils.asOtherList(orders, BaseBoatOrdersVO.class);
     }
 
-    public List<BaseBoatOrdersVO> getAdminBoatOrdersListQuery(BaseBoatOrdersDTO boatOrdersDTO) {
-        QueryWrapper orderQueryWrapper = getAdminBoatOrdersQueryWrapper(boatOrdersDTO);
-        return super.listAs(orderQueryWrapper, BaseBoatOrdersVO.class);
+    /**
+     * 获取管理员船舶订单列表
+     *
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 订单视图对象列表
+     */
+    public List<BaseBoatOrdersVO> adminGetBoatOrdersList(
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseBoatOrdersDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, BoatOrders.class);
+        adminParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.listAs(queryWrapper, BaseBoatOrdersVO.class);
     }
 
-    public Page<BaseBoatOrdersVO> getAdminBoatOrdersPageQuery(Integer pageNum, Integer pageSize,
-                                                              BaseBoatOrdersDTO boatOrdersDTO) {
-        QueryWrapper orderQueryWrapper = getAdminBoatOrdersQueryWrapper(boatOrdersDTO);
-        return super.pageAs(Page.of(pageNum, pageSize), orderQueryWrapper, BaseBoatOrdersVO.class);
+    /**
+     * 分页获取管理员船舶订单列表
+     *
+     * @param pageNum       页码
+     * @param pageSize      每页大小
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 分页订单视图对象
+     */
+    public Page<BaseBoatOrdersVO> adminGetBoatOrdersPage(
+            Integer pageNum,
+            Integer pageSize,
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseBoatOrdersDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, BoatOrders.class);
+        adminParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatOrdersVO.class);
     }
 
+    /**
+     * 根据 ID 获取管理员船舶订单
+     *
+     * @param ids 订单 ID 字符串，多个 ID 用逗号分隔
+     * @return 订单视图对象列表
+     * @throws RuntimeException 当订单不存在时抛出
+     */
+    public List<BaseBoatOrdersVO> adminGetBoatOrdersByIds(String ids) {
+        List<Long> idList = ParamsUtils.getListFromIds(ids);
+
+        if (idList.isEmpty()) {
+            throw new RuntimeException("订单不存在");
+        }
+
+        List<BoatOrders> orders = POJOUtils.getListFromIds(idList, super::getById);
+
+        return POJOUtils.asOtherList(orders, BaseBoatOrdersVO.class);
+    }
 
     /*
      * 商家函数

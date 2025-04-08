@@ -4,7 +4,6 @@ import com.mybatisflex.core.paginate.Page;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseAccountsDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.base.BaseUserCertifyDTO;
-import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseAccountsVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseUserCertifyVO;
 import com.sakurapuare.boatmanagement.service.AccountsService;
@@ -12,7 +11,6 @@ import com.sakurapuare.boatmanagement.service.UserCertifyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,72 +22,108 @@ import java.util.List;
 public class AdminUserController {
 
     private final AccountsService accountsService;
-
     private final UserCertifyService userCertifyService;
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     @Operation(summary = "获取用户列表")
-    public Response<List<BaseAccountsVO>> getAdminUserListQuery(@RequestBody BaseAccountsDTO queryDTO) {
-        return Response.success("获取用户列表成功", accountsService.getAdminUserListQuery(queryDTO));
+    public Response<List<BaseAccountsVO>> adminGetUserList(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseAccountsDTO filter) {
+        return Response.success(accountsService.adminGetUserList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @PostMapping("/page")
+    @GetMapping("/page")
     @Operation(summary = "获取用户列表分页")
-    public Response<Page<BaseAccountsVO>> getAdminUserPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseAccountsDTO queryDTO) {
-        return Response.success("获取用户列表分页成功", accountsService.getAdminUserPageQuery(pageNum, pageSize, queryDTO));
+    public Response<Page<BaseAccountsVO>> adminGetUserPage(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseAccountsDTO filter) {
+        return Response.success(accountsService.adminGetUserPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
+    }
+
+    @GetMapping("/ids/{ids}")
+    @Operation(summary = "根据ID获取用户")
+    public Response<List<BaseAccountsVO>> adminGetUserByIds(@PathVariable String ids) {
+        return Response.success(accountsService.adminGetUserByIds(ids));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取用户详情")
-    public Response<BaseAccountsVO> getAdminUser(@PathVariable Long id) {
-        Accounts accounts = accountsService.getById(id);
-        BaseAccountsVO accountsVO = new BaseAccountsVO();
-        BeanUtils.copyProperties(accounts, accountsVO);
-        return Response.success("获取用户详情成功", accountsVO);
+    public Response<BaseAccountsVO> adminGetUser(@PathVariable Long id) {
+        List<BaseAccountsVO> users = accountsService.adminGetUserByIds(id.toString());
+        if (users.isEmpty()) {
+            return Response.error("用户不存在");
+        }
+        return Response.success(users.get(0));
+    }
+
+    @PostMapping
+    @Operation(summary = "创建用户")
+    public Response<BaseAccountsVO> adminCreateUser(@RequestBody BaseAccountsDTO baseAccountsDTO) {
+        return Response.success(accountsService.adminCreateUser(baseAccountsDTO));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "更新用户")
-    public Response<String> updateAdminAccount(@PathVariable Long id, @RequestBody BaseAccountsDTO baseAccountsDTO) {
-        accountsService.updateAdminAccount(id, baseAccountsDTO);
-        return Response.success("更新用户成功");
+    public Response<BaseAccountsVO> adminUpdateUser(@PathVariable Long id, @RequestBody BaseAccountsDTO baseAccountsDTO) {
+        return Response.success(accountsService.adminUpdateUser(id, baseAccountsDTO));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除用户")
-    public Response<String> deleteAdminAccount(@PathVariable Long id) {
-        accountsService.deleteAdminAccount(id);
-        return Response.success("删除用户成功");
-    }
-
-    @PostMapping("/")
-    @Operation(summary = "创建用户")
-    public Response<String> createAdminAccount(@RequestBody BaseAccountsDTO baseAccountsDTO) {
-        accountsService.createAdminAccount(baseAccountsDTO);
-        return Response.success("创建用户成功");
+    public Response<Void> adminDeleteUser(@PathVariable Long id) {
+        accountsService.adminDeleteUser(id);
+        return Response.success();
     }
 
     /*
-     * certify 相关接口
+     * 用户认证相关接口
      */
 
-    @PostMapping("/certify/user/list")
+    @GetMapping("/certify/user/list")
     @Operation(summary = "获取用户认证列表")
-    public Response<List<BaseUserCertifyVO>> getAdminUserCertifyList(@RequestBody BaseUserCertifyDTO queryDTO) {
-        return Response.success("获取用户认证列表成功", userCertifyService.getAdminUserCertifyList(queryDTO));
+    public Response<List<BaseUserCertifyVO>> adminGetUserCertifyList(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseUserCertifyDTO filter) {
+        return Response.success(userCertifyService.adminGetUserCertifyList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @PostMapping("/certify/user/page")
+    @GetMapping("/certify/user/page")
     @Operation(summary = "获取用户认证列表分页")
-    public Response<Page<BaseUserCertifyVO>> getAdminUserCertifyPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                                          @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseUserCertifyDTO queryDTO) {
-        return Response.success("获取用户认证列表分页成功", userCertifyService.getAdminUserCertifyPageQuery(pageNum, pageSize, queryDTO));
+    public Response<Page<BaseUserCertifyVO>> adminGetUserCertifyPage(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseUserCertifyDTO filter) {
+        return Response.success(userCertifyService.adminGetUserCertifyPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
+    }
+
+    @GetMapping("/certify/user/ids/{ids}")
+    @Operation(summary = "根据ID获取用户认证")
+    public Response<List<BaseUserCertifyVO>> adminGetUserCertifyByIds(@PathVariable String ids) {
+        return Response.success(userCertifyService.adminGetUserCertifyByIds(ids));
     }
 
     @GetMapping("/certify/user/{id}")
     @Operation(summary = "获取用户认证详情")
-    public Response<BaseUserCertifyVO> getAdminUserCertify(@PathVariable Long id) {
-        return Response.success("获取用户认证详情成功", userCertifyService.getAdminUserCertify(id));
+    public Response<BaseUserCertifyVO> adminGetUserCertify(@PathVariable Long id) {
+        List<BaseUserCertifyVO> certifies = userCertifyService.adminGetUserCertifyByIds(id.toString());
+        if (certifies.isEmpty()) {
+            return Response.error("用户认证不存在");
+        }
+        return Response.success(certifies.get(0));
     }
 }

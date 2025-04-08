@@ -14,24 +14,49 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user/dock")
-@Tag(name = "UserDockController", description = "用户码头管理")
+@Tag(name = "UserDock", description = "用户码头模块")
 @RequiredArgsConstructor
 public class UserDockController {
 
     private final DocksService docksService;
 
-    @PostMapping("/list")
-    @Operation(summary = "获取用户码头列表", description = "获取用户码头列表")
-    public Response<List<BaseDocksVO>> getUserDockListQuery(@RequestBody BaseDocksDTO queryDTO) {
-        return Response.success(docksService.getUserDockListQuery(queryDTO));
+    @GetMapping("/list")
+    @Operation(summary = "获取用户码头列表")
+    public Response<List<BaseDocksVO>> userGetDockList(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseDocksDTO filter) {
+        return Response.success(docksService.userGetDockList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @PostMapping("/page")
-    @Operation(summary = "获取用户码头分页列表", description = "获取用户码头分页列表")
-    public Response<Page<BaseDocksVO>> getUserDockPageQuery(
+    @GetMapping("/page")
+    @Operation(summary = "分页获取用户码头列表")
+    public Response<Page<BaseDocksVO>> userGetDockPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestBody BaseDocksDTO queryDTO) {
-        return Response.success(docksService.getUserDockPageQuery(pageNum, pageSize, queryDTO));
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseDocksDTO filter) {
+        return Response.success(docksService.userGetDockPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
+    }
+
+    @GetMapping("/ids/{ids}")
+    @Operation(summary = "根据ID获取用户码头列表")
+    public Response<List<BaseDocksVO>> userGetDockByIds(@PathVariable String ids) {
+        return Response.success(docksService.userGetDockByIds(ids));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "获取用户码头详情")
+    public Response<BaseDocksVO> userGetDock(@PathVariable Long id) {
+        List<BaseDocksVO> docks = docksService.userGetDockByIds(id.toString());
+        if (docks.isEmpty()) {
+            return Response.error("码头不存在");
+        }
+        return Response.success(docks.get(0));
     }
 }

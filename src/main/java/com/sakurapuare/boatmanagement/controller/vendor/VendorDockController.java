@@ -14,29 +14,47 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/vendor/dock")
-@Tag(name = "VendorDockController", description = "供应商码头管理")
+@Tag(name = "VendorDock", description = "供应商码头模块")
 @RequiredArgsConstructor
 public class VendorDockController {
 
     private final DocksService docksService;
 
-    @GetMapping("/{id}")
-    @Operation(summary = "获取供应商码头")
-    public Response<BaseDocksVO> getVendorDock(@PathVariable Long id) {
-        return Response.success("获取供应商码头成功", docksService.getVendorDock(id));
-    }
-
     @PostMapping("/list")
-    @Operation(summary = "获取供应商码头列表", description = "获取供应商码头列表")
-    public Response<List<BaseDocksVO>> getVendorDockListQuery(@RequestBody BaseDocksDTO queryDTO) {
-        return Response.success("获取供应商码头列表成功", docksService.getVendorDockListQuery(queryDTO));
+    @Operation(summary = "获取供应商码头列表")
+    public Response<List<BaseDocksVO>> getDockList(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseDocksDTO filter) {
+        return Response.success("获取供应商码头列表成功", 
+                docksService.vendorGetDockList(search, sort, startDateTime, endDateTime, filter));
     }
 
     @PostMapping("/page")
-    @Operation(summary = "获取供应商码头分页列表", description = "获取供应商码头分页列表")
-    public Response<Page<BaseDocksVO>> getVendorDockPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                              @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseDocksDTO queryDTO) {
-        return Response.success("获取供应商码头分页列表成功", docksService.getVendorDockPageQuery(pageNum, pageSize, queryDTO));
+    @Operation(summary = "分页获取供应商码头列表")
+    public Response<Page<BaseDocksVO>> getDockPage(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseDocksDTO filter) {
+        return Response.success("获取供应商码头列表分页成功", 
+                docksService.vendorGetDockPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
+    @GetMapping("/ids")
+    @Operation(summary = "根据ID获取供应商码头列表")
+    public Response<List<BaseDocksVO>> getDockByIds(@RequestParam String ids) {
+        return Response.success("根据ID获取供应商码头列表成功", docksService.vendorGetDockByIds(ids));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "获取供应商码头详情")
+    public Response<BaseDocksVO> getDock(@PathVariable Long id) {
+        return Response.success("获取供应商码头详情成功", docksService.vendorGetDockByIds(id.toString()).get(0));
+    }
 }

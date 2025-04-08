@@ -22,75 +22,73 @@ import java.util.List;
 public class UserOrderController {
 
     private final GoodsOrdersService goodsOrdersService;
-
     private final BoatOrdersService boatOrdersService;
 
     /*
      * 商品订单
      */
 
-    @PostMapping("/goods/list")
+    @GetMapping("/goods/list")
     @Operation(summary = "获取用户商品订单列表")
-    public Response<List<BaseGoodsOrdersVO>> getUserGoodsOrdersListQuery(
+    public Response<List<BaseGoodsOrdersVO>> userGetGoodsOrdersList(
             @RequestBody BaseGoodsOrdersDTO goodsOrdersDTO) {
-        return Response.success("获取用户商品订单列表成功", goodsOrdersService.getUserGoodsOrdersListQuery(goodsOrdersDTO));
+        return Response.success(goodsOrdersService.userGetGoodsOrdersList(goodsOrdersDTO));
     }
 
-    @PostMapping("/goods/page")
+    @GetMapping("/goods/page")
     @Operation(summary = "获取用户商品订单列表分页")
-    public Response<Page<BaseGoodsOrdersVO>> getUserGoodsOrdersPageQuery(
+    public Response<Page<BaseGoodsOrdersVO>> userGetGoodsOrdersPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestBody BaseGoodsOrdersDTO goodsOrdersDTO) {
-        return Response.success("获取用户商品订单列表分页成功",
-                goodsOrdersService.getUserGoodsOrdersPageQuery(pageNum, pageSize, goodsOrdersDTO));
+        return Response.success(goodsOrdersService.userGetGoodsOrdersPage(pageNum, pageSize, goodsOrdersDTO));
     }
 
-    @PostMapping("/goods/pay/{id}")
+    @PutMapping("/goods/pay/{id}")
     @Operation(summary = "支付用户商品订单")
-    public Response<String> payUserGoodsOrder(@PathVariable Long id) {
-        goodsOrdersService.payUserGoodsOrder(id);
-        return Response.success("支付用户商品订单成功");
+    public Response<Void> userPayGoodsOrder(@PathVariable Long id) {
+        goodsOrdersService.userPayGoodsOrder(id);
+        return Response.success();
     }
 
-    @PostMapping("/goods/cancel/{id}")
+    @PutMapping("/goods/cancel/{id}")
     @Operation(summary = "取消用户商品订单")
-    public Response<String> cancelUserGoodsOrder(@PathVariable Long id) {
-        goodsOrdersService.cancelUserGoodsOrder(id);
-        return Response.success("取消用户商品订单成功");
+    public Response<Void> userCancelGoodsOrder(@PathVariable Long id) {
+        goodsOrdersService.userCancelGoodsOrder(id);
+        return Response.success();
     }
 
     /*
      * 船舶订单
      */
 
-    @PostMapping("/boat/list")
+    @GetMapping("/boat/list")
     @Operation(summary = "获取用户船舶订单列表")
-    public Response<List<BaseBoatOrdersVO>> getUserBoatOrdersListQuery(@RequestBody BaseBoatOrdersDTO boatOrdersDTO) {
-        return Response.success("获取用户船舶订单列表成功", boatOrdersService.getUserBoatOrdersListQuery(boatOrdersDTO));
+    public Response<List<BaseBoatOrdersVO>> userGetBoatOrdersList(
+            @RequestBody BaseBoatOrdersDTO boatOrdersDTO) {
+        return Response.success(boatOrdersService.getUserBoatOrdersListQuery(boatOrdersDTO));
     }
 
-    @PostMapping("/boat/page")
+    @GetMapping("/boat/page")
     @Operation(summary = "获取用户船舶订单列表分页")
-    public Response<Page<BaseBoatOrdersVO>> getUserBoatOrdersPageQuery(
+    public Response<Page<BaseBoatOrdersVO>> userGetBoatOrdersPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestBody BaseBoatOrdersDTO boatOrdersDTO) {
-        return Response.success("获取用户船舶订单列表分页成功",
-                boatOrdersService.getUserBoatOrdersPageQuery(pageNum, pageSize, boatOrdersDTO));
+        return Response.success(boatOrdersService.getUserBoatOrdersPageQuery(pageNum, pageSize, boatOrdersDTO));
     }
 
-    @PostMapping("/boat/pay/{id}")
+    @PutMapping("/boat/pay/{id}")
     @Operation(summary = "支付用户船舶订单")
-    public Response<String> payUserBoatOrders(@PathVariable Long id) {
+    public Response<Void> userPayBoatOrder(@PathVariable Long id) {
         boatOrdersService.payUserBoatOrders(id);
-        return Response.success("支付用户船舶订单成功");
+        return Response.success();
     }
 
-    @PostMapping("/boat/cancel/{id}")
+    @PutMapping("/boat/cancel/{id}")
     @Operation(summary = "取消用户船舶订单")
-    public Response<String> cancelUserBoatOrder(@PathVariable Long id) {
+    public Response<Void> userCancelBoatOrder(@PathVariable Long id) {
         boatOrdersService.cancelUserBoatOrders(id);
-        return Response.success("取消用户船舶订单成功");
+        return Response.success();
     }
 }

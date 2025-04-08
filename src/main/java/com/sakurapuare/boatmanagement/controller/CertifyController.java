@@ -19,63 +19,67 @@ public class CertifyController {
 
     private final CertifyService certifyService;
 
-    @GetMapping("user")
+    @GetMapping("/user")
     @Operation(summary = "获取用户实名认证信息")
     public Response<BaseUserCertifyVO> getUserCertify() {
         return Response.success(certifyService.getUserCertify());
     }
 
-    @PostMapping("user")
+    @PostMapping("/user")
     @Operation(summary = "用户实名认证")
-    public Response<String> certifyUser(@RequestBody UserCertifyRequestDTO userCertifyRequestDTO) {
+    public Response<Void> userCertify(@RequestBody UserCertifyRequestDTO userCertifyRequestDTO) {
         certifyService.certifyUser(userCertifyRequestDTO);
-        return Response.success("实名认证中");
+        return Response.success();
     }
 
-    @GetMapping("merchant")
+    @GetMapping("/merchant")
     @Operation(summary = "获取商户实名认证信息")
     public Response<BaseUnitsVO> getMerchantCertify() {
         return Response.success(certifyService.getMerchantCertify());
     }
 
-    @PostMapping("merchant")
+    @PostMapping("/merchant")
     @Operation(summary = "商户实名认证")
-    public Response<String> certifyMerchant(@RequestBody UnitCertifyRequestDTO unitCertifyRequestDTO) {
+    public Response<Void> merchantCertify(@RequestBody UnitCertifyRequestDTO unitCertifyRequestDTO) {
         certifyService.certifyMerchant(unitCertifyRequestDTO);
-        return Response.success("实名认证中");
+        return Response.success();
     }
 
-    @GetMapping("vendor")
+    @GetMapping("/vendor")
     @Operation(summary = "获取供应商实名认证信息")
     public Response<BaseUnitsVO> getVendorCertify() {
         return Response.success(certifyService.getVendorCertify());
     }
 
-    @PostMapping("vendor")
+    @PostMapping("/vendor")
     @Operation(summary = "供应商实名认证")
-    public Response<String> certifyVendor(@RequestBody UnitCertifyRequestDTO unitCertifyRequestDTO) {
+    public Response<Void> vendorCertify(@RequestBody UnitCertifyRequestDTO unitCertifyRequestDTO) {
         certifyService.certifyVendor(unitCertifyRequestDTO);
-        return Response.success("实名认证中");
+        return Response.success();
     }
 
-    @PutMapping("join/{types}/{unitId}")
+    @PutMapping("/join/{types}/{unitId}")
     @Operation(summary = "加入单位")
-    public Response<String> joinUnit(@PathVariable String types, @PathVariable Long unitId) {
+    public Response<Void> joinUnit(
+            @PathVariable String types, 
+            @PathVariable Long unitId) {
         certifyService.joinUnit(types, unitId);
-        return Response.success("已加入单位");
+        return Response.success();
     }
 
-    @PutMapping("transfer/{types}/{userId}")
+    @PutMapping("/transfer/{types}/{userId}")
     @Operation(summary = "转让单位")
-    public Response<String> transferUnit(@PathVariable String types, @PathVariable Long userId) {
+    public Response<Void> transferUnit(
+            @PathVariable String types, 
+            @PathVariable Long userId) {
         certifyService.transferUnit(types, userId);
-        return Response.success("已转让单位");
+        return Response.success();
     }
 
-    @DeleteMapping("leave/{types}")
+    @DeleteMapping("/leave/{types}")
     @Operation(summary = "离开单位")
-    public Response<String> leaveUnit(@PathVariable String types) {
+    public Response<Void> leaveUnit(@PathVariable String types) {
         certifyService.leaveUnit(types);
-        return Response.success("已离开单位");
+        return Response.success();
     }
 }

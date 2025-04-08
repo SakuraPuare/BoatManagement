@@ -20,40 +20,63 @@ public class UserBoatRequestController {
 
     private final BoatRequestsService boatRequestsService;
 
-    @PostMapping("/list")
-    @Operation(summary = "获取用户船只请求列表", description = "获取用户船只请求列表")
-    public Response<List<BaseBoatRequestsVO>> getUserBoatRequestsListQuery(
-            @RequestBody BaseBoatRequestsDTO boatRequestDTO) {
-        return Response.success("获取用户船只请求列表成功", boatRequestsService.getUserBoatRequestsListQuery(boatRequestDTO));
+    @GetMapping("/list")
+    @Operation(summary = "获取用户船只请求列表")
+    public Response<List<BaseBoatRequestsVO>> userGetBoatRequestList(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseBoatRequestsDTO filter) {
+        return Response.success(boatRequestsService.userGetBoatRequestList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @PostMapping("/page")
-    @Operation(summary = "获取用户船只请求列表分页", description = "获取用户船只请求列表分页")
-    public Response<Page<BaseBoatRequestsVO>> getUserBoatRequestsPageQuery(
-            @RequestParam(defaultValue = "1") Integer pageNum, @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestBody BaseBoatRequestsDTO boatRequestDTO) {
-        return Response.success("获取用户船只请求列表分页成功", boatRequestsService.getUserBoatRequestsPageQuery(pageNum, pageSize, boatRequestDTO));
+    @GetMapping("/page")
+    @Operation(summary = "获取用户船只请求列表分页")
+    public Response<Page<BaseBoatRequestsVO>> userGetBoatRequestPage(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseBoatRequestsDTO filter) {
+        return Response.success(boatRequestsService.userGetBoatRequestPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
-    @PostMapping("/")
-    @Operation(summary = "创建用户船只请求", description = "创建用户船只请求")
-    public Response<String> createUserBoatRequest(@RequestBody BaseBoatRequestsDTO boatRequestDTO) {
-        boatRequestsService.createUserBoatRequest(boatRequestDTO);
-        return Response.success("创建用户船只请求成功");
+    @GetMapping("/ids/{ids}")
+    @Operation(summary = "根据ID获取用户船只请求")
+    public Response<List<BaseBoatRequestsVO>> userGetBoatRequestByIds(@PathVariable String ids) {
+        return Response.success(boatRequestsService.userGetBoatRequestByIds(ids));
     }
 
-    @PostMapping("/cancel/{id}")
-    @Operation(summary = "取消用户船只请求", description = "取消用户船只请求")
-    public Response<String> cancelUserBoatRequest(@PathVariable Long id) {
-        boatRequestsService.cancelUserBoatRequest(id);
-        return Response.success("取消用户船只请求成功");
+    @GetMapping("/{id}")
+    @Operation(summary = "获取用户船只请求详情")
+    public Response<BaseBoatRequestsVO> userGetBoatRequest(@PathVariable Long id) {
+        List<BaseBoatRequestsVO> requests = boatRequestsService.userGetBoatRequestByIds(id.toString());
+        if (requests.isEmpty()) {
+            return Response.error("船只请求不存在");
+        }
+        return Response.success(requests.get(0));
     }
 
-    @PostMapping("/update/{id}")
-    @Operation(summary = "更新用户船只请求", description = "更新用户船只请求")
-    public Response<String> updateUserBoatRequest(@PathVariable Long id,
-                                                  @RequestBody BaseBoatRequestsDTO boatRequestDTO) {
-        boatRequestsService.updateUserBoatRequest(id, boatRequestDTO);
-        return Response.success("更新用户船只请求成功");
+    @PostMapping
+    @Operation(summary = "创建用户船只请求")
+    public Response<BaseBoatRequestsVO> userCreateBoatRequest(@RequestBody BaseBoatRequestsDTO dto) {
+        return Response.success(boatRequestsService.userCreateBoatRequest(dto));
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "更新用户船只请求")
+    public Response<BaseBoatRequestsVO> userUpdateBoatRequest(
+            @PathVariable Long id,
+            @RequestBody BaseBoatRequestsDTO dto) {
+        return Response.success(boatRequestsService.userUpdateBoatRequest(id, dto));
+    }
+
+    @PutMapping("/cancel/{id}")
+    @Operation(summary = "取消用户船只请求")
+    public Response<BaseBoatRequestsVO> userCancelBoatRequest(@PathVariable Long id) {
+        return Response.success(boatRequestsService.userCancelBoatRequest(id));
     }
 }

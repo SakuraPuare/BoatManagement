@@ -22,33 +22,33 @@ public class MerchantOrderController {
 
     @PostMapping("/list")
     @Operation(summary = "获取商家订单列表")
-    public Response<List<BaseGoodsOrdersVO>> getMerchantOrdersListQuery(@RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
-        List<BaseGoodsOrdersVO> merchantOrders = goodsOrdersService.getMerchantsGoodsOrdersListQuery(merchantOrderDTO);
+    public Response<List<BaseGoodsOrdersVO>> merchantGetOrdersList(@RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
+        List<BaseGoodsOrdersVO> merchantOrders = goodsOrdersService.merchantGetGoodsOrdersList(merchantOrderDTO);
         return Response.success(merchantOrders);
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取商家订单列表分页")
-
-    public Response<Page<BaseGoodsOrdersVO>> getMerchantOrdersPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                                        @RequestParam(defaultValue = "10") Integer pageSize,
-                                                                        @RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
-        Page<BaseGoodsOrdersVO> merchantOrders = goodsOrdersService.getMerchantsGoodsOrdersPageQuery(pageNum, pageSize,
+    public Response<Page<BaseGoodsOrdersVO>> merchantGetOrdersPage(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestBody BaseGoodsOrdersDTO merchantOrderDTO) {
+        Page<BaseGoodsOrdersVO> merchantOrders = goodsOrdersService.merchantGetGoodsOrdersPage(pageNum, pageSize,
                 merchantOrderDTO);
         return Response.success(merchantOrders);
     }
 
     @PostMapping("/complete/{id}")
     @Operation(summary = "完成订单")
-    public Response<String> completeOrder(@PathVariable Long id) {
-        goodsOrdersService.completeMerchantOrder(id);
+    public Response<String> merchantCompleteOrder(@PathVariable Long id) {
+        goodsOrdersService.merchantCompleteOrder(id);
         return Response.success("订单完成");
     }
 
     @PostMapping("/cancel/{id}")
     @Operation(summary = "取消订单")
-    public Response<String> cancelOrder(@PathVariable Long id) {
-        goodsOrdersService.cancelMerchantOrder(id);
+    public Response<String> merchantCancelOrder(@PathVariable Long id) {
+        goodsOrdersService.merchantCancelOrder(id);
         return Response.success("订单取消");
     }
 }

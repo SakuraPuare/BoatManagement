@@ -22,35 +22,57 @@ public class VendorBoatController {
 
     @PostMapping("/list")
     @Operation(summary = "获取供应商船舶列表")
-    public Response<List<BaseBoatsVO>> getVendorBoatsListQuery(@RequestBody BaseBoatsDTO queryDTO) {
-        return Response.success("获取供应商船舶列表成功", boatsService.getVendorBoatsListQuery(queryDTO));
+    public Response<List<BaseBoatsVO>> vendorGetBoatList(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseBoatsDTO filter) {
+        return Response.success("获取供应商船舶列表成功", boatsService.vendorGetBoatList(search, sort, startDateTime, endDateTime, filter));
     }
 
     @PostMapping("/page")
-    @Operation(summary = "获取供应商船舶列表分页")
-    public Response<Page<BaseBoatsVO>> getVendorBoatsPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                               @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseBoatsDTO boatsQueryDTO) {
-        return Response.success("获取供应商船舶列表分页成功", boatsService.getVendorBoatsPageQuery(pageNum, pageSize, boatsQueryDTO));
+    @Operation(summary = "分页获取供应商船舶列表")
+    public Response<Page<BaseBoatsVO>> vendorGetBoatPage(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseBoatsDTO filter) {
+        return Response.success("获取供应商船舶列表分页成功", 
+                boatsService.vendorGetBoatPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
-    @PostMapping("/")
-    @Operation(summary = "添加供应商船舶")
-    public Response<String> addVendorBoat(@RequestBody BaseBoatsDTO boatsDTO) {
-        boatsService.addVendorBoat(boatsDTO);
-        return Response.success("添加船舶成功");
+    @GetMapping("/ids")
+    @Operation(summary = "根据ID获取供应商船舶列表")
+    public Response<List<BaseBoatsVO>> vendorGetBoatByIds(@RequestParam String ids) {
+        return Response.success("根据ID获取供应商船舶列表成功", boatsService.vendorGetBoatByIds(ids));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "获取供应商船舶详情")
+    public Response<BaseBoatsVO> vendorGetBoat(@PathVariable Long id) {
+        return Response.success("获取供应商船舶详情成功", boatsService.vendorGetBoatByIds(id.toString()).get(0));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "更新供应商船舶")
-    public Response<String> updateVendorBoat(@PathVariable Long id, @RequestBody BaseBoatsDTO boatsDTO) {
-        boatsService.updateVendorBoat(id, boatsDTO);
-        return Response.success("更新船舶成功");
+    public Response<BaseBoatsVO> vendorUpdateBoat(@PathVariable Long id, @RequestBody BaseBoatsDTO baseBoatsDTO) {
+        return Response.success("更新供应商船舶成功", boatsService.vendorUpdateBoat(id, baseBoatsDTO));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除供应商船舶")
-    public Response<String> deleteVendorBoat(@PathVariable Long id) {
-        boatsService.deleteVendorBoat(id);
-        return Response.success("删除船舶成功");
+    public Response<String> vendorDeleteBoat(@PathVariable Long id) {
+        boatsService.vendorDeleteBoat(id);
+        return Response.success("删除供应商船舶成功");
+    }
+
+    @PostMapping("/")
+    @Operation(summary = "创建供应商船舶")
+    public Response<BaseBoatsVO> vendorCreateBoat(@RequestBody BaseBoatsDTO baseBoatsDTO) {
+        return Response.success("创建供应商船舶成功", boatsService.vendorCreateBoat(baseBoatsDTO));
     }
 }
