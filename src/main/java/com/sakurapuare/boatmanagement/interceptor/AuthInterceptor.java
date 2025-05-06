@@ -1,9 +1,11 @@
 package com.sakurapuare.boatmanagement.interceptor;
 
 import com.sakurapuare.boatmanagement.common.context.UserContext;
-import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
+import com.sakurapuare.boatmanagement.pojo.entity.Permission;
+import com.sakurapuare.boatmanagement.pojo.entity.Role;
 import com.sakurapuare.boatmanagement.service.AccountsService;
+import com.sakurapuare.boatmanagement.service.RoleService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +16,18 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final AccountsService accountService;
+    private final RoleService RoleService;
 
     private void writeResponse(HttpServletResponse response, int code, String message) {
         response.setContentType("application/json;charset=UTF-8");
@@ -36,21 +42,21 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                              @NonNull Object handler) {
-        // 获取token
+        // 获取 token
         String token = request.getHeader("Authorization");
         if (!StringUtils.hasText(token)) {
             writeResponse(response, 401, "未登录");
             return false;
         }
 
-        // 验证token并获取用户信息
+        // 验证 token 并获取用户信息
         Accounts account;
         try {
             token = token.replace("Bearer ", "");
             account = accountService.getAccountByToken(token);
             UserContext.setAccount(account);
         } catch (Exception e) {
-            writeResponse(response, 401, "token无效");
+            writeResponse(response, 401, "token 无效");
             return false;
         }
 
@@ -65,17 +71,23 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        // 校验权限
+        // 获取用户角色和权限
+        List<Role> roles = RoleService.getUserRoles(account.getId());
+        List<Permission> permissions = RoleService.getUserPermissions(account.getId());
+        
+        // 检查 URI 访问权限
         String uri = request.getRequestURI();
-        Map<String, Integer> roleMap = new HashMap<>();
-        roleMap.put("/user", UserRole.USER);
-        roleMap.put("/merchant", UserRole.MERCHANT);
-        roleMap.put("/vendor", UserRole.VENDOR);
-        roleMap.put("/admin", UserRole.ADMIN);
-
-        for (Map.Entry<String, Integer> entry : roleMap.entrySet()) {
+        
+        // 基于 URI 路径检查角色
+        Map<String, List<String>> pathRoleMap = new HashMap<>();
+        pathRoleMap.put("/user", Arrays.asList("USER"));
+        pathRoleMap.put("/merchant", Arrays.asList("MERCHANT"));
+        pathRoleMap.put("/vendor", Arrays.asList("VENDOR"));
+        pathRoleMap.put("/admin", Arrays.asList("ADMIN"));
+        
+        for (Map.Entry<String, List<String>> entry : pathRoleMap.entrySet()) {
             if (uri.startsWith(entry.getKey())) {
-                if (!UserRole.hasRole(account.getRole(), entry.getValue())) {
+                if (!RoleService.hasAnyRole(account.getId(), entry.getValue())) {
                     writeResponse(response, 401, "权限不足");
                     return false;
                 }
@@ -89,8 +101,7 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                 @NonNull Object handler, @SuppressWarnings("null") Exception ex) {
-        // 清理ThreadLocal
+        // 清理 ThreadLocal
         UserContext.clear();
-
     }
 }

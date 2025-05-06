@@ -5,8 +5,8 @@ import com.mybatisflex.core.service.IService;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.constant.AuditOperation;
 import com.sakurapuare.boatmanagement.constant.CertifyStatus;
+import com.sakurapuare.boatmanagement.constant.Roles;
 import com.sakurapuare.boatmanagement.constant.UnitsTypes;
-import com.sakurapuare.boatmanagement.constant.UserRole;
 import com.sakurapuare.boatmanagement.pojo.dto.UnitCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.dto.UserCertifyRequestDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.*;
@@ -28,6 +28,7 @@ public class CertifyService {
     private final VendorsService vendorsService;
     private final AccountsService accountsService;
     private final LogsService logsService;
+    private final RoleService roleService;
 
     public void certifyUser(UserCertifyRequestDTO request) {
         UserCertify userCertify = userCertifyService.getOne(
@@ -380,6 +381,8 @@ public class CertifyService {
         unitsService.updateById(unit);
 
         Accounts account = null;
+        Role merchantRole = null;
+        Role vendorRole = null;
 
         switch (unit.getTypes()) {
             case UnitsTypes.MERCHANT: {
@@ -389,9 +392,13 @@ public class CertifyService {
                 merchant.setStatus(CertifyStatus.APPROVED);
                 merchantsService.updateById(merchant);
 
-                // 3. 更新账号权限
+                // 3. 更新账号权限 - 找到 MERCHANT 角色
                 account = accountsService.getById(merchant.getUserId());
-                account.setRole(UserRole.addRole(account.getRole(), UserRole.MERCHANT));
+                merchantRole = roleService.getOne(
+                        new QueryWrapper().where(ROLE.NAME.eq("MERCHANT")));
+                if (merchantRole != null) {
+                    roleService.assignRole(merchant.getUserId(), merchantRole.getId(), unit.getId());
+                }
                 break;
             }
             case UnitsTypes.VENDOR: {
@@ -401,13 +408,16 @@ public class CertifyService {
                 vendor.setStatus(CertifyStatus.APPROVED);
                 vendorsService.updateById(vendor);
 
-                // 3. 更新账号权限
+                // 3. 更新账号权限 - 找到 VENDOR 角色
                 account = accountsService.getById(vendor.getUserId());
-                account.setRole(UserRole.addRole(account.getRole(), UserRole.VENDOR));
+                vendorRole = roleService.getOne(
+                        new QueryWrapper().where(ROLE.NAME.eq("VENDOR")));
+                if (vendorRole != null) {
+                    roleService.assignRole(vendor.getUserId(), vendorRole.getId(), unit.getId());
+                }
                 break;
             }
         }
-        accountsService.updateById(account);
     }
 
     private void rejectUnit(Units unit) {
@@ -416,6 +426,8 @@ public class CertifyService {
         unitsService.updateById(unit);
 
         Accounts account = null;
+        Role merchantRole = null;
+        Role vendorRole = null;
 
         switch (unit.getTypes()) {
 
@@ -426,9 +438,14 @@ public class CertifyService {
                 merchant.setStatus(CertifyStatus.REJECTED);
                 merchantsService.updateById(merchant);
 
-                // 3. 更新账号权限
+                // 3. 更新账号权限 - 撤销 MERCHANT 角色
                 account = accountsService.getById(merchant.getUserId());
-                account.setRole(UserRole.removeRole(account.getRole(), UserRole.MERCHANT));
+                merchantRole = roleService.getOne(
+                        new QueryWrapper().where(ROLE.NAME.eq(Roles.MERCHANT)));
+                if (merchantRole != null) {
+                    roleService.revokeRole(merchant.getUserId(), merchantRole.getId(), unit.getId());
+                }
+                break;
             }
             case UnitsTypes.VENDOR: {
                 Vendors vendor = vendorsService.getOne(
@@ -436,12 +453,16 @@ public class CertifyService {
                 vendor.setStatus(CertifyStatus.REJECTED);
                 vendorsService.updateById(vendor);
 
-                // 3. 更新账号权限
+                // 3. 更新账号权限 - 撤销 VENDOR 角色
                 account = accountsService.getById(vendor.getUserId());
-                account.setRole(UserRole.removeRole(account.getRole(), UserRole.VENDOR));
+                vendorRole = roleService.getOne(
+                        new QueryWrapper().where(ROLE.NAME.eq(Roles.VENDOR)));
+                if (vendorRole != null) {
+                    roleService.revokeRole(vendor.getUserId(), vendorRole.getId(), unit.getId());
+                }
+                break;
             }
         }
-        accountsService.updateById(account);
     }
 
     private void approveUser(UserCertify userCertify) {
@@ -478,7 +499,7 @@ public class CertifyService {
     }
 
     public void auditAdminUser(String types, Long id) {
-        if (AuditOperation.isAuditOperation(types)) {
+        if (!AuditOperation.isAuditOperation(types)) {
             throw new IllegalArgumentException("不支持的审核操作");
         }
 
@@ -493,6 +514,7 @@ public class CertifyService {
                 break;
             case AuditOperation.REJECTED:
                 rejectUser(userCertify);
+                break;
         }
     }
 }

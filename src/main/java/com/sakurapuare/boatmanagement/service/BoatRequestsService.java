@@ -12,6 +12,8 @@ import com.sakurapuare.boatmanagement.service.base.BaseBoatRequestsService;
 import com.sakurapuare.boatmanagement.utils.POJOUtils;
 import com.sakurapuare.boatmanagement.utils.ParamsUtils;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -162,9 +164,9 @@ public class BoatRequestsService extends BaseBoatRequestsService {
     }
 
     /**
-     * 根据ID获取船只请求
+     * 根据 ID 获取船只请求
      *
-     * @param ids 船只请求ID字符串，多个ID用逗号分隔
+     * @param ids 船只请求 ID 字符串，多个 ID 用逗号分隔
      * @return 船只请求视图对象列表
      */
     public List<BaseBoatRequestsVO> userGetBoatRequestByIds(String ids) {
@@ -200,13 +202,13 @@ public class BoatRequestsService extends BaseBoatRequestsService {
     /**
      * 检查船只请求是否存在并属于当前用户
      *
-     * @param id 船只请求ID
+     * @param id 船只请求 ID
      * @return 船只请求实体
      * @throws RuntimeException 当船只请求不存在或不属于当前用户时抛出
      */
     private BoatRequests checkUserBoatRequestExist(Long id) {
         if (id == null) {
-            throw new RuntimeException("请求ID不能为空");
+            throw new RuntimeException("请求 ID 不能为空");
         }
 
         BoatRequests boatRequest = super.getById(id);
@@ -224,7 +226,7 @@ public class BoatRequestsService extends BaseBoatRequestsService {
     /**
      * 用户取消船只请求
      *
-     * @param id 船只请求ID
+     * @param id 船只请求 ID
      * @return 更新后的船只请求视图对象
      */
     public BaseBoatRequestsVO userCancelBoatRequest(Long id) {
@@ -237,24 +239,74 @@ public class BoatRequestsService extends BaseBoatRequestsService {
     /**
      * 用户更新船只请求
      *
-     * @param id  船只请求ID
+     * @param id  船只请求 ID
      * @param dto 船只请求数据传输对象
      * @return 更新后的船只请求视图对象
      */
     public BaseBoatRequestsVO userUpdateBoatRequest(Long id, BaseBoatRequestsDTO dto) {
         BoatRequests boatRequest = checkUserBoatRequestExist(id);
         
-        // 保留原有的用户ID和状态
+        // 保留原有的用户 ID 和状态
         Long userId = boatRequest.getUserId();
         String status = boatRequest.getStatus();
         
-        // 复制新的属性
-        boatRequest = POJOUtils.asOther(dto, BoatRequests.class);
-        boatRequest.setId(id);
+        // 更新实体
+        BeanUtils.copyProperties(dto, boatRequest);
         boatRequest.setUserId(userId);
         boatRequest.setStatus(status);
         
         super.updateById(boatRequest);
         return POJOUtils.asOther(boatRequest, BaseBoatRequestsVO.class);
+    }
+
+    /**
+     * 检查船只请求是否存在
+     *
+     * @param id 船只请求 ID
+     * @return 船只请求实体
+     * @throws RuntimeException 当船只请求不存在时抛出
+     */
+    private BoatRequests checkBoatRequestExist(Long id) {
+        if (id == null) {
+            throw new RuntimeException("请求 ID 不能为空");
+        }
+
+        BoatRequests boatRequest = super.getById(id);
+        if (boatRequest == null) {
+            throw new RuntimeException("船只请求不存在");
+        }
+        
+        return boatRequest;
+    }
+
+    /**
+     * 商家更新船只请求状态
+     *
+     * @param id     船只请求 ID
+     * @param status 新状态
+     * @return 更新后的船只请求视图对象
+     */
+    public BaseBoatRequestsVO vendorUpdateBoatRequestStatus(Long id, String status) {
+        BoatRequests boatRequest = checkBoatRequestExist(id);
+        boatRequest.setStatus(status);
+        super.updateById(boatRequest);
+        return POJOUtils.asOther(boatRequest, BaseBoatRequestsVO.class);
+    }
+
+    /**
+     * 商家根据 ID 获取船只请求
+     *
+     * @param ids 船只请求 ID 字符串，多个 ID 用逗号分隔
+     * @return 船只请求视图对象列表
+     */
+    public List<BaseBoatRequestsVO> vendorGetBoatRequestByIds(String ids) {
+        List<Long> idList = ParamsUtils.getListFromIds(ids);
+
+        if (idList.isEmpty()) {
+            return List.of();
+        }
+
+        List<BoatRequests> requests = POJOUtils.getListFromIds(idList, super::getById);
+        return POJOUtils.asOtherList(requests, BaseBoatRequestsVO.class);
     }
 }

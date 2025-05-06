@@ -47,9 +47,9 @@ public class AdminDockController {
     }
 
     @GetMapping("/ids")
-    @Operation(summary = "根据ID获取码头列表")
+    @Operation(summary = "根据 ID 获取码头列表")
     public Response<List<BaseDocksVO>> getDockByIds(@RequestParam String ids) {
-        return Response.success("根据ID获取码头列表成功", docksService.adminGetDockByIds(ids));
+        return Response.success("根据 ID 获取码头列表成功", docksService.adminGetDockByIds(ids));
     }
 
     @GetMapping("/{id}")

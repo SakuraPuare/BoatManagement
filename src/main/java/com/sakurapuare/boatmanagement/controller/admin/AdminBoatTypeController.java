@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/boat-type")
+@RequestMapping("/admin/boat/type")
 @Tag(name = "AdminBoatType", description = "船舶类型模块")
 @RequiredArgsConstructor
 public class AdminBoatTypeController {
@@ -47,9 +47,9 @@ public class AdminBoatTypeController {
     }
 
     @GetMapping("/ids")
-    @Operation(summary = "根据ID获取船舶类型列表")
+    @Operation(summary = "根据 ID 获取船舶类型列表")
     public Response<List<BaseBoatTypesVO>> getBoatTypeByIds(@RequestParam String ids) {
-        return Response.success("根据ID获取船舶类型列表成功", boatTypesService.adminGetBoatTypeByIds(ids));
+        return Response.success("根据 ID 获取船舶类型列表成功", boatTypesService.adminGetBoatTypeByIds(ids));
     }
 
     @GetMapping("/{id}")

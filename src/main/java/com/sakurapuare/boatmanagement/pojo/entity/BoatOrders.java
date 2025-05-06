@@ -37,9 +37,9 @@ public class BoatOrders extends BaseOrder implements Serializable {
     private Long id;
 
     /**
-     * 请求ID_serverside
+     * 请求 ID_serverside
      */
-    @ApiModelProperty("请求ID_serverside")
+    @ApiModelProperty("请求 ID_serverside")
     private Long requestId;
 
     /**

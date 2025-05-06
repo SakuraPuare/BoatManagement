@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.EqualsAndHashCode;
 
 /**
- * 角色表_ndto_nvo 实体类。
+ * 角色表 实体类。
  *
  */
 @Data
@@ -25,7 +25,7 @@ import lombok.EqualsAndHashCode;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@ApiModel("角色表_ndto_nvo")
+@ApiModel("角色表")
 @Table("role")
 public class Role extends BaseEntity implements Serializable {
 

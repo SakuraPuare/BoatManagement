@@ -44,9 +44,9 @@ public class BoatRequests extends BaseEntity implements Serializable {
     private Long userId;
 
     /**
-     * 订单ID_serverside
+     * 订单 ID_serverside
      */
-    @ApiModelProperty("订单ID_serverside")
+    @ApiModelProperty("订单 ID_serverside")
     private Long orderId;
 
     /**

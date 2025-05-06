@@ -90,7 +90,7 @@ public class AuthService {
     public Accounts loginWithWechat(WxLoginDTO wxLoginDTO) {
 //         AuthStatus authStatus = new AuthStatus(AuthMethod.WECHAT, AuthType.LOGIN);
 
-// //        // 将WxLoginDTO转换为AuthRequestDTO
+// //        // 将 WxLoginDTO 转换为 AuthRequestDTO
 //         AuthRequestDTO authRequestDTO = new AuthRequestDTO();
 //         authRequestDTO.setCode(wxLoginDTO.getCode());
 //         authRequestDTO.setUserInfo(wxLoginDTO.getUserInfo());
@@ -104,7 +104,6 @@ public class AuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", account.getId());
         claims.put("username", account.getUsername());
-        // claims.put("role", account.getRole());
         return JWTUtils.generateToken(claims);
     }
 

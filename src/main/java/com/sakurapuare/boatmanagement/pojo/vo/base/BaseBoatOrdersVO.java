@@ -11,7 +11,7 @@ public class BaseBoatOrdersVO extends BaseOrderVO {
 
     private Long id;
 
-    @ApiModelProperty("请求ID_serverside")
+    @ApiModelProperty("请求 ID_serverside")
     private Long requestId;
 
     @ApiModelProperty("指定船只")

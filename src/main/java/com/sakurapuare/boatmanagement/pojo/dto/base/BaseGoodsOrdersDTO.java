@@ -10,7 +10,7 @@ import java.util.Map;
 @EqualsAndHashCode(callSuper = true)
 public class BaseGoodsOrdersDTO extends BaseOrderDTO {
 
-    @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
+    @ApiModelProperty("订单信息：id:数量，id:数量，id:数量")
     private Map<Long, Double> orderInfo;
 
 }

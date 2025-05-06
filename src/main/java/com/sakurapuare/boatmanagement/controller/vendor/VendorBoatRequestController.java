@@ -23,15 +23,40 @@ public class VendorBoatRequestController {
     @PostMapping("/list")
     @Operation(summary = "获取商家船只请求列表")
     public Response<List<BaseBoatRequestsVO>> getVendorBoatRequestsListQuery(
-            @RequestBody BaseBoatRequestsDTO baseBoatRequestsDTO) {
-        return Response.success("获取商家船只请求列表成功", boatRequestsService.getVendorBoatRequestsListQuery(baseBoatRequestsDTO));
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseBoatRequestsDTO filter) {
+        return Response.success("获取商家船只请求列表成功", 
+                boatRequestsService.vendorGetBoatRequestList(search, sort, startDateTime, endDateTime, filter));
     }
 
     @PostMapping("/page")
     @Operation(summary = "获取商家船只请求列表分页")
-    public Response<Page<BaseBoatRequestsVO>> getVendorBoatRequestsPageQuery(@RequestParam(defaultValue = "1") Integer pageNum,
-                                                                             @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody BaseBoatRequestsDTO baseBoatRequestsDTO) {
-        return Response
-                .success("获取商家船只请求列表分页成功", boatRequestsService.getVendorBoatRequestsPageQuery(pageNum, pageSize, baseBoatRequestsDTO));
+    public Response<Page<BaseBoatRequestsVO>> getVendorBoatRequestsPageQuery(
+            @RequestParam(defaultValue = "1") Integer pageNum,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String startDateTime,
+            @RequestParam(required = false) String endDateTime,
+            @RequestBody(required = false) BaseBoatRequestsDTO filter) {
+        return Response.success("获取商家船只请求列表分页成功", 
+                boatRequestsService.vendorGetBoatRequestPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
+    }
+    
+    @GetMapping("/ids")
+    @Operation(summary = "根据ID获取商家船只请求")
+    public Response<List<BaseBoatRequestsVO>> vendorGetBoatRequestByIds(@RequestParam String ids) {
+        return Response.success("根据ID获取商家船只请求成功", boatRequestsService.vendorGetBoatRequestByIds(ids));
+    }
+    
+    @PutMapping("/status/{id}")
+    @Operation(summary = "更新商家船只请求状态")
+    public Response<BaseBoatRequestsVO> vendorUpdateBoatRequestStatus(
+            @PathVariable Long id, 
+            @RequestParam String status) {
+        return Response.success("更新商家船只请求状态成功", boatRequestsService.vendorUpdateBoatRequestStatus(id, status));
     }
 }

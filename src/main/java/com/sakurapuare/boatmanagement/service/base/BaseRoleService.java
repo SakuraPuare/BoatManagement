@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * 角色表_ndto_nvo 服务层实现。
+ * 角色表 服务层实现。
  *
  */
 @Service

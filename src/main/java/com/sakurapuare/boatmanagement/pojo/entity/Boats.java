@@ -55,9 +55,9 @@ public class Boats extends BaseEntity implements Serializable {
     private Long dockId;
 
     /**
-     * 船主ID_serverside
+     * 船主 ID_serverside
      */
-    @ApiModelProperty("船主ID_serverside")
+    @ApiModelProperty("船主 ID_serverside")
     private Long vendorId;
 
     /**

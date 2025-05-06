@@ -12,10 +12,10 @@ public class BaseGoodsOrdersVO extends BaseOrderVO {
 
     private Long id;
 
-    @ApiModelProperty("商家ID_serverside")
+    @ApiModelProperty("商家 ID_serverside")
     private Long merchantId;
 
-    @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
+    @ApiModelProperty("订单信息：id:数量，id:数量，id:数量")
     private Map<Long, Double> orderInfo;
 
 }

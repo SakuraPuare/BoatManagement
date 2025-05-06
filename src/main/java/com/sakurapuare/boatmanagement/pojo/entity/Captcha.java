@@ -62,9 +62,9 @@ public class Captcha extends BaseEntity implements Serializable {
     private LocalDateTime expireAt;
 
     /**
-     * 请求IP
+     * 请求 IP
      */
-    @ApiModelProperty("请求IP")
+    @ApiModelProperty("请求 IP")
     private String clientIp;
 
 }

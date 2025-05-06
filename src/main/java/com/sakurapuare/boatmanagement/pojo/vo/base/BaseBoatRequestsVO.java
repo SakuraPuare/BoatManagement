@@ -15,7 +15,7 @@ public class BaseBoatRequestsVO extends BaseEntityVO {
     @ApiModelProperty("下单用户_serverside")
     private Long userId;
 
-    @ApiModelProperty("订单ID_serverside")
+    @ApiModelProperty("订单 ID_serverside")
     private Long orderId;
 
     @ApiModelProperty("起始码头")

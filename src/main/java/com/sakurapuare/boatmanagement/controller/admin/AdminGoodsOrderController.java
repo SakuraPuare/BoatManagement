@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/goods-order")
+@RequestMapping("/admin/goods/order")
 @Tag(name = "AdminGoodsOrder", description = "管理员商品订单模块")
 @RequiredArgsConstructor
 public class AdminGoodsOrderController {
@@ -47,10 +47,10 @@ public class AdminGoodsOrderController {
     }
 
     @GetMapping("/ids")
-    @Operation(summary = "根据ID获取商品订单")
+    @Operation(summary = "根据 ID 获取商品订单")
     public Response<List<BaseGoodsOrdersVO>> getGoodsOrdersByIds(@RequestParam String ids) {
         List<BaseGoodsOrdersVO> orders = goodsOrdersService.adminGetGoodsOrdersByIds(ids);
-        return Response.success("根据ID获取商品订单成功", orders);
+        return Response.success("根据 ID 获取商品订单成功", orders);
     }
 
     @PutMapping("/{id}/complete")

@@ -21,9 +21,6 @@ public class BaseAccountsDTO extends BaseEntityDTO {
     @ApiModelProperty("邮箱")
     private String email;
 
-    @ApiModelProperty("角色MASK")
-    private Integer role;
-
     private Boolean isActive;
 
     private Boolean isBlocked;

@@ -40,16 +40,16 @@ public class GoodsOrders extends BaseOrder implements Serializable {
     private Long id;
 
     /**
-     * 商家ID_serverside
+     * 商家 ID_serverside
      */
-    @ApiModelProperty("商家ID_serverside")
+    @ApiModelProperty("商家 ID_serverside")
     private Long merchantId;
 
     /**
-     * 订单信息：id:数量,id:数量,id:数量
+     * 订单信息：id:数量，id:数量，id:数量
      */
     @Column(typeHandler = GoodsInfoTypeHandler.class)
-    @ApiModelProperty("订单信息：id:数量,id:数量,id:数量")
+    @ApiModelProperty("订单信息：id:数量，id:数量，id:数量")
     private Map<Long, Double> orderInfo;
 
 }

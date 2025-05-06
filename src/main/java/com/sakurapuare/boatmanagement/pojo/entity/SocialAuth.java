@@ -46,15 +46,15 @@ public class SocialAuth extends BaseEntity implements Serializable {
     private String platform;
 
     /**
-     * 第三方唯一ID
+     * 第三方唯一 ID
      */
-    @ApiModelProperty("第三方唯一ID")
+    @ApiModelProperty("第三方唯一 ID")
     private String openId;
 
     /**
-     * 跨平台统一ID
+     * 跨平台统一 ID
      */
-    @ApiModelProperty("跨平台统一ID")
+    @ApiModelProperty("跨平台统一 ID")
     private String unionId;
 
 }

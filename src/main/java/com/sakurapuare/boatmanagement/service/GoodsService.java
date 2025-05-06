@@ -256,7 +256,9 @@ public class GoodsService extends BaseGoodsService {
 
     public void merchantUpdateGoods(Long id, BaseGoodsDTO goods) {
         verifyId(id);
-        super.updateById(POJOUtils.asOther(goods, Goods.class));
+        Goods updatedGoods = POJOUtils.asOther(goods, Goods.class);
+        updatedGoods.setId(id);
+        super.updateById(updatedGoods);
     }
 
     public void merchantDeleteGoods(Long id) {
@@ -298,7 +300,13 @@ public class GoodsService extends BaseGoodsService {
         List<Goods> goodsList = new ArrayList<>();
         BigDecimal price = BigDecimal.ZERO;
         for (Map.Entry<Long, Double> entry : orderInfoMap.entrySet()) {
-            Goods goods = merchantGetGoods(entry.getKey());
+            Goods goods = super.getById(entry.getKey());
+            if (goods == null) {
+                throw new RuntimeException("商品不存在");
+            }
+            if (!goods.getMerchantId().equals(merchantId)) {
+                throw new RuntimeException("商品不属于指定商家");
+            }
             goodsList.add(goods);
             price = price.add(goods.getPrice().multiply(BigDecimal.valueOf(entry.getValue())));
         }

@@ -20,7 +20,7 @@ public class BaseBoatsVO extends BaseEntityVO {
     @ApiModelProperty("所属码头")
     private Long dockId;
 
-    @ApiModelProperty("船主ID_serverside")
+    @ApiModelProperty("船主 ID_serverside")
     private Long vendorId;
 
     @ApiModelProperty("所属单位_serverside")
