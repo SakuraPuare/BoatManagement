@@ -17,14 +17,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/user")
-@Tag(name = "AdminUser", description = "用户模块")
+@Tag(name = "AdminUser", description = "管理员用户管理模块")
 @RequiredArgsConstructor
 public class AdminUserController {
 
     private final AccountsService accountsService;
     private final UserCertifyService userCertifyService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取用户列表")
     public Response<List<BaseAccountsVO>> adminGetUserList(
             @RequestParam(required = false) String search,
@@ -32,11 +32,12 @@ public class AdminUserController {
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseAccountsDTO filter) {
-        return Response.success(accountsService.adminGetUserList(search, sort, startDateTime, endDateTime, filter));
+        return Response.success("获取用户列表成功", 
+                accountsService.adminGetUserList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @GetMapping("/page")
-    @Operation(summary = "获取用户列表分页")
+    @PostMapping("/page")
+    @Operation(summary = "分页获取用户列表")
     public Response<Page<BaseAccountsVO>> adminGetUserPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -45,13 +46,14 @@ public class AdminUserController {
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseAccountsDTO filter) {
-        return Response.success(accountsService.adminGetUserPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
+        return Response.success("获取用户列表分页成功", 
+                accountsService.adminGetUserPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
-    @GetMapping("/ids/{ids}")
-    @Operation(summary = "根据ID获取用户")
-    public Response<List<BaseAccountsVO>> adminGetUserByIds(@PathVariable String ids) {
-        return Response.success(accountsService.adminGetUserByIds(ids));
+    @GetMapping("/ids")
+    @Operation(summary = "根据 ID 获取用户列表")
+    public Response<List<BaseAccountsVO>> adminGetUserByIds(@RequestParam String ids) {
+        return Response.success("根据 ID 获取用户列表成功", accountsService.adminGetUserByIds(ids));
     }
 
     @GetMapping("/{id}")
@@ -87,7 +89,7 @@ public class AdminUserController {
      * 用户认证相关接口
      */
 
-    @GetMapping("/certify/user/list")
+    @PostMapping("/certify/list")
     @Operation(summary = "获取用户认证列表")
     public Response<List<BaseUserCertifyVO>> adminGetUserCertifyList(
             @RequestParam(required = false) String search,
@@ -95,11 +97,12 @@ public class AdminUserController {
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseUserCertifyDTO filter) {
-        return Response.success(userCertifyService.adminGetUserCertifyList(search, sort, startDateTime, endDateTime, filter));
+        return Response.success("获取用户认证列表成功", 
+                userCertifyService.adminGetUserCertifyList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @GetMapping("/certify/user/page")
-    @Operation(summary = "获取用户认证列表分页")
+    @PostMapping("/certify/page")
+    @Operation(summary = "分页获取用户认证列表")
     public Response<Page<BaseUserCertifyVO>> adminGetUserCertifyPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
@@ -108,13 +111,14 @@ public class AdminUserController {
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseUserCertifyDTO filter) {
-        return Response.success(userCertifyService.adminGetUserCertifyPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
+        return Response.success("获取用户认证列表分页成功", 
+                userCertifyService.adminGetUserCertifyPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
-    @GetMapping("/certify/user/ids/{ids}")
-    @Operation(summary = "根据ID获取用户认证")
-    public Response<List<BaseUserCertifyVO>> adminGetUserCertifyByIds(@PathVariable String ids) {
-        return Response.success(userCertifyService.adminGetUserCertifyByIds(ids));
+    @GetMapping("/certify/ids")
+    @Operation(summary = "根据 ID 获取用户认证列表")
+    public Response<List<BaseUserCertifyVO>> adminGetUserCertifyByIds(@RequestParam String ids) {
+        return Response.success("根据 ID 获取用户认证列表成功", userCertifyService.adminGetUserCertifyByIds(ids));
     }
 
     @GetMapping("/certify/user/{id}")

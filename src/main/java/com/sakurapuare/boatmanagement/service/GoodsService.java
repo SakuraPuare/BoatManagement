@@ -320,4 +320,96 @@ public class GoodsService extends BaseGoodsService {
         goodsOrders.setDiscount(BigDecimal.ZERO);
         goodsOrdersService.save(goodsOrders);
     }
+
+    /*
+     * 公共函数（不需要登录）
+     */
+
+    /**
+     * 解析公共查询参数
+     *
+     * @param queryWrapper  查询包装器
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     */
+    private void publicParseParams(QueryWrapper queryWrapper, String search, String sort, String startDateTime,
+                                  String endDateTime) {
+        queryWrapper.where(GOODS.IS_ENABLED.eq(true));
+        POJOUtils.search(queryWrapper, SEARCH_FIELDS, search);
+        POJOUtils.dateRange(queryWrapper, startDateTime, endDateTime);
+        POJOUtils.sort(queryWrapper, ParamsUtils.getSortFromParams(sort));
+    }
+
+    /**
+     * 获取公共商品列表
+     *
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 商品视图对象列表
+     */
+    public List<BaseGoodsVO> publicGetGoodsList(
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseGoodsDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, Goods.class);
+        publicParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.listAs(queryWrapper, BaseGoodsVO.class);
+    }
+
+    /**
+     * 分页获取公共商品列表
+     *
+     * @param pageNum          页码
+     * @param pageSize         每页大小
+     * @param search           搜索关键词
+     * @param sort             排序方式
+     * @param startDateTime    开始时间
+     * @param endDateTime      结束时间
+     * @param filter           过滤条件
+     * @return 分页商品视图对象
+     */
+    public Page<BaseGoodsVO> publicGetGoodsPage(
+            Integer pageNum,
+            Integer pageSize,
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseGoodsDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, Goods.class);
+        publicParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsVO.class);
+    }
+
+    /**
+     * 根据 ID 获取公共商品
+     *
+     * @param ids 商品 ID 字符串，多个 ID 用逗号分隔
+     * @return 商品视图对象列表
+     * @throws RuntimeException 当商品不存在时抛出
+     */
+    public List<BaseGoodsVO> publicGetGoodsByIds(String ids) {
+        List<Long> idList = ParamsUtils.getListFromIds(ids);
+
+        if (idList.isEmpty()) {
+            throw new RuntimeException("商品不存在");
+        }
+
+        List<Goods> goods = POJOUtils.getListFromIds(idList, id -> {
+            Goods good = super.getById(id);
+            if (good != null && !good.getIsEnabled()) {
+                throw new RuntimeException("商品未启用");
+            }
+            return good;
+        });
+
+        return POJOUtils.asOtherList(goods, BaseGoodsVO.class);
+    }
 }

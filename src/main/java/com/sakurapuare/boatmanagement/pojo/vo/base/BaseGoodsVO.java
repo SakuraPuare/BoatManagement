@@ -36,4 +36,7 @@ public class BaseGoodsVO extends BaseEntityVO {
     @ApiModelProperty("创建单位_serverside")
     private Long unitId;
 
+    @ApiModelProperty("是否启用")
+    private Boolean isEnabled;
+
 }

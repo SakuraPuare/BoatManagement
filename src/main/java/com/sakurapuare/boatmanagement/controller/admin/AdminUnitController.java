@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/unit")
-@Tag(name = "AdminUnit", description = "单位模块")
+@Tag(name = "AdminUnit", description = "管理员单位管理模块")
 @RequiredArgsConstructor
 public class AdminUnitController {
 
@@ -22,7 +22,7 @@ public class AdminUnitController {
 
     @PostMapping("/list")
     @Operation(summary = "获取单位列表")
-    public Response<List<BaseUnitsVO>> getUnitList(
+    public Response<List<BaseUnitsVO>> adminGetUnitList(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String startDateTime,
@@ -33,7 +33,7 @@ public class AdminUnitController {
 
     @PostMapping("/page")
     @Operation(summary = "分页获取单位列表")
-    public Response<Page<BaseUnitsVO>> getUnitPage(
+    public Response<Page<BaseUnitsVO>> adminGetUnitPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String search,
@@ -46,33 +46,33 @@ public class AdminUnitController {
     }
 
     @GetMapping("/ids")
-    @Operation(summary = "根据ID获取单位列表")
-    public Response<List<BaseUnitsVO>> getUnitByIds(@RequestParam String ids) {
-        return Response.success("根据ID获取单位列表成功", unitsService.adminGetUnitByIds(ids));
+    @Operation(summary = "根据 ID 获取单位列表")
+    public Response<List<BaseUnitsVO>> adminGetUnitByIds(@RequestParam String ids) {
+        return Response.success("根据 ID 获取单位列表成功", unitsService.adminGetUnitByIds(ids));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取单位详情")
-    public Response<BaseUnitsVO> getUnit(@PathVariable Long id) {
-        return Response.success("获取单位详情成功", unitsService.adminGetUnit(id));
+    public Response<BaseUnitsVO> adminGetUnit(@PathVariable Long id) {
+        return Response.success("获取单位详情成功", unitsService.adminGetUnitByIds(id.toString()).get(0));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "更新单位")
-    public Response<BaseUnitsVO> updateUnit(@PathVariable Long id, @RequestBody BaseUnitsDTO unitDTO) {
-        return Response.success("更新单位成功", unitsService.adminUpdateUnit(id, unitDTO));
+    public Response<BaseUnitsVO> adminUpdateUnit(@PathVariable Long id, @RequestBody BaseUnitsDTO baseUnitsDTO) {
+        return Response.success("更新单位成功", unitsService.adminUpdateUnit(id, baseUnitsDTO));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除单位")
-    public Response<String> deleteUnit(@PathVariable Long id) {
+    public Response<String> adminDeleteUnit(@PathVariable Long id) {
         unitsService.adminDeleteUnit(id);
         return Response.success("删除单位成功");
     }
 
     @PostMapping("/")
     @Operation(summary = "创建单位")
-    public Response<BaseUnitsVO> createUnit(@RequestBody BaseUnitsDTO unitDTO) {
-        return Response.success("创建单位成功", unitsService.adminCreateUnit(unitDTO));
+    public Response<BaseUnitsVO> adminCreateUnit(@RequestBody BaseUnitsDTO baseUnitsDTO) {
+        return Response.success("创建单位成功", unitsService.adminCreateUnit(baseUnitsDTO));
     }
 }

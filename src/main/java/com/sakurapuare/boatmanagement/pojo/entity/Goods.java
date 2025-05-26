@@ -85,4 +85,10 @@ public class Goods extends BaseEntity implements Serializable {
     @ApiModelProperty("创建单位_serverside")
     private Long unitId;
 
+    /**
+     * 是否启用
+     */
+    @ApiModelProperty("是否启用")
+    private Boolean isEnabled;
+
 }

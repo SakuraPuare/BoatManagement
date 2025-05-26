@@ -14,6 +14,9 @@ CREATE TABLE accounts (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_username` (`username`),
+  UNIQUE KEY `uk_phone` (`phone`),
+  UNIQUE KEY `uk_email` (`email`),
   INDEX `idx_phone` (`phone`),
   INDEX `idx_email` (`email`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '基础账号表';
@@ -88,11 +91,12 @@ CREATE TABLE `role_inheritance` (
 CREATE TABLE `user_role` (
   `user_id` BIGINT UNSIGNED NOT NULL,
   `role_id` INT UNSIGNED NOT NULL,
-  `unit_id` BIGINT UNSIGNED COMMENT '所属单位',
+  `unit_id` BIGINT UNSIGNED DEFAULT NULL COMMENT '所属单位',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`, `role_id`, `unit_id`),
+  PRIMARY KEY (`user_id`, `role_id`),
+  UNIQUE KEY `uk_user_role_unit` (`user_id`, `role_id`, `unit_id`),
   FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
   FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '用户角色关联表_ndto_nvo';
@@ -328,6 +332,7 @@ CREATE TABLE `goods` (
   `sales` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '销量_serverside',
   `merchant_id` BIGINT UNSIGNED NOT NULL COMMENT '创建商家_serverside',
   `unit_id` BIGINT UNSIGNED NOT NULL COMMENT '创建单位_serverside',
+  `is_enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
   `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

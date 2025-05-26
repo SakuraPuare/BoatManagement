@@ -347,4 +347,96 @@ public class DocksService extends BaseDocksService {
 
         return POJOUtils.asOtherList(docks, BaseDocksVO.class);
     }
+
+    /*
+     * 公共函数（不需要登录）
+     */
+
+    /**
+     * 解析公共查询参数
+     *
+     * @param queryWrapper  查询包装器
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     */
+    private void publicParseParams(QueryWrapper queryWrapper, String search, String sort, String startDateTime,
+                                  String endDateTime) {
+        queryWrapper.where(DOCKS.IS_ENABLED.eq(true));
+        POJOUtils.search(queryWrapper, SEARCH_FIELDS, search);
+        POJOUtils.dateRange(queryWrapper, startDateTime, endDateTime);
+        POJOUtils.sort(queryWrapper, ParamsUtils.getSortFromParams(sort));
+    }
+
+    /**
+     * 获取公共码头列表
+     *
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 码头视图对象列表
+     */
+    public List<BaseDocksVO> publicGetDockList(
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseDocksDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, Docks.class);
+        publicParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.listAs(queryWrapper, BaseDocksVO.class);
+    }
+
+    /**
+     * 分页获取公共码头列表
+     *
+     * @param pageNum          页码
+     * @param pageSize         每页大小
+     * @param search           搜索关键词
+     * @param sort             排序方式
+     * @param startDateTime    开始时间
+     * @param endDateTime      结束时间
+     * @param filter           过滤条件
+     * @return 分页码头视图对象
+     */
+    public Page<BaseDocksVO> publicGetDockPage(
+            Integer pageNum,
+            Integer pageSize,
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseDocksDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, Docks.class);
+        publicParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseDocksVO.class);
+    }
+
+    /**
+     * 根据ID获取公共码头
+     *
+     * @param ids 码头ID字符串，多个ID用逗号分隔
+     * @return 码头视图对象列表
+     * @throws RuntimeException 当码头不存在时抛出
+     */
+    public List<BaseDocksVO> publicGetDockByIds(String ids) {
+        List<Long> idList = ParamsUtils.getListFromIds(ids);
+
+        if (idList.isEmpty()) {
+            throw new RuntimeException("码头不存在");
+        }
+
+        List<Docks> docks = POJOUtils.getListFromIds(idList, id -> {
+            Docks dock = super.getById(id);
+            if (dock != null && !dock.getIsEnabled()) {
+                throw new RuntimeException("码头未启用");
+            }
+            return dock;
+        });
+
+        return POJOUtils.asOtherList(docks, BaseDocksVO.class);
+    }
 }

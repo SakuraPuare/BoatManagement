@@ -1,12 +1,18 @@
 package com.sakurapuare.boatmanagement.service;
 
+import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryColumn;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.sakurapuare.boatmanagement.pojo.dto.base.BaseRoleDTO;
 import com.sakurapuare.boatmanagement.pojo.entity.Permission;
 import com.sakurapuare.boatmanagement.pojo.entity.Role;
 import com.sakurapuare.boatmanagement.pojo.entity.RoleInheritance;
 import com.sakurapuare.boatmanagement.pojo.entity.RolePermission;
 import com.sakurapuare.boatmanagement.pojo.entity.UserRole;
+import com.sakurapuare.boatmanagement.pojo.vo.base.BaseRoleVO;
 import com.sakurapuare.boatmanagement.service.base.BaseRoleService;
+import com.sakurapuare.boatmanagement.utils.POJOUtils;
+import com.sakurapuare.boatmanagement.utils.ParamsUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -252,5 +258,148 @@ public class RoleService extends BaseRoleService {
         }
         
         return userRoleService.remove(queryWrapper);
+    }
+
+    /*
+     * 管理员的函数
+     */
+
+    /**
+     * 管理员搜索字段
+     */
+    private static final QueryColumn[] SEARCH_FIELDS = {
+            ROLE.ID,
+            ROLE.NAME,
+            ROLE.DESCRIPTION
+    };
+
+    /**
+     * 解析管理员查询参数
+     *
+     * @param queryWrapper  查询包装器
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     */
+    private void adminParseParams(QueryWrapper queryWrapper, String search, String sort, String startDateTime,
+                                String endDateTime) {
+        POJOUtils.search(queryWrapper, SEARCH_FIELDS, search);
+        POJOUtils.dateRange(queryWrapper, startDateTime, endDateTime);
+        POJOUtils.sort(queryWrapper, ParamsUtils.getSortFromParams(sort));
+    }
+
+    /**
+     * 管理员获取角色列表
+     *
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 角色视图对象列表
+     */
+    public List<BaseRoleVO> adminGetRoleList(
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseRoleDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, Role.class);
+        adminParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.listAs(queryWrapper, BaseRoleVO.class);
+    }
+
+    /**
+     * 管理员分页获取角色列表
+     *
+     * @param pageNum       页码
+     * @param pageSize      每页大小
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 分页角色视图对象
+     */
+    public Page<BaseRoleVO> adminGetRolePage(
+            Integer pageNum,
+            Integer pageSize,
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseRoleDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, Role.class);
+        adminParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.pageAs(
+                Page.of(pageNum, pageSize), queryWrapper, BaseRoleVO.class);
+    }
+
+    /**
+     * 管理员根据 ID 获取角色
+     *
+     * @param ids 角色 ID 字符串，多个 ID 用逗号分隔
+     * @return 角色视图对象列表
+     * @throws RuntimeException 当角色不存在时抛出
+     */
+    public List<BaseRoleVO> adminGetRoleByIds(String ids) {
+        List<Long> idList = ParamsUtils.getListFromIds(ids);
+
+        if (idList.isEmpty()) {
+            throw new RuntimeException("角色不存在");
+        }
+
+        List<Role> roles = POJOUtils.getListFromIds(idList, super::getById);
+        return POJOUtils.asOtherList(roles, BaseRoleVO.class);
+    }
+
+    /**
+     * 管理员创建角色
+     *
+     * @param dto 角色数据传输对象
+     * @return 创建的角色视图对象
+     */
+    public BaseRoleVO adminCreateRole(BaseRoleDTO dto) {
+        Role role = POJOUtils.asOther(dto, Role.class);
+        super.save(role);
+        return POJOUtils.asOther(role, BaseRoleVO.class);
+    }
+
+    /**
+     * 检查角色是否存在
+     *
+     * @param id 角色ID
+     * @throws RuntimeException 当角色不存在时抛出
+     */
+    private void checkRoleExist(Long id) {
+        if (super.getById(id) == null) {
+            throw new RuntimeException("角色不存在");
+        }
+    }
+
+    /**
+     * 管理员更新角色信息
+     *
+     * @param id  角色ID
+     * @param dto 角色数据传输对象
+     * @return 更新后的角色视图对象
+     */
+    public BaseRoleVO adminUpdateRole(Long id, BaseRoleDTO dto) {
+        checkRoleExist(id);
+        Role role = POJOUtils.asOther(dto, Role.class);
+        role.setId(id);
+        super.updateById(role);
+        return POJOUtils.asOther(super.getById(id), BaseRoleVO.class);
+    }
+
+    /**
+     * 管理员删除角色
+     *
+     * @param id 角色ID
+     */
+    public void adminDeleteRole(Long id) {
+        checkRoleExist(id);
+        super.removeById(id);
     }
 }

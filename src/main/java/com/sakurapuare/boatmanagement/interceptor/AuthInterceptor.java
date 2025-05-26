@@ -78,6 +78,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         // 检查 URI 访问权限
         String uri = request.getRequestURI();
         
+        // 检查是否是管理员，管理员可以访问所有路径
+        if (RoleService.hasAnyRole(account.getId(), Arrays.asList("ADMIN"))) {
+            return true;
+        }
+        
         // 基于 URI 路径检查角色
         Map<String, List<String>> pathRoleMap = new HashMap<>();
         pathRoleMap.put("/user", Arrays.asList("USER"));

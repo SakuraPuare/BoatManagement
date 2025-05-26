@@ -14,27 +14,27 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/vendor")
-@Tag(name = "AdminVendor", description = "供应商模块")
+@Tag(name = "AdminVendor", description = "管理员供应商管理模块")
 @RequiredArgsConstructor
 public class AdminVendorController {
 
-    private final VendorsService vendorService;
+    private final VendorsService vendorsService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取供应商列表")
-    public Response<List<BaseVendorsVO>> getVendorList(
+    public Response<List<BaseVendorsVO>> adminGetVendorList(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseVendorsDTO filter) {
-        List<BaseVendorsVO> vendors = vendorService.adminGetVendorList(search, sort, startDateTime, endDateTime, filter);
-        return Response.success("获取供应商列表成功", vendors);
+        return Response.success("获取供应商列表成功", 
+                vendorsService.adminGetVendorList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "分页获取供应商列表")
-    public Response<Page<BaseVendorsVO>> getVendorPage(
+    public Response<Page<BaseVendorsVO>> adminGetVendorPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String search,
@@ -42,42 +42,38 @@ public class AdminVendorController {
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseVendorsDTO filter) {
-        Page<BaseVendorsVO> vendorPage = vendorService.adminGetVendorPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter);
-        return Response.success("分页获取供应商列表成功", vendorPage);
+        return Response.success("获取供应商列表分页成功", 
+                vendorsService.adminGetVendorPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
     @GetMapping("/ids")
-    @Operation(summary = "根据ID获取供应商")
-    public Response<List<BaseVendorsVO>> getVendorByIds(@RequestParam String ids) {
-        List<BaseVendorsVO> vendors = vendorService.adminGetVendorByIds(ids);
-        return Response.success("根据ID获取供应商成功", vendors);
+    @Operation(summary = "根据 ID 获取供应商列表")
+    public Response<List<BaseVendorsVO>> adminGetVendorByIds(@RequestParam String ids) {
+        return Response.success("根据 ID 获取供应商列表成功", vendorsService.adminGetVendorByIds(ids));
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "获取供应商详情")
-    public Response<BaseVendorsVO> getVendorById(@PathVariable Long id) {
-        BaseVendorsVO vendor = vendorService.adminGetVendorById(id);
-        return Response.success("获取供应商详情成功", vendor);
-    }
-
-    @PostMapping
-    @Operation(summary = "创建供应商")
-    public Response<BaseVendorsVO> createVendor(@RequestBody BaseVendorsDTO dto) {
-        BaseVendorsVO vendor = vendorService.adminCreateVendor(dto);
-        return Response.success("创建供应商成功", vendor);
+    public Response<BaseVendorsVO> adminGetVendor(@PathVariable Long id) {
+        return Response.success("获取供应商详情成功", vendorsService.adminGetVendorByIds(id.toString()).get(0));
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "更新供应商")
-    public Response<BaseVendorsVO> updateVendor(@PathVariable Long id, @RequestBody BaseVendorsDTO dto) {
-        BaseVendorsVO vendor = vendorService.adminUpdateVendor(id, dto);
-        return Response.success("更新供应商成功", vendor);
+    public Response<BaseVendorsVO> adminUpdateVendor(@PathVariable Long id, @RequestBody BaseVendorsDTO baseVendorsDTO) {
+        return Response.success("更新供应商成功", vendorsService.adminUpdateVendor(id, baseVendorsDTO));
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "删除供应商")
-    public Response<Void> deleteVendor(@PathVariable Long id) {
-        vendorService.adminDeleteVendor(id);
-        return Response.success("删除供应商成功", null);
+    public Response<String> adminDeleteVendor(@PathVariable Long id) {
+        vendorsService.adminDeleteVendor(id);
+        return Response.success("删除供应商成功");
+    }
+
+    @PostMapping("/")
+    @Operation(summary = "创建供应商")
+    public Response<BaseVendorsVO> adminCreateVendor(@RequestBody BaseVendorsDTO baseVendorsDTO) {
+        return Response.success("创建供应商成功", vendorsService.adminCreateVendor(baseVendorsDTO));
     }
 }

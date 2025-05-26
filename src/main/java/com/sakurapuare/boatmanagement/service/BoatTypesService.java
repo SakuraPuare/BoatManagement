@@ -362,4 +362,96 @@ public class BoatTypesService extends BaseBoatTypesService {
         vendorCheckBoatTypeExist(id);
         super.removeById(id);
     }
+
+    /*
+     * 公共函数（不需要登录）
+     */
+
+    /**
+     * 解析公共查询参数
+     *
+     * @param queryWrapper  查询包装器
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     */
+    private void publicParseParams(QueryWrapper queryWrapper, String search, String sort, String startDateTime,
+                                  String endDateTime) {
+        queryWrapper.where(BOAT_TYPES.IS_ENABLED.eq(true));
+        POJOUtils.search(queryWrapper, SEARCH_FIELDS, search);
+        POJOUtils.dateRange(queryWrapper, startDateTime, endDateTime);
+        POJOUtils.sort(queryWrapper, ParamsUtils.getSortFromParams(sort));
+    }
+
+    /**
+     * 获取公共船舶类型列表
+     *
+     * @param search        搜索关键词
+     * @param sort          排序方式
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param filter        过滤条件
+     * @return 船舶类型视图对象列表
+     */
+    public List<BaseBoatTypesVO> publicGetBoatTypeList(
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseBoatTypesDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, BoatTypes.class);
+        publicParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.listAs(queryWrapper, BaseBoatTypesVO.class);
+    }
+
+    /**
+     * 分页获取公共船舶类型列表
+     *
+     * @param pageNum          页码
+     * @param pageSize         每页大小
+     * @param search           搜索关键词
+     * @param sort             排序方式
+     * @param startDateTime    开始时间
+     * @param endDateTime      结束时间
+     * @param filter           过滤条件
+     * @return 分页船舶类型视图对象
+     */
+    public Page<BaseBoatTypesVO> publicGetBoatTypePage(
+            Integer pageNum,
+            Integer pageSize,
+            String search,
+            String sort,
+            String startDateTime,
+            String endDateTime,
+            BaseBoatTypesDTO filter) {
+        QueryWrapper queryWrapper = POJOUtils.getQueryWrapper(filter, BoatTypes.class);
+        publicParseParams(queryWrapper, search, sort, startDateTime, endDateTime);
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseBoatTypesVO.class);
+    }
+
+    /**
+     * 根据 ID 获取公共船舶类型
+     *
+     * @param ids 船舶类型 ID 字符串，多个 ID 用逗号分隔
+     * @return 船舶类型视图对象列表
+     * @throws RuntimeException 当船舶类型不存在时抛出
+     */
+    public List<BaseBoatTypesVO> publicGetBoatTypeByIds(String ids) {
+        List<Long> idList = ParamsUtils.getListFromIds(ids);
+
+        if (idList.isEmpty()) {
+            throw new RuntimeException("船舶类型不存在");
+        }
+
+        List<BoatTypes> boatTypes = POJOUtils.getListFromIds(idList, id -> {
+            BoatTypes boatType = super.getById(id);
+            if (boatType != null && !boatType.getIsEnabled()) {
+                throw new RuntimeException("船舶类型未启用");
+            }
+            return boatType;
+        });
+
+        return POJOUtils.asOtherList(boatTypes, BaseBoatTypesVO.class);
+    }
 }

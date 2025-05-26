@@ -20,21 +20,21 @@ public class AdminGoodsOrderController {
 
     private final GoodsOrdersService goodsOrdersService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     @Operation(summary = "获取商品订单列表")
-    public Response<List<BaseGoodsOrdersVO>> getGoodsOrdersList(
+    public Response<List<BaseGoodsOrdersVO>> adminGetGoodsOrdersList(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseGoodsOrdersDTO filter) {
-        List<BaseGoodsOrdersVO> orders = goodsOrdersService.adminGetGoodsOrdersList(search, sort, startDateTime, endDateTime, filter);
-        return Response.success("获取商品订单列表成功", orders);
+        return Response.success("获取商品订单列表成功", 
+                goodsOrdersService.adminGetGoodsOrdersList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "分页获取商品订单列表")
-    public Response<Page<BaseGoodsOrdersVO>> getGoodsOrdersPage(
+    public Response<Page<BaseGoodsOrdersVO>> adminGetGoodsOrdersPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String search,
@@ -42,15 +42,14 @@ public class AdminGoodsOrderController {
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseGoodsOrdersDTO filter) {
-        Page<BaseGoodsOrdersVO> orderPage = goodsOrdersService.adminGetGoodsOrdersPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter);
-        return Response.success("分页获取商品订单列表成功", orderPage);
+        return Response.success("分页获取商品订单列表成功", 
+                goodsOrdersService.adminGetGoodsOrdersPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
     @GetMapping("/ids")
     @Operation(summary = "根据 ID 获取商品订单")
-    public Response<List<BaseGoodsOrdersVO>> getGoodsOrdersByIds(@RequestParam String ids) {
-        List<BaseGoodsOrdersVO> orders = goodsOrdersService.adminGetGoodsOrdersByIds(ids);
-        return Response.success("根据 ID 获取商品订单成功", orders);
+    public Response<List<BaseGoodsOrdersVO>> adminGetGoodsOrdersByIds(@RequestParam String ids) {
+        return Response.success("根据 ID 获取商品订单成功", goodsOrdersService.adminGetGoodsOrdersByIds(ids));
     }
 
     @PutMapping("/{id}/complete")

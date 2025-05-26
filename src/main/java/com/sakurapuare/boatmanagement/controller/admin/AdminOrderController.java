@@ -14,27 +14,27 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/order")
-@Tag(name = "AdminOrder", description = "商家订单模块")
+@Tag(name = "AdminOrder", description = "管理员订单管理模块")
 @RequiredArgsConstructor
 public class AdminOrderController {
 
     private final BoatOrdersService boatOrdersService;
 
-    @GetMapping("goods/list")
+    @PostMapping("goods/list")
     @Operation(summary = "获取商品订单列表")
-    public Response<List<BaseBoatOrdersVO>> getGoodsOrdersList(
+    public Response<List<BaseBoatOrdersVO>> adminGetGoodsOrdersList(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseBoatOrdersDTO filter) {
-        List<BaseBoatOrdersVO> orders = boatOrdersService.adminGetGoodsOrdersList(search, sort, startDateTime, endDateTime, filter);
-        return Response.success("获取商品订单列表成功", orders);
+        return Response.success("获取商品订单列表成功", 
+                boatOrdersService.adminGetGoodsOrdersList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @GetMapping("goods/page")
+    @PostMapping("goods/page")
     @Operation(summary = "分页获取商品订单列表")
-    public Response<Page<BaseBoatOrdersVO>> getGoodsOrdersPage(
+    public Response<Page<BaseBoatOrdersVO>> adminGetGoodsOrdersPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String search,
@@ -42,32 +42,31 @@ public class AdminOrderController {
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseBoatOrdersDTO filter) {
-        Page<BaseBoatOrdersVO> orderPage = boatOrdersService.adminGetGoodsOrdersPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter);
-        return Response.success("分页获取商品订单列表成功", orderPage);
+        return Response.success("分页获取商品订单列表成功", 
+                boatOrdersService.adminGetGoodsOrdersPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
     @GetMapping("goods/ids")
-    @Operation(summary = "根据ID获取商品订单")
-    public Response<List<BaseBoatOrdersVO>> getGoodsOrdersByIds(@RequestParam String ids) {
-        List<BaseBoatOrdersVO> orders = boatOrdersService.adminGetGoodsOrdersByIds(ids);
-        return Response.success("根据ID获取商品订单成功", orders);
+    @Operation(summary = "根据 ID 获取商品订单")
+    public Response<List<BaseBoatOrdersVO>> adminGetGoodsOrdersByIds(@RequestParam String ids) {
+        return Response.success("根据 ID 获取商品订单成功", boatOrdersService.adminGetGoodsOrdersByIds(ids));
     }
 
-    @GetMapping("boat/list")
+    @PostMapping("boat/list")
     @Operation(summary = "获取船舶订单列表")
-    public Response<List<BaseBoatOrdersVO>> getBoatOrdersList(
+    public Response<List<BaseBoatOrdersVO>> adminGetBoatOrdersList(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseBoatOrdersDTO filter) {
-        List<BaseBoatOrdersVO> orders = boatOrdersService.adminGetBoatOrdersList(search, sort, startDateTime, endDateTime, filter);
-        return Response.success("获取船舶订单列表成功", orders);
+        return Response.success("获取船舶订单列表成功", 
+                boatOrdersService.adminGetBoatOrdersList(search, sort, startDateTime, endDateTime, filter));
     }
 
-    @GetMapping("boat/page")
+    @PostMapping("boat/page")
     @Operation(summary = "分页获取船舶订单列表")
-    public Response<Page<BaseBoatOrdersVO>> getBoatOrdersPage(
+    public Response<Page<BaseBoatOrdersVO>> adminGetBoatOrdersPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(required = false) String search,
@@ -75,14 +74,13 @@ public class AdminOrderController {
             @RequestParam(required = false) String startDateTime,
             @RequestParam(required = false) String endDateTime,
             @RequestBody(required = false) BaseBoatOrdersDTO filter) {
-        Page<BaseBoatOrdersVO> orderPage = boatOrdersService.adminGetBoatOrdersPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter);
-        return Response.success("分页获取船舶订单列表成功", orderPage);
+        return Response.success("分页获取船舶订单列表成功", 
+                boatOrdersService.adminGetBoatOrdersPage(pageNum, pageSize, search, sort, startDateTime, endDateTime, filter));
     }
 
     @GetMapping("boat/ids")
-    @Operation(summary = "根据ID获取船舶订单")
-    public Response<List<BaseBoatOrdersVO>> getBoatOrdersByIds(@RequestParam String ids) {
-        List<BaseBoatOrdersVO> orders = boatOrdersService.adminGetBoatOrdersByIds(ids);
-        return Response.success("根据ID获取船舶订单成功", orders);
+    @Operation(summary = "根据 ID 获取船舶订单")
+    public Response<List<BaseBoatOrdersVO>> adminGetBoatOrdersByIds(@RequestParam String ids) {
+        return Response.success("根据 ID 获取船舶订单成功", boatOrdersService.adminGetBoatOrdersByIds(ids));
     }
 }

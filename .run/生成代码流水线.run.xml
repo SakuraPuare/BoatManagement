@@ -13,7 +13,6 @@
     <option name="EXECUTE_SCRIPT_FILE" value="false" />
     <envs />
     <method v="2">
-      <option name="RunConfigurationTask" enabled="true" run_configuration_name="导入数据" run_configuration_type="DatabaseScript" />
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="SQLGen" run_configuration_type="Application" />
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="生成代码" run_configuration_type="ShConfigurationType" />
       <option name="Maven.BeforeRunTask" enabled="true" file="$PROJECT_DIR$/pom.xml" goal="clean compile" />

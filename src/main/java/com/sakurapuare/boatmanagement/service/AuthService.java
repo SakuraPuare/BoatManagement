@@ -14,6 +14,7 @@ import com.sakurapuare.boatmanagement.service.captcha.CaptchaSenderContext;
 import com.sakurapuare.boatmanagement.utils.AuthNameUtils;
 import com.sakurapuare.boatmanagement.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.ACCOUNTS;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -68,6 +70,8 @@ public class AuthService {
     public boolean checkAvailability(NameRequestDTO nameRequestDTO) {
         AuthName name = AuthNameUtils.getAuthName(nameRequestDTO.getUsername());
 
+        log.info("checkAvailability - username: {}, authName: {}", nameRequestDTO.getUsername(), name);
+
         String field;
         switch (name) {
             case AuthName.USERNAME -> field = ACCOUNTS.USERNAME.getName();
@@ -77,13 +81,20 @@ public class AuthService {
         }
 
         if (field == null) {
+            log.info("checkAvailability - field is null, returning false");
             return false;
         }
+
+        log.info("checkAvailability - 查询字段: {}", field);
 
         // Accounts account = userMapper.selectOneByQuery(QueryWrapper.create().eq(field, nameRequestDTO.getUsername()));
         Accounts account = accountsService.getOne(
                 new QueryWrapper().eq(field, nameRequestDTO.getUsername()));
-        return account == null;
+        
+        boolean isAvailable = account == null;
+        log.info("checkAvailability - 查询结果: {}, 是否可用: {}", account != null ? "账号已存在" : "账号不存在", isAvailable);
+        
+        return isAvailable;
     }
 
 

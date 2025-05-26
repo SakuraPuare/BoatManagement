@@ -25,4 +25,7 @@ public class BaseGoodsDTO extends BaseEntityDTO {
     @ApiModelProperty("库存")
     private Long stock;
 
+    @ApiModelProperty("是否启用")
+    private Boolean isEnabled;
+
 }
