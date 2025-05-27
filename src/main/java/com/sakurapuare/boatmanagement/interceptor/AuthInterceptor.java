@@ -20,14 +20,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
 
     private final AccountsService accountService;
-    private final RoleService RoleService;
+    private final RoleService roleService;
 
     private void writeResponse(HttpServletResponse response, int code, String message) {
         response.setContentType("application/json;charset=UTF-8");
@@ -72,27 +71,32 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         // 获取用户角色和权限
-        List<Role> roles = RoleService.getUserRoles(account.getId());
-        List<Permission> permissions = RoleService.getUserPermissions(account.getId());
+        List<Role> roles = roleService.getUserRoles(account.getId());
+        List<Permission> permissions = roleService.getUserPermissions(account.getId());
         
         // 检查 URI 访问权限
         String uri = request.getRequestURI();
         
         // 检查是否是管理员，管理员可以访问所有路径
-        if (RoleService.hasAnyRole(account.getId(), Arrays.asList("ADMIN"))) {
+        if (roleService.hasAnyRole(account.getId(), Arrays.asList("ADMIN"))) {
             return true;
+        }
+        
+        // 特殊路径处理 - 允许所有已登录用户访问基本信息
+        if (uri.equals("/user/info/me")) {
+            return true; // 所有已登录用户都可以获取自己的信息
         }
         
         // 基于 URI 路径检查角色
         Map<String, List<String>> pathRoleMap = new HashMap<>();
-        pathRoleMap.put("/user", Arrays.asList("USER"));
-        pathRoleMap.put("/merchant", Arrays.asList("MERCHANT"));
-        pathRoleMap.put("/vendor", Arrays.asList("VENDOR"));
+        pathRoleMap.put("/user", Arrays.asList("USER", "MERCHANT", "VENDOR", "ADMIN"));
+        pathRoleMap.put("/merchant", Arrays.asList("MERCHANT", "ADMIN"));
+        pathRoleMap.put("/vendor", Arrays.asList("VENDOR", "ADMIN"));
         pathRoleMap.put("/admin", Arrays.asList("ADMIN"));
         
         for (Map.Entry<String, List<String>> entry : pathRoleMap.entrySet()) {
             if (uri.startsWith(entry.getKey())) {
-                if (!RoleService.hasAnyRole(account.getId(), entry.getValue())) {
+                if (!roleService.hasAnyRole(account.getId(), entry.getValue())) {
                     writeResponse(response, 401, "权限不足");
                     return false;
                 }

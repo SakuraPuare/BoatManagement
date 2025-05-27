@@ -38,6 +38,32 @@ public class POJOUtils {
         }
     }
 
+    public static <Entity, DTO> Entity convertToEntity(DTO dto, Class<Entity> entityClass) {
+        try {
+            if (dto == null) {
+                return entityClass.getDeclaredConstructor().newInstance();
+            }
+            Entity entity = entityClass.getDeclaredConstructor().newInstance();
+            BeanUtils.copyProperties(dto, entity);
+            return entity;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to convert DTO to entity", e);
+        }
+    }
+
+    public static <VO, Entity> VO convertToVO(Entity entity, Class<VO> voClass) {
+        try {
+            if (entity == null) {
+                return voClass.getDeclaredConstructor().newInstance();
+            }
+            VO vo = voClass.getDeclaredConstructor().newInstance();
+            BeanUtils.copyProperties(entity, vo);
+            return vo;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to convert entity to VO", e);
+        }
+    }
+
     public static <Other, Entity> List<Other> asOtherList(List<Entity> entityList, Class<Other> otherClass) {
         if (entityList == null || entityList.isEmpty()) {
             return Collections.emptyList();

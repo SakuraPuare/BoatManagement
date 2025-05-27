@@ -8,6 +8,7 @@ import com.sakurapuare.boatmanagement.pojo.dto.base.BaseMerchantsDTO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseGoodsVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseMerchantsVO;
 import com.sakurapuare.boatmanagement.service.GoodsService;
+import com.sakurapuare.boatmanagement.service.GoodsOrdersService;
 import com.sakurapuare.boatmanagement.service.MerchantsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +26,8 @@ public class UserMerchantController {
     private final MerchantsService merchantService;
 
     private final GoodsService goodsService;
+    
+    private final GoodsOrdersService goodsOrdersService;
 
     @PostMapping("/list")
     @Operation(summary = "获取所有商家列表")
@@ -67,7 +70,7 @@ public class UserMerchantController {
     @Operation(summary = "创建商家商品订单")
     public Response<String> createUserMerchantGoodsOrder(@PathVariable Long merchantId,
                                                          @RequestBody BaseGoodsOrdersDTO orderDTO) {
-        goodsService.createUserMerchantGoodsOrder(merchantId, orderDTO);
+        goodsOrdersService.createUserMerchantGoodsOrder(merchantId, orderDTO);
         return Response.success("创建商家商品订单成功");
     }
 }

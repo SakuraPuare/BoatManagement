@@ -340,3 +340,157 @@ CREATE TABLE `goods` (
   FOREIGN KEY (`merchant_id`) REFERENCES merchants (`id`),
   FOREIGN KEY (`unit_id`) REFERENCES units (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '商品表';
+
+-- 文件上传管理表
+CREATE TABLE `file_uploads` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `original_name` VARCHAR(255) NOT NULL COMMENT '原始文件名',
+  `stored_name` VARCHAR(255) NOT NULL COMMENT '存储文件名',
+  `file_path` VARCHAR(500) NOT NULL COMMENT '文件路径',
+  `file_size` BIGINT UNSIGNED NOT NULL COMMENT '文件大小（字节）',
+  `file_type` VARCHAR(100) NOT NULL COMMENT '文件类型',
+  `mime_type` VARCHAR(100) NOT NULL COMMENT 'MIME类型',
+  `uploader_id` BIGINT UNSIGNED NOT NULL COMMENT '上传者ID',
+  `business_type` ENUM('AVATAR', 'GOODS_IMAGE', 'CERT_FILE', 'BOAT_IMAGE', 'OTHER') NOT NULL COMMENT '业务类型',
+  `business_id` BIGINT UNSIGNED COMMENT '关联业务ID',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`uploader_id`) REFERENCES accounts (`id`),
+  INDEX `idx_business` (`business_type`, `business_id`),
+  INDEX `idx_uploader` (`uploader_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '文件上传管理表';
+
+-- 通知系统表
+CREATE TABLE `notifications` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '接收用户',
+  `title` VARCHAR(255) NOT NULL COMMENT '通知标题',
+  `content` TEXT NOT NULL COMMENT '通知内容',
+  `type` ENUM('ORDER', 'AUDIT', 'SYSTEM', 'PROMOTION') NOT NULL COMMENT '通知类型',
+  `business_type` VARCHAR(50) COMMENT '业务类型',
+  `business_id` BIGINT UNSIGNED COMMENT '关联业务ID',
+  `is_read` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否已读',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
+  INDEX `idx_user_read` (`user_id`, `is_read`),
+  INDEX `idx_business` (`business_type`, `business_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '通知表';
+
+-- 支付记录表
+CREATE TABLE `payments` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID',
+  `order_type` ENUM('BOAT_ORDER', 'GOODS_ORDER') NOT NULL COMMENT '订单类型',
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '支付用户',
+  `amount` DECIMAL(12, 2) NOT NULL COMMENT '支付金额',
+  `payment_method` ENUM('WECHAT', 'ALIPAY', 'BANK_CARD', 'BALANCE') NOT NULL COMMENT '支付方式',
+  `transaction_id` VARCHAR(255) COMMENT '第三方交易号',
+  `status` ENUM('PENDING', 'SUCCESS', 'FAILED', 'REFUNDED') NOT NULL DEFAULT 'PENDING' COMMENT '支付状态',
+  `paid_at` DATETIME COMMENT '支付时间',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
+  INDEX `idx_order` (`order_type`, `order_id`),
+  INDEX `idx_transaction` (`transaction_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '支付记录表';
+
+-- 评价系统表
+CREATE TABLE `reviews` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '评价用户',
+  `target_type` ENUM('BOAT', 'GOODS', 'MERCHANT', 'VENDOR') NOT NULL COMMENT '评价对象类型',
+  `target_id` BIGINT UNSIGNED NOT NULL COMMENT '评价对象ID',
+  `order_id` BIGINT UNSIGNED COMMENT '关联订单ID',
+  `rating` TINYINT UNSIGNED NOT NULL COMMENT '评分(1-5)',
+  `content` TEXT COMMENT '评价内容',
+  `images` JSON COMMENT '评价图片',
+  `is_anonymous` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否匿名',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
+  INDEX `idx_target` (`target_type`, `target_id`),
+  INDEX `idx_rating` (`rating`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '评价表';
+
+-- 优惠券表
+CREATE TABLE `coupons` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL COMMENT '优惠券名称',
+  `code` VARCHAR(50) UNIQUE COMMENT '优惠券代码',
+  `type` ENUM('FIXED', 'PERCENTAGE') NOT NULL COMMENT '优惠类型：固定金额/百分比',
+  `value` DECIMAL(10, 2) NOT NULL COMMENT '优惠值',
+  `min_amount` DECIMAL(10, 2) COMMENT '最小使用金额',
+  `max_discount` DECIMAL(10, 2) COMMENT '最大优惠金额',
+  `total_count` INT UNSIGNED NOT NULL COMMENT '发放总数',
+  `used_count` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '已使用数量',
+  `start_time` DATETIME NOT NULL COMMENT '有效期开始',
+  `end_time` DATETIME NOT NULL COMMENT '有效期结束',
+  `applicable_type` ENUM('ALL', 'BOAT', 'GOODS') NOT NULL DEFAULT 'ALL' COMMENT '适用类型',
+  `creator_id` BIGINT UNSIGNED NOT NULL COMMENT '创建者',
+  `is_enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`creator_id`) REFERENCES accounts (`id`),
+  INDEX `idx_code` (`code`),
+  INDEX `idx_time` (`start_time`, `end_time`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '优惠券表';
+
+-- 用户优惠券表
+CREATE TABLE `user_coupons` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` BIGINT UNSIGNED NOT NULL COMMENT '用户ID',
+  `coupon_id` BIGINT UNSIGNED NOT NULL COMMENT '优惠券ID',
+  `order_id` BIGINT UNSIGNED COMMENT '使用订单ID',
+  `status` ENUM('UNUSED', 'USED', 'EXPIRED') NOT NULL DEFAULT 'UNUSED' COMMENT '使用状态',
+  `used_at` DATETIME COMMENT '使用时间',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_id`) REFERENCES accounts (`id`),
+  FOREIGN KEY (`coupon_id`) REFERENCES coupons (`id`),
+  INDEX `idx_user_status` (`user_id`, `status`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '用户优惠券表';
+
+-- 系统配置表
+CREATE TABLE `system_configs` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `config_key` VARCHAR(100) NOT NULL UNIQUE COMMENT '配置键',
+  `config_value` TEXT NOT NULL COMMENT '配置值',
+  `config_type` ENUM('STRING', 'NUMBER', 'BOOLEAN', 'JSON') NOT NULL DEFAULT 'STRING' COMMENT '配置类型',
+  `description` VARCHAR(255) COMMENT '配置描述',
+  `is_public` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否公开配置',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX `idx_key` (`config_key`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '系统配置表';
+
+-- 统计数据表
+CREATE TABLE `statistics` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `stat_date` DATE NOT NULL COMMENT '统计日期',
+  `stat_type` ENUM('DAILY', 'WEEKLY', 'MONTHLY') NOT NULL COMMENT '统计类型',
+  `metric_name` VARCHAR(100) NOT NULL COMMENT '指标名称',
+  `metric_value` DECIMAL(15, 2) NOT NULL COMMENT '指标值',
+  `unit_id` BIGINT UNSIGNED COMMENT '单位ID（可选）',
+  `is_deleted` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`unit_id`) REFERENCES units (`id`),
+  UNIQUE KEY `uk_stat` (`stat_date`, `stat_type`, `metric_name`, `unit_id`),
+  INDEX `idx_date_type` (`stat_date`, `stat_type`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = '统计数据表_ndto_nvo';

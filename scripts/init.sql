@@ -3,7 +3,7 @@ USE boatmanagement;
 INSERT INTO `role` (`name`, `description`) VALUES ('ADMIN', '管理员');
 INSERT INTO `role` (`name`, `description`) VALUES ('MERCHANT', '商户');
 INSERT INTO `role` (`name`, `description`) VALUES ('VENDOR', '供应商');
-INSERT INTO `role` (`name`, `description`) VALUES ('BOAT_OWNER', '船主');
+INSERT INTO `role` (`name`, `description`) VALUES ('SUPER_ADMIN', '超级管理员');
 INSERT INTO `role` (`name`, `description`) VALUES ('USER', '普通用户');
 -- 创建管理员和他的其他角色
 INSERT INTO `accounts` ( `username`, `password`, `phone`, `email` )

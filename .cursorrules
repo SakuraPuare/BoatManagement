@@ -199,11 +199,103 @@ If needed, you can further use the `web_scraper.py` file to scrape the web page 
 - 在 `BaseGoodsVO` 中添加了 `isEnabled` 字段
 - 解决了 `GOODS.IS_ENABLED` 和 `good.getIsEnabled()` 的编译错误
 
+✅ **BaseFileUploadsDTO和BaseFileUploadsVO缺失问题**：
+- 创建了 `BaseFileUploadsDTO` 类，包含文件上传的基本字段（originalName, storedName, filePath等）
+- 创建了 `BaseFileUploadsVO` 类，包含文件上传的基本字段和ID
+- 解决了文件上传管理模块中的编译错误
+
+✅ **BaseNotificationsDTO和BaseNotificationsVO缺失问题**：
+- 创建了 `BaseNotificationsDTO` 类，包含通知的基本字段（userId, title, content, type等）
+- 创建了 `BaseNotificationsVO` 类，包含通知的基本字段和ID
+- 解决了通知系统模块中的编译错误
+
+✅ **BaseFileUploadsService和BaseNotificationsService缺失问题**：
+- 创建了 `BaseFileUploadsService` 类，继承ServiceImpl<FileUploadsMapper, FileUploads>
+- 创建了 `BaseNotificationsService` 类，继承ServiceImpl<NotificationsMapper, Notifications>
+- 解决了FileUploadsService和NotificationsService的编译错误
+
+✅ **POJOUtils缺少convertToEntity和convertToVO方法问题**：
+- 在 `POJOUtils` 类中添加了 `convertToEntity` 方法，用于将DTO转换为Entity
+- 在 `POJOUtils` 类中添加了 `convertToVO` 方法，用于将Entity转换为VO
+- 解决了FileUploadsService和NotificationsService中的方法调用错误
+
+✅ **ParamsUtils缺少parseSearchParams等方法问题**：
+- 修复了FileUploadsService和NotificationsService中错误使用不存在的ParamsUtils方法
+- 改为使用正确的POJOUtils.search、POJOUtils.dateRange、POJOUtils.sort方法
+- 添加了SEARCH_FIELDS常量定义，遵循项目统一的参数解析模式
+
+### 新增功能模块：
+
+#### 5. 文件上传管理系统 ✅
+- **FileUploads实体**：文件上传管理实体，支持多种业务类型（头像、商品图片、认证文件等）
+- **FileUploadsService**：完整的文件上传管理服务，包含admin前缀的CRUD方法、用户文件管理、业务文件关联等
+- **AdminFileUploadController**：管理员文件上传管理接口
+- **FileUploadController**：文件上传功能接口，支持单文件和批量上传、下载、预览、删除等
+- **FileUploadUtils工具类**：文件上传工具类，提供文件验证、路径生成、文件操作等功能
+
+#### 6. 通知系统 ✅
+- **Notifications实体**：通知系统实体，支持多种通知类型和业务关联
+- **NotificationsService**：完整的通知系统服务，包含发送通知、标记已读、批量操作、未读数量统计等
+- **AdminNotificationController**：管理员通知管理接口
+- **UserNotificationController**：用户通知管理接口
+
+#### 7. 其他扩展实体 ✅
+- **Payments实体**：支付记录管理
+- **Reviews实体**：评价系统
+- **Coupons实体**：优惠券管理
+- **UserCoupons实体**：用户优惠券关联
+- **SystemConfigs实体**：系统配置管理
+
+### 数据库结构更新：
+✅ 在 `scripts/database.sql` 中新增了8个功能模块的数据库表：
+- `file_uploads`：文件上传管理表
+- `notifications`：通知系统表
+- `payments`：支付记录表
+- `reviews`：评价系统表
+- `coupons`：优惠券表
+- `user_coupons`：用户优惠券表
+- `system_configs`：系统配置表
+- `statistics`：统计数据表
+
 ⚠️ **需要更新数据库表结构**：
 - 需要在 `goods` 表中添加 `is_enabled` 字段：
   ```sql
   ALTER TABLE `goods` ADD COLUMN `is_enabled` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '是否启用';
   ```
+- 需要执行新增的8个表的创建语句
+
+### 最新修复：
+✅ **初始化数据角色代码修复**：
+- 修复了 `scripts/init.sql` 中的角色定义问题
+- 移除了不存在的 `BOAT_OWNER` 角色，替换为 `SUPER_ADMIN` 角色
+- 确保角色定义与 `Roles.java` 常量文件一致
+- 角色ID分配：1-ADMIN, 2-MERCHANT, 3-VENDOR, 4-SUPER_ADMIN, 5-USER
 
 ### 总结：
-绿色智能船艇农文旅服务平台后端接口已基本完善，包含了完整的CRUD操作、权限控制、数据查询等功能。所有接口都遵循统一的设计规范，具有良好的可维护性和扩展性。
+绿色智能船艇农文旅服务平台后端接口已全面完善，现在包含：
+
+#### 核心业务模块：
+- 船艇管理（船只、船只类型、船只请求、船只订单）
+- 码头管理
+- 商品管理（商品、商品订单）
+- 商户管理
+- 供应商管理
+- 用户认证和权限管理
+- 单位管理
+
+#### 扩展功能模块：
+- 文件上传管理系统（支持多种业务类型的文件上传、下载、预览）
+- 通知系统（支持多种通知类型、已读状态管理、业务关联）
+- 支付记录管理
+- 评价系统
+- 优惠券系统
+- 系统配置管理
+
+#### 技术特点：
+- 统一的接口设计规范（list、page、ids三种查询方式）
+- 完善的权限控制（admin、vendor、merchant、user、public前缀）
+- 标准化的数据传输（DTO/VO模式）
+- 完整的异常处理机制
+- 丰富的工具类支持
+
+整个系统具备了完整的农文旅服务平台后端功能，具有良好的可维护性、扩展性和用户体验。

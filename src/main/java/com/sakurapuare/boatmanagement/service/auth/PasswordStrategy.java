@@ -85,7 +85,7 @@ public class PasswordStrategy implements AuthStrategy {
                     
                     // 为新用户分配默认的 USER 角色
                     try {
-                        boolean roleAssigned = roleService.assignRole(account.getId(), 6L, null); // USER 角色 ID 为 6
+                        boolean roleAssigned = roleService.assignRole(account.getId(), 5L, null); // USER 角色 ID 为 5
                         if (roleAssigned) {
                             log.info("PasswordStrategy.auth - 默认角色分配成功: userId={}", account.getId());
                         } else {

@@ -1,13 +1,16 @@
 package com.sakurapuare.boatmanagement.controller.user;
 
+import com.mybatisflex.core.query.QueryWrapper;
 import com.sakurapuare.boatmanagement.common.Response;
 import com.sakurapuare.boatmanagement.common.context.UserContext;
 import com.sakurapuare.boatmanagement.pojo.entity.Accounts;
+import com.sakurapuare.boatmanagement.pojo.entity.Merchants;
 import com.sakurapuare.boatmanagement.pojo.entity.Role;
 import com.sakurapuare.boatmanagement.pojo.vo.UserInfoVO;
 import com.sakurapuare.boatmanagement.pojo.vo.UserWithRoleVO;
 import com.sakurapuare.boatmanagement.pojo.vo.base.BaseAccountsVO;
 import com.sakurapuare.boatmanagement.service.AccountsService;
+import com.sakurapuare.boatmanagement.service.MerchantsService;
 import com.sakurapuare.boatmanagement.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.sakurapuare.boatmanagement.pojo.entity.table.Tables.MERCHANTS;
+
 @RestController
 @RequestMapping("/user/info")
 @Tag(name = "UserInfo", description = "用户信息模块")
@@ -27,6 +32,7 @@ public class UserInfoController {
 
     private final AccountsService accountsService;
     private final RoleService roleService;
+    private final MerchantsService merchantsService;
 
     @GetMapping("/{id}")
     @Operation(summary = "获取用户信息")
@@ -44,6 +50,17 @@ public class UserInfoController {
         // 设置其他需要的属性...
         
         return Response.success(userInfoVO);
+    }
+
+    @GetMapping("/merchant/{merchantId}")
+    @Operation(summary = "检查当前用户是否是指定商家")
+    public Response<Boolean> userCheckIsMerchant(@PathVariable Long merchantId) {
+        Accounts account = UserContext.getAccount();
+        // 查询当前用户是否是该商家
+        Merchants merchant = merchantsService.getOne(
+                QueryWrapper.create().where(MERCHANTS.USER_ID.eq(account.getId()))
+                        .and(MERCHANTS.ID.eq(merchantId)));
+        return Response.success(merchant != null);
     }
 
     @GetMapping("/me")
@@ -74,10 +91,11 @@ public class UserInfoController {
         int roleMask = 0;
         for (Role role : userRoles) {
             switch (role.getName()) {
-                case "USER" -> roleMask |= 1; // 1 << 0
+                case "ADMIN" -> roleMask |= 1; // 1 << 0
                 case "MERCHANT" -> roleMask |= 2; // 1 << 1
                 case "VENDOR" -> roleMask |= 4; // 1 << 2
-                case "ADMIN" -> roleMask |= 8; // 1 << 3
+                case "BOAT_OWNER" -> roleMask |= 8; // 1 << 3
+                case "USER" -> roleMask |= 16; // 1 << 4
             }
         }
         userWithRole.setRole(roleMask);

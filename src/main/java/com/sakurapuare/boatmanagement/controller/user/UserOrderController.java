@@ -31,7 +31,9 @@ public class UserOrderController {
     @GetMapping("/goods/list")
     @Operation(summary = "获取用户商品订单列表")
     public Response<List<BaseGoodsOrdersVO>> userGetGoodsOrdersList(
-            @RequestBody BaseGoodsOrdersDTO goodsOrdersDTO) {
+            @RequestParam(required = false) String status) {
+        BaseGoodsOrdersDTO goodsOrdersDTO = new BaseGoodsOrdersDTO();
+        goodsOrdersDTO.setStatus(status);
         return Response.success(goodsOrdersService.userGetGoodsOrdersList(goodsOrdersDTO));
     }
 
@@ -40,7 +42,9 @@ public class UserOrderController {
     public Response<Page<BaseGoodsOrdersVO>> userGetGoodsOrdersPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestBody BaseGoodsOrdersDTO goodsOrdersDTO) {
+            @RequestParam(required = false) String status) {
+        BaseGoodsOrdersDTO goodsOrdersDTO = new BaseGoodsOrdersDTO();
+        goodsOrdersDTO.setStatus(status);
         return Response.success(goodsOrdersService.userGetGoodsOrdersPage(pageNum, pageSize, goodsOrdersDTO));
     }
 
@@ -65,7 +69,9 @@ public class UserOrderController {
     @GetMapping("/boat/list")
     @Operation(summary = "获取用户船舶订单列表")
     public Response<List<BaseBoatOrdersVO>> userGetBoatOrdersList(
-            @RequestBody BaseBoatOrdersDTO boatOrdersDTO) {
+            @RequestParam(required = false) String status) {
+        BaseBoatOrdersDTO boatOrdersDTO = new BaseBoatOrdersDTO();
+        boatOrdersDTO.setStatus(status);
         return Response.success(boatOrdersService.getUserBoatOrdersListQuery(boatOrdersDTO));
     }
 
@@ -74,7 +80,9 @@ public class UserOrderController {
     public Response<Page<BaseBoatOrdersVO>> userGetBoatOrdersPage(
             @RequestParam(defaultValue = "1") Integer pageNum,
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestBody BaseBoatOrdersDTO boatOrdersDTO) {
+            @RequestParam(required = false) String status) {
+        BaseBoatOrdersDTO boatOrdersDTO = new BaseBoatOrdersDTO();
+        boatOrdersDTO.setStatus(status);
         return Response.success(boatOrdersService.getUserBoatOrdersPageQuery(pageNum, pageSize, boatOrdersDTO));
     }
 
