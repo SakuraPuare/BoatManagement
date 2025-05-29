@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
-@MapperScan("com.sakurapuare.boatmanagement.mapper")
 public class BoatmanagementApplication {
 
     public static void main(String[] args) {

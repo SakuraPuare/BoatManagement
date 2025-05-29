@@ -3,7 +3,7 @@
     <script-file value="$PROJECT_DIR$/scripts/database.sql" />
     <script-file value="$PROJECT_DIR$/scripts/init.sql" />
     <script-mode>FILE</script-mode>
-    <data-source id="709a2c4b-0cef-4595-b0ed-fa3944234d1d" />
+    <data-source id="709a2c4b-0cef-4595-b0ed-fa3944234d1d" namespace="schema/&quot;boatmanagement&quot;" />
     <method v="2" />
   </configuration>
 </component>
