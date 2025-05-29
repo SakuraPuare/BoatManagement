@@ -73,7 +73,10 @@ public class AdminGoodsController {
 
     @PostMapping("/")
     @Operation(summary = "创建商品")
-    public Response<BaseGoodsVO> adminCreateGoods(@RequestBody BaseGoodsDTO baseGoodsDTO) {
-        return Response.success("创建商品成功", goodsService.adminCreateGoods(baseGoodsDTO));
+    public Response<BaseGoodsVO> adminCreateGoods(
+            @RequestBody BaseGoodsDTO baseGoodsDTO,
+            @RequestParam Long merchantId,
+            @RequestParam Long unitId) {
+        return Response.success("创建商品成功", goodsService.adminCreateGoods(baseGoodsDTO, merchantId, unitId));
     }
 } 

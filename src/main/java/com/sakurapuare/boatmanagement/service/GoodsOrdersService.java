@@ -214,6 +214,17 @@ public class GoodsOrdersService extends BaseGoodsOrdersService {
         return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsOrdersVO.class);
     }
 
+    public Page<BaseGoodsOrdersVO> merchantGetGoodsOrdersPage(Integer pageNum, Integer pageSize,
+                                                              String search, String sort, String startDateTime, String endDateTime,
+                                                              BaseGoodsOrdersDTO goodsOrderDTO) {
+        QueryWrapper queryWrapper = getMerchantQueryWrapper(goodsOrderDTO);
+        // 添加搜索、排序、时间范围等参数
+        POJOUtils.search(queryWrapper, SEARCH_FIELDS, search);
+        POJOUtils.dateRange(queryWrapper, startDateTime, endDateTime);
+        POJOUtils.sort(queryWrapper, ParamsUtils.getSortFromParams(sort));
+        return super.pageAs(Page.of(pageNum, pageSize), queryWrapper, BaseGoodsOrdersVO.class);
+    }
+
     private void verifyMerchantId(Long id) {
         // 获取当前用户对应的商家
         Merchants merchant = merchantsService.getOne(

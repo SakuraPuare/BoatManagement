@@ -44,24 +44,24 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES
 
 -- 创建管理员账户
 INSERT INTO `accounts` (`username`, `password`, `phone`, `email`) VALUES 
-('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138000', 'admin@boatmanagement.com'),
-('superadmin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138001', 'superadmin@boatmanagement.com');
+('admin', '123456', '13800138000', 'admin@boatmanagement.com'),
+('superadmin', '123456', '13800138001', 'superadmin@boatmanagement.com');
 
 -- 创建商户账户
 INSERT INTO `accounts` (`username`, `password`, `phone`, `email`) VALUES 
-('merchant1', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138002', 'merchant1@example.com'),
-('merchant2', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138003', 'merchant2@example.com');
+('merchant1', '123456', '13800138002', 'merchant1@example.com'),
+('merchant2', '123456', '13800138003', 'merchant2@example.com');
 
 -- 创建供应商账户
 INSERT INTO `accounts` (`username`, `password`, `phone`, `email`) VALUES 
-('vendor1', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138004', 'vendor1@example.com'),
-('vendor2', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138005', 'vendor2@example.com');
+('vendor1', '123456', '13800138004', 'vendor1@example.com'),
+('vendor2', '123456', '13800138005', 'vendor2@example.com');
 
 -- 创建普通用户账户
 INSERT INTO `accounts` (`username`, `password`, `phone`, `email`) VALUES 
-('user1', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138006', 'user1@example.com'),
-('user2', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138007', 'user2@example.com'),
-('user3', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBaYMountjSJTe', '13800138008', 'user3@example.com');
+('user1', '123456', '13800138006', 'user1@example.com'),
+('user2', '123456', '13800138007', 'user2@example.com'),
+('user3', '123456', '13800138008', 'user3@example.com');
 
 -- ================================
 -- 3. 单位数据

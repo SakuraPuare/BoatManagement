@@ -129,10 +129,31 @@ public class GoodsService extends BaseGoodsService {
      * 创建商品
      *
      * @param dto 商品数据传输对象
+     * @param merchantId 商家ID
+     * @param unitId 单位ID
      * @return 创建的商品视图对象
      */
-    public BaseGoodsVO adminCreateGoods(BaseGoodsDTO dto) {
+    public BaseGoodsVO adminCreateGoods(BaseGoodsDTO dto, Long merchantId, Long unitId) {
+        // 验证商家是否存在
+        Merchants merchant = merchantsService.getById(merchantId);
+        if (merchant == null) {
+            throw new RuntimeException("商家不存在");
+        }
+        
+        // 验证单位是否存在
+        Units unit = unitsService.getById(unitId);
+        if (unit == null) {
+            throw new RuntimeException("单位不存在");
+        }
+        
+        // 验证商家是否属于指定单位
+        if (!merchant.getUnitId().equals(unitId)) {
+            throw new RuntimeException("商家不属于指定单位");
+        }
+        
         Goods goods = POJOUtils.asOther(dto, Goods.class);
+        goods.setMerchantId(merchantId);
+        goods.setUnitId(unitId);
         super.save(goods);
         return POJOUtils.asOther(goods, BaseGoodsVO.class);
     }
@@ -255,8 +276,13 @@ public class GoodsService extends BaseGoodsService {
         if (merchant == null) {
             throw new RuntimeException("商家不存在");
         }
+        Units unit = getUnit(merchant);
+        if (unit == null) {
+            throw new RuntimeException("单位不存在");
+        }
         Goods newGoods = POJOUtils.asOther(goods, Goods.class);
         newGoods.setMerchantId(merchant.getId());
+        newGoods.setUnitId(unit.getId());
         super.save(newGoods);
     }
 
